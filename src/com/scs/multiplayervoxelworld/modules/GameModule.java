@@ -16,12 +16,16 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.AmbientLight;
+import com.jme3.light.DirectionalLight;
+import com.jme3.light.Light;
+import com.jme3.light.LightList;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.Spatial.CullHint;
+import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.Settings.GameMode;
@@ -31,6 +35,7 @@ import com.scs.multiplayervoxelworld.components.IEntity;
 import com.scs.multiplayervoxelworld.components.IMustRemainInArena;
 import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
+import com.scs.multiplayervoxelworld.entities.Collectable;
 import com.scs.multiplayervoxelworld.entities.CubeExplosionShard;
 import com.scs.multiplayervoxelworld.entities.DodgeballBall;
 import com.scs.multiplayervoxelworld.entities.PlayersAvatar;
@@ -38,7 +43,7 @@ import com.scs.multiplayervoxelworld.hud.HUD;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
 import com.scs.multiplayervoxelworld.input.JoystickCamera2;
 import com.scs.multiplayervoxelworld.input.MouseAndKeyboardCamera;
-import com.scs.multiplayervoxelworld.map.FlatWorld;
+import com.scs.multiplayervoxelworld.map.DefaultMap;
 import com.scs.multiplayervoxelworld.map.IPertinentMapData;
 
 import ssmith.util.RealtimeInterval;
@@ -63,6 +68,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 	public AudioNode audioExplode, audioSmallExplode;
 	private AudioNode audioMusic;
+	public DirectionalLight sun;
 
 	public GameModule(MultiplayerVoxelWorldMain _game) {
 		super();
@@ -92,8 +98,18 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 		setUpLight();
 
-		mapData = new FlatWorld(game, this);
+		final int SHADOWMAP_SIZE = 1024;
+		DirectionalLightShadowRenderer dlsr = new DirectionalLightShadowRenderer(game.getAssetManager(), SHADOWMAP_SIZE, 2);
+		dlsr.setLight(sun);
+		this.game.getViewPort().addProcessor(dlsr);
+
+		mapData = new DefaultMap(game, this);
 		mapData.setup();
+		
+		if (Settings.DEBUG_NO_MAP) {
+			Collectable c = new Collectable(game, this, 5, 5, 5);
+			this.addEntity(c);
+		}
 
 		Joystick[] joysticks = game.getInputManager().getJoysticks();
 		int numPlayers = game.getNumPlayers();
@@ -299,10 +315,23 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 
 	private void setUpLight() {
+		// Remove existing lights
+		this.game.getRootNode().getWorldLightList().clear(); //this.rootNode.getWorldLightList().size();
+		LightList list = this.game.getRootNode().getWorldLightList();
+		for (Light it : list) {
+			this.game.getRootNode().removeLight(it);
+		}
+
 		AmbientLight al = new AmbientLight();
-		al.setColor(ColorRGBA.White.mult(1));
+		al.setColor(ColorRGBA.White);
 		game.getRootNode().addLight(al);
-	}
+
+		sun = new DirectionalLight();
+		sun.setColor(ColorRGBA.White);
+		sun.setDirection(new Vector3f(-.5f, -1f, -.5f).normalizeLocal());
+		game.getRootNode().addLight(sun);
+
+}
 
 
 	@Override
@@ -310,8 +339,8 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		addAndRemoveEntities();
 
 		boolean check = checkOutOfArena.hitInterval();
-		
-		this.game.getRootNode();
+
+		this.game.getRootNode().getChild(5).getWorldBound();
 
 		for(IProcessable ip : this.entitiesForProcessing) {
 			ip.process(tpfSecs);
@@ -363,7 +392,6 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		}
 
 		if (a != null && b != null) {
-			//CollisionLogic.collision(this, a, b);
 			if (a instanceof ICollideable && b instanceof ICollideable) {
 				//Settings.p(a + " has collided with " + b);
 				ICollideable ica = (ICollideable)a;
@@ -458,14 +486,6 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 	}
 
-	/*
-	public void createCollectable() {
-		Point p = mapData.getRandomCollectablePos();
-		Collectable c = new Collectable(game, this, p.x+1, mapData.getRespawnHeight(), p.y+1);
-		game.getRootNode().attachChild(c.getMainNode());
-
-	}
-	 */
 
 	public float getPlayersHealth(int id) {
 		if (Settings.GAME_MODE == GameMode.KingOfTheHill) {
@@ -494,14 +514,12 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 		while (this.entitiesToAdd.size() > 0) {
 			IEntity e = this.entitiesToAdd.remove(0);
-			//this.entities.add(e);
 			actuallyAddEntity(e);
 		}
 	}
 
 
 	public void addEntity(IEntity e) {
-		//if (!loadingLevel) {
 		this.entitiesToAdd.add(e);
 	}
 
@@ -526,10 +544,6 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		if (e instanceof IProcessable) {
 			this.entitiesForProcessing.remove((IProcessable)e);
 		}
-		/*if (e instanceof PhysicsTickListener) {
-			this.getBulletAppState().getPhysicsSpace().removeTickListener((PhysicsTickListener)e);
-		}*/
-
 	}
 
 

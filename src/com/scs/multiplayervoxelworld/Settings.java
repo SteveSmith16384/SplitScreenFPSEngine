@@ -3,9 +3,13 @@ package com.scs.multiplayervoxelworld;
 public class Settings {
 
 	public static final boolean RELEASE_MODE = false;
+	public static final boolean RECORD_VID = false;
 
 	// DEBUG
 	public static final boolean DEBUG_NO_MAP = true;
+	public static final boolean USE_MODEL_FOR_PLAYERS = false;
+
+	// Unused debug
 	public static final boolean DEBUG_SIMPLE_MAP = false;
 	public static final boolean DEBUG_GAMEPAD_DIV_TPF = false;
 	public static final boolean DEBUG_GAMEPAD_MULT_VALUE = false;	
@@ -20,8 +24,6 @@ public class Settings {
 
 	public static final String VERSION = "0.01";
 	public static final boolean ALWAYS_SHOW_4_CAMS = false;
-	public static final boolean RECORD_VID = false;
-	public static final boolean USE_MODEL_FOR_PLAYERS = true;
 	public static final boolean SHOW_FLASH_EXPLOSIONS = false;
 	public static final boolean PLAYER1_IS_MOUSE = true;
 	public static final int TEX_PER_SHEET = 16;
@@ -39,11 +41,10 @@ public class Settings {
 	public static final float PLAYER_MOVE_SPEED = 3f;
 	public static final float JUMP_FORCE = 8f;
 
-	public static final float CAM_DIST = 50f;
-	public static final int FLOOR_SECTION_SIZE = 12;
-	public static final boolean LIGHTING = true;
+	public static final float CAM_DIST = 100f;
+	//public static final int FLOOR_SECTION_SIZE = 12;
 	public static final String NAME = "Multiplayer Voxel World";
-	public static final int CLONE_ID = 2; // Which model to use for clones
+	//public static final int CLONE_ID = 2; // Which model to use for clones
 	
 	// User Data
 	public static final String ENTITY = "Entity";

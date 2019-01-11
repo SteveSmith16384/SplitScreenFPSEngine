@@ -123,13 +123,8 @@ public class JMEFunctions {
 		tex3.setWrap(WrapMode.Repeat);
 
 		Material material = null;
-		if (Settings.LIGHTING) {
 			material = new Material(assetManager,"Common/MatDefs/Light/Lighting.j3md");  // create a simple material
 			material.setTexture("DiffuseMap", tex3);
-		} else {
-			material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-			material.setTexture("ColorMap", tex3);
-		}
 		SetMaterialOnSpatial(spatial, material);
 	}
 

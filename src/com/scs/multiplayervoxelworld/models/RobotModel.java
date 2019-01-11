@@ -24,10 +24,10 @@ public class RobotModel extends Node {
 			t = assetManager.loadTexture("Textures/robot_green.png");
 			break;
 		case 1:
-			t = assetManager.loadTexture("Textures/robot_purple.png");
+			t = assetManager.loadTexture("Textures/robot_yellow.png");
 			break;
 		case 2:
-			t = assetManager.loadTexture("Textures/robot_yellow.png");
+			t = assetManager.loadTexture("Textures/robot_purple.png");
 			break;
 		case 3:
 			t = assetManager.loadTexture("Textures/robot_red.png");

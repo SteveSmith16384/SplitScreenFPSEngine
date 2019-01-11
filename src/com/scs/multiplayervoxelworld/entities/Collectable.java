@@ -17,7 +17,7 @@ import com.scs.multiplayervoxelworld.modules.GameModule;
 public class Collectable extends AbstractPhysicalEntity implements ICollideable, IShowOnHUD, IAffectedByPhysics {
 
 	private static final float SIZE = .1f;
-	
+
 	public boolean collected = false;
 
 	public Collectable(MultiplayerVoxelWorldMain _game, GameModule _module, float x, float y, float z) {
@@ -31,13 +31,8 @@ public class Collectable extends AbstractPhysicalEntity implements ICollideable,
 		tex3.setWrap(WrapMode.Repeat);
 
 		Material floor_mat = null;
-		if (Settings.LIGHTING) {
-			floor_mat = new Material(game.getAssetManager(),"Common/MatDefs/Light/Lighting.j3md");  // create a simple material
-			floor_mat.setTexture("DiffuseMap", tex3);
-		} else {
-			floor_mat = new Material(game.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-			floor_mat.setTexture("ColorMap", tex3);
-		}
+		floor_mat = new Material(game.getAssetManager(),"Common/MatDefs/Light/Lighting.j3md");  // create a simple material
+		floor_mat.setTexture("DiffuseMap", tex3);
 		geometry.setMaterial(floor_mat);
 
 		this.mainNode.attachChild(geometry);
@@ -47,16 +42,16 @@ public class Collectable extends AbstractPhysicalEntity implements ICollideable,
 		mainNode.addControl(rigidBodyControl);
 
 		//module.bulletAppState.getPhysicsSpace().add(rigidBodyControl);
-		
+
 		geometry.setUserData(Settings.ENTITY, this);
 		rigidBodyControl.setUserObject(this);
 
 		rigidBodyControl.setRestitution(.5f);
 
 		module.addEntity(this); // need this to target it
-		
+
 		Settings.p("Created collectable");
-		
+
 	}
 
 
@@ -68,7 +63,7 @@ public class Collectable extends AbstractPhysicalEntity implements ICollideable,
 
 	@Override
 	public void collidedWith(ICollideable other) {
-		
+
 	}
 
 

@@ -85,7 +85,7 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		health = module.getPlayersHealth(playerID);
 
 		{
-			int pid = Settings.GAME_MODE != GameMode.CloneWars ? playerID : Settings.CLONE_ID;
+			int pid = playerID;
 			playerGeometry = getPlayersModel(game, pid);
 			this.getMainNode().attachChild(playerGeometry);
 		}
@@ -113,14 +113,6 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		if (abilityOther != null) {
 			this.hud.setAbilityOtherText(this.abilityOther.getHudText());
 		}
-
-		//playerControl.getPhysicsRigidBody().setCcdMotionThreshold(PLAYER_RAD*2);
-
-		if (Settings.DEBUG_GAMEPAD_TURNING) {
-			gamepadTest = new AbstractHUDImage(game, module, this.hud, "Textures/text/hit.png", 10, 10, -1);
-			gamepadTest.setPosition(100, 50);
-		}
-
 	}
 
 
@@ -132,17 +124,12 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 			Box box1 = new Box(PLAYER_RAD, PLAYER_HEIGHT/2, PLAYER_RAD);
 			//Cylinder box1 = new Cylinder(1, 8, PLAYER_RAD, PLAYER_HEIGHT, true);
 			Geometry playerGeometry = new Geometry("Player", box1);
-			TextureKey key3 = new TextureKey("Textures/computerconsole2.jpg");
+			TextureKey key3 = new TextureKey("Textures/robot_green.png");
 			key3.setGenerateMips(true);
 			Texture tex3 = game.getAssetManager().loadTexture(key3);
 			Material floor_mat = null;
-			if (Settings.LIGHTING) {
 				floor_mat = new Material(game.getAssetManager(),"Common/MatDefs/Light/Lighting.j3md");  // create a simple material
 				floor_mat.setTexture("DiffuseMap", tex3);
-			} else {
-				floor_mat = new Material(game.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-				floor_mat.setTexture("ColorMap", tex3);
-			}
 			playerGeometry.setMaterial(floor_mat);
 			//playerGeometry.setLocalTranslation(new Vector3f(0, PLAYER_HEIGHT/2, 0)); // Need this to ensure the crate is on the floor
 			playerGeometry.setLocalTranslation(new Vector3f(0, (PLAYER_HEIGHT/2)-.075f, 0)); // Need this to ensure the crate is on the floor

@@ -47,7 +47,6 @@ public class MultiplayerVoxelWorldMain extends SimpleApplication {
 			BASE_SCORE_INC = MultiplayerVoxelWorldMain.properties.GetBaseScoreInc();
 			
 			MultiplayerVoxelWorldMain app = new MultiplayerVoxelWorldMain();
-			//instance = app;
 			app.setSettings(settings);
 			//app.setPauseOnLostFocus(true);
 
@@ -60,8 +59,6 @@ public class MultiplayerVoxelWorldMain extends SimpleApplication {
 				Capture.captureAudio(app, audio);
 			}*/
 
-			app.start();
-
 			/*if (Settings.RECORD_VID) {
 				System.out.println("Video saved at " + video.getCanonicalPath());
 				System.out.println("Audio saved at " + audio.getCanonicalPath());
@@ -72,6 +69,8 @@ public class MultiplayerVoxelWorldMain extends SimpleApplication {
 			} catch (BackingStoreException e) {
 				e.printStackTrace();
 			}
+
+			app.start();
 
 		} catch (Exception e) {
 			Settings.p("Error: " + e);
@@ -100,7 +99,6 @@ public class MultiplayerVoxelWorldMain extends SimpleApplication {
 		cam.setFrustumPerspective(45f, (float) cam.getWidth() / cam.getHeight(), 0.01f, Settings.CAM_DIST);
 		//scs cam.setViewPort(0f, 0.5f, 0f, 0.5f); // BL
 
-		//currentModule = new GamepadModule(this);
 		if (Settings.RELEASE_MODE) {
 			currentModule = new StartModule(this, GameMode.Skirmish);
 		} else {

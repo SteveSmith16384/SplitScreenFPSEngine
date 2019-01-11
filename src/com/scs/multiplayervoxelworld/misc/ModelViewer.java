@@ -11,7 +11,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Spatial;
 import com.scs.multiplayervoxelworld.jme.JMEFunctions;
 
-public class ModelViewer extends SimpleApplication {
+public class ModelViewer extends SimpleApplication { // todo - copy SteveTech version
 
 	public static void main(String[] args){
 		ModelViewer app = new ModelViewer();
@@ -23,9 +23,6 @@ public class ModelViewer extends SimpleApplication {
 
 	@Override
 	public void simpleInitApp() {
-		assetManager.registerLocator("assets/", FileLocator.class); // default
-		//assetManager.registerLocator("assets/Textures/", FileLocator.class);
-
 		super.getViewPort().setBackgroundColor(ColorRGBA.White);
 
 		cam.setFrustumPerspective(60, settings.getWidth() / settings.getHeight(), .1f, 100);
@@ -40,7 +37,6 @@ public class ModelViewer extends SimpleApplication {
 		//JMEFunctions.SetTextureOnSpatial(assetManager, model, "Textures/sun.jpg");
 		//JMEFunctions.SetTextureOnSpatial(assetManager, model, "Textures/cells3.png");
 		//JMEFunctions.SetTextureOnSpatial(assetManager, model, "Textures/computerconsole2.jpg");
-
 		
 		model.setModelBound(new BoundingBox());
 		model.updateModelBound();

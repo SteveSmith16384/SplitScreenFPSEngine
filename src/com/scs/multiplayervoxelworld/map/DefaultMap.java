@@ -9,14 +9,14 @@ import com.scs.multiplayervoxelworld.modules.GameModule;
 
 import mygame.util.Vector3Int;
 
-public class FlatWorld implements IPertinentMapData {
+public class DefaultMap implements IPertinentMapData {
 
 	private static final int WIDTH = 100;
 
 	private MultiplayerVoxelWorldMain game;
 	private GameModule module;
 
-	public FlatWorld(MultiplayerVoxelWorldMain _game, GameModule _module) {
+	public DefaultMap(MultiplayerVoxelWorldMain _game, GameModule _module) {
 		game = _game;
 		module = _module;
 
