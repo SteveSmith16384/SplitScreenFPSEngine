@@ -1,0 +1,6 @@
+#Multiplayer Voxel World settings file
+#Fri Jan 11 15:20:49 GMT 2019
+BaseScoreInc=0.005
+InvulnerableTimeSecs=3.0
+MaxTurnSpeed=1.0
+RestartTimeSecs=3.0

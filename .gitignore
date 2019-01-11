@@ -1,0 +1,16 @@
+/bin/
+
+OpenAL64.dll
+bulletjme64.dll
+lwjgl64.dll
+OpenAL32.dll
+bulletjme.dll
+lwjgl.dll
+.svn
+#MultiplayerArena_settings.txt
+jinput-dx8.dll
+jinput-dx8_64.dll
+jinput-raw.dll
+jinput-raw_64.dll
+/target/
+/.settings/
