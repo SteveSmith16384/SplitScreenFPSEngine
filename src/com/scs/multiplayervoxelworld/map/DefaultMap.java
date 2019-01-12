@@ -25,7 +25,8 @@ public class DefaultMap implements IPertinentMapData {
 
 	public void setup() {
 		VoxelTerrainEntity vte = new VoxelTerrainEntity(game, module, 0, 0, 0, new Vector3Int(200, 20, 200), 16, 1, 1);
-		vte.addRectRange_Blocks(BlockCodes.SAND, new Vector3Int(0, 0, 0), new Vector3Int(100, 1, 100));
+		vte.addRectRange_Blocks(BlockCodes.GRASS, new Vector3Int(0, 0, 0), new Vector3Int(100, 1, 100));
+		vte.addRectRange_Blocks(BlockCodes.SAND, new Vector3Int(0, 1, 0), new Vector3Int(10, 1, 10));
 		module.addEntity(vte);
 	}
 

@@ -26,7 +26,7 @@ public class Settings {
 	public static final boolean ALWAYS_SHOW_4_CAMS = false;
 	public static final boolean SHOW_FLASH_EXPLOSIONS = false;
 	public static final boolean PLAYER1_IS_MOUSE = true;
-	public static final int TEX_PER_SHEET = 16;
+	public static final int TEX_PER_SHEET = 2;
 
 	public enum GameMode {Skirmish, KingOfTheHill, Dodgeball, Bladerunner, CloneWars, Evolve, Sorcerers } // Evolve & Sorcerers not finished (hardly started...)
 	

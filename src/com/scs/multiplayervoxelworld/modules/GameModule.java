@@ -261,7 +261,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		}
 
 		final ViewPort view2 = game.getRenderManager().createMainView("viewport_"+newCam.toString(), newCam);
-		view2.setBackgroundColor(new ColorRGBA(0, 0, 0, 0f));
+		view2.setBackgroundColor(ColorRGBA.Cyan);
 		view2.setClearFlags(true, true, true);
 		view2.attachScene(game.getRootNode());
 
@@ -340,7 +340,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 		boolean check = checkOutOfArena.hitInterval();
 
-		this.game.getRootNode().getChild(5).getWorldBound();
+		//this.game.getRootNode().getChild(5).getWorldBound();
 
 		for(IProcessable ip : this.entitiesForProcessing) {
 			ip.process(tpfSecs);
