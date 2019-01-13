@@ -1,6 +1,8 @@
 package com.scs.multiplayervoxelworld.entities;
 
 import com.jme3.audio.AudioNode;
+import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -10,10 +12,11 @@ import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.components.IBullet;
 import com.scs.multiplayervoxelworld.components.ICanShoot;
 import com.scs.multiplayervoxelworld.components.ICollideable;
+import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.models.BeamLaserModel;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 
-public class LaserBullet extends AbstractPhysicalEntity implements IBullet {
+public class LaserBullet extends AbstractPhysicalEntity implements IBullet, IProcessable, PhysicsTickListener {
 
 	public ICanShoot shooter;
 	private float timeLeft = 3;
@@ -29,12 +32,9 @@ public class LaserBullet extends AbstractPhysicalEntity implements IBullet {
 
 		this.mainNode.attachChild(ball_geo);
 		game.getRootNode().attachChild(this.mainNode);
-		/** Position the cannon ball  */
 		ball_geo.setLocalTranslation(shooter.getLocation().add(shooter.getShootDir().multLocal(PlayersAvatar.PLAYER_RAD*3)));
 		ball_geo.getLocalTranslation().y -= 0.1f; // Drop bullets slightly
-		/** Make the ball physical with a mass > 0.0f */
 		rigidBodyControl = new RigidBodyControl(.1f);
-		/** Add physical ball to physics space. */
 		ball_geo.addControl(rigidBodyControl);
 		//module.bulletAppState.getPhysicsSpace().add(rigidBodyControl);
 		/** Accelerate the physical ball to shoot it. */
@@ -88,6 +88,20 @@ public class LaserBullet extends AbstractPhysicalEntity implements IBullet {
 	@Override
 	public float getDamageCaused() {
 		return 10;
+	}
+
+
+	@Override
+	public void prePhysicsTick(PhysicsSpace space, float tpf) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void physicsTick(PhysicsSpace space, float tpf) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

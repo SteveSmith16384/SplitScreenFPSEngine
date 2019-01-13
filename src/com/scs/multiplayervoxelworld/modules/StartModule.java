@@ -25,7 +25,6 @@ import com.jme3.ui.Picture;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.Settings.GameMode;
-import com.scs.multiplayervoxelworld.entities.DodgeballBall;
 import com.scs.multiplayervoxelworld.models.RobotModel;
 
 
@@ -136,27 +135,6 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 			robot.setLocalTranslation(0, -1.5f, 2f);
 			robot.scale(4);
 			gameModeSpecificText.setText("Be the player who is inside the base in the centre for the longest.");
-			break;
-
-		case Dodgeball:
-			robot = DodgeballBall.getBall(game);
-			robot.setLocalTranslation(0, -1.5f, 2f);
-			robot.scale(4);
-			gameModeSpecificText.setText("Hit other players with an active dodgeball.\nThe ball is active only for a few seconds after being thrown.\nInactive balls can be collected.");
-			break;
-
-		case Bladerunner:
-			/*robot = RoamingAI.getModel(game);
-			robot.setLocalTranslation(0, -1.5f, 2f);
-			robot.scale(4);
-			gameModeSpecificText.setText("Hunt down the rogue AI.");*/
-			break;
-
-		case CloneWars:
-			robot = new RobotModel(game.getAssetManager(), 3);
-			robot.setLocalTranslation(0, -1.5f, 2f);
-			robot.scale(4);
-			gameModeSpecificText.setText("Hunt down the other players, if you can work out who they are.");
 			break;
 
 		default:

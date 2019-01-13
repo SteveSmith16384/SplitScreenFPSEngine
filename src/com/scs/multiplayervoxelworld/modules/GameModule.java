@@ -1,6 +1,5 @@
 package com.scs.multiplayervoxelworld.modules;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +10,7 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
 import com.jme3.input.Joystick;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
@@ -24,7 +24,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.Spatial.CullHint;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
@@ -37,7 +36,6 @@ import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.Collectable;
 import com.scs.multiplayervoxelworld.entities.CubeExplosionShard;
-import com.scs.multiplayervoxelworld.entities.DodgeballBall;
 import com.scs.multiplayervoxelworld.entities.PlayersAvatar;
 import com.scs.multiplayervoxelworld.hud.HUD;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
@@ -97,11 +95,6 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		game.getRenderManager().removeMainView(game.getViewPort()); // Since we create new ones for each player
 
 		setUpLight();
-
-		final int SHADOWMAP_SIZE = 1024;
-		DirectionalLightShadowRenderer dlsr = new DirectionalLightShadowRenderer(game.getAssetManager(), SHADOWMAP_SIZE, 2);
-		dlsr.setLight(sun);
-		this.game.getViewPort().addProcessor(dlsr);
 
 		mapData = new DefaultMap(game, this);
 		mapData.setup();
@@ -265,6 +258,20 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		view2.setClearFlags(true, true, true);
 		view2.attachScene(game.getRootNode());
 
+		final int SHADOWMAP_SIZE = 2048;
+		DirectionalLightShadowRenderer dlsr = new DirectionalLightShadowRenderer(game.getAssetManager(), SHADOWMAP_SIZE, 2);
+		dlsr.setLight(sun);
+		view2.addProcessor(dlsr);
+
+		BitmapFont guiFont = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");
+		BitmapText hudText = new BitmapText(guiFont, false);
+		hudText.setSize(guiFont.getCharSet().getRenderedSize()+2);
+		hudText.setColor(ColorRGBA.White);
+		hudText.setText("+");
+		hudText.setLocalTranslation(newCam.getWidth() / 2 - hudText.getLineWidth()/2, newCam.getHeight() / 2 + hudText.getLineHeight(), 0); // position
+		game.getGuiNode().attachChild(hudText);
+
+
 		/*FilterPostProcessor fpp = new FilterPostProcessor(game.getAssetManager());
 		if (Settings.NEON) {
 			BloomFilter bloom = new BloomFilter(BloomFilter.GlowMode.Scene);
@@ -304,9 +311,9 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 	private void addPlayersAvatar(int id, Camera cam, IInputDevice input, HUD hud) {
 		PlayersAvatar player = new PlayersAvatar(game, this, id, cam, input, hud);
-		if (Settings.DEBUG_NO_MAP) {
+		/*if (Settings.DEBUG_NO_MAP) {
 			player.getMainNode().setCullHint(CullHint.Always);
-		}
+		}*/
 		this.addEntity(player);
 		player.moveToStartPostion(true);
 		// Look towards centre
@@ -328,7 +335,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 		sun = new DirectionalLight();
 		sun.setColor(ColorRGBA.White);
-		sun.setDirection(new Vector3f(-.5f, -1f, -.5f).normalizeLocal());
+		sun.setDirection(new Vector3f(-.5f, -.1f, -.5f).normalizeLocal());
 		game.getRootNode().addLight(sun);
 
 }
@@ -362,18 +369,6 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 	@Override
 	public void collision(PhysicsCollisionEvent event) {
-		//String s = event.getObjectA().getUserObject().toString() + " collided with " + event.getObjectB().getUserObject().toString();
-		//System.out.println(s);
-		/*if (s.equals("Entity:Player collided with cannon ball (Geometry)")) {
-			int f = 3;
-		}*/
-
-		//String s = event.getObjectA().getUserObject().toString() + " collided with " + event.getObjectB().getUserObject().toString();
-		//System.out.println(s);
-		/*if (s.equals("Entity:Player collided with cannon ball (Geometry)")) {
-			int f = 3;
-		}*/
-
 		AbstractPhysicalEntity a=null, b=null;
 		Object oa = event.getObjectA().getUserObject(); 
 		if (oa instanceof Spatial) {
@@ -434,8 +429,6 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 					pos.z-=2;
 					doExplosion(pos);//, 5, 10);*/
 					//break;
-				} else if (e instanceof DodgeballBall) {
-					((DodgeballBall) e).markForRemoval();
 				}
 			}
 
@@ -473,17 +466,6 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		}
 
 		CubeExplosionShard.Factory(game, this, pos, 10);
-	}
-
-
-	public void createDodgeballBall() {
-		Point p = mapData.getRandomCollectablePos();
-		DodgeballBall c = new DodgeballBall(game, this, null);
-		c.setUnlive();//.live = false; // Prevent player being killed immed
-		c.getMainNode().setLocalTranslation(p.x,  10f,  p.y);
-		c.rigidBodyControl.setPhysicsLocation(new Vector3f(p.x,  mapData.getRespawnHeight(),  p.y));
-		game.getRootNode().attachChild(c.getMainNode());
-
 	}
 
 

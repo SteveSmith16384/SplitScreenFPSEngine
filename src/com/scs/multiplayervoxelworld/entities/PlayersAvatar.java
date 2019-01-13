@@ -36,7 +36,6 @@ import com.scs.multiplayervoxelworld.hud.HUD;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
 import com.scs.multiplayervoxelworld.models.RobotModel;
 import com.scs.multiplayervoxelworld.modules.GameModule;
-import com.scs.multiplayervoxelworld.weapons.DodgeballGun;
 import com.scs.multiplayervoxelworld.weapons.LaserRifle;
 
 import ssmith.lang.NumberFunctions;
@@ -98,15 +97,11 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		this.getMainNode().setUserData(Settings.ENTITY, this);
 		playerControl.getPhysicsRigidBody().setUserObject(this);
 
-		if (Settings.GAME_MODE == GameMode.Dodgeball) {
-			abilityGun = new DodgeballGun(_game, _module, this);
+		abilityGun = new LaserRifle(_game, _module, this);
+		if (Settings.DEBUG_SPELLS) {
+			this.abilityOther = new Spellbook(module, this);
 		} else {
-			abilityGun = new LaserRifle(_game, _module, this);
-			if (Settings.DEBUG_SPELLS) {
-				this.abilityOther = new Spellbook(module, this);
-			} else {
-				this.abilityOther = new JetPac(this);// BoostFwd(this);//getRandomAbility(this);
-			}
+			this.abilityOther = new JetPac(this);// BoostFwd(this);//getRandomAbility(this);
 		}
 
 		this.hud.setAbilityGunText(this.abilityGun.getHudText());
@@ -128,8 +123,8 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 			key3.setGenerateMips(true);
 			Texture tex3 = game.getAssetManager().loadTexture(key3);
 			Material floor_mat = null;
-				floor_mat = new Material(game.getAssetManager(),"Common/MatDefs/Light/Lighting.j3md");  // create a simple material
-				floor_mat.setTexture("DiffuseMap", tex3);
+			floor_mat = new Material(game.getAssetManager(),"Common/MatDefs/Light/Lighting.j3md");  // create a simple material
+			floor_mat.setTexture("DiffuseMap", tex3);
 			playerGeometry.setMaterial(floor_mat);
 			//playerGeometry.setLocalTranslation(new Vector3f(0, PLAYER_HEIGHT/2, 0)); // Need this to ensure the crate is on the floor
 			playerGeometry.setLocalTranslation(new Vector3f(0, (PLAYER_HEIGHT/2)-.075f, 0)); // Need this to ensure the crate is on the floor
@@ -179,7 +174,7 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		if (invulnerableTime >= 0) {
 			invulnerableTime -= tpf;
 		}
-		
+
 		if (!this.restarting) {
 			// Have we fallen off the edge
 			if (this.playerControl.getPhysicsRigidBody().getPhysicsLocation().y < -1f) { // scs catching here after died!
@@ -246,7 +241,7 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 			if (abilityOther != null) {
 				this.hud.setAbilityOtherText(this.abilityOther.getHudText());
 			}
-			
+
 			if (Settings.GAME_MODE == GameMode.CloneWars) {
 				if (this.timeSinceLastMove > 10) {
 					this.jump();
