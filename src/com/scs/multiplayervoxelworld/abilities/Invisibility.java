@@ -2,6 +2,7 @@ package com.scs.multiplayervoxelworld.abilities;
 
 import com.jme3.scene.Spatial.CullHint;
 import com.scs.multiplayervoxelworld.entities.PlayersAvatar;
+import com.scs.multiplayervoxelworld.modules.GameModule;
 
 public class Invisibility extends AbstractAbility {
 
@@ -10,8 +11,8 @@ public class Invisibility extends AbstractAbility {
 	private float power;
 	private boolean isInvisible;
 	
-	public Invisibility(PlayersAvatar _player) {
-		super(_player);
+	public Invisibility(GameModule module, PlayersAvatar _player) {
+		super(module, _player);
 	}
 
 	

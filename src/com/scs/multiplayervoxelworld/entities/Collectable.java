@@ -11,11 +11,10 @@ import com.jme3.texture.Texture.WrapMode;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.components.IAffectedByPhysics;
-import com.scs.multiplayervoxelworld.components.ICollideable;
 import com.scs.multiplayervoxelworld.components.IShowOnHUD;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 
-public class Collectable extends AbstractPhysicalEntity implements ICollideable, IShowOnHUD, IAffectedByPhysics {
+public class Collectable extends AbstractPhysicalEntity implements IShowOnHUD, IAffectedByPhysics {
 
 	private static final float SIZE = .1f;
 
@@ -53,18 +52,6 @@ public class Collectable extends AbstractPhysicalEntity implements ICollideable,
 		module.addEntity(this); // need this to target it
 
 		Settings.p("Created collectable");
-
-	}
-
-
-	@Override
-	public void process(float tpf) {
-		// Do nothing
-	}
-
-
-	@Override
-	public void collidedWith(ICollideable other) {
 
 	}
 

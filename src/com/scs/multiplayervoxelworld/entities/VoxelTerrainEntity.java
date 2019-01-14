@@ -7,6 +7,7 @@ import com.jme3.scene.Geometry;
 import com.scs.multiplayervoxelworld.BlockCodes;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
+import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 
 import mygame.BlockSettings;
@@ -15,7 +16,7 @@ import mygame.blocks.ChunkControl;
 import mygame.blocks.IBlockTerrainListener;
 import mygame.util.Vector3Int;
 
-public class VoxelTerrainEntity extends AbstractPhysicalEntity {
+public class VoxelTerrainEntity extends AbstractPhysicalEntity implements IProcessable {
 
 	public BlockTerrainControl blocks;
 	private float blockSize;
@@ -114,7 +115,7 @@ public class VoxelTerrainEntity extends AbstractPhysicalEntity {
 
 	@Override
 	public void process(float tpf) {
-		// Do nothing		
+		// Do nothing for now
 	}
 
 

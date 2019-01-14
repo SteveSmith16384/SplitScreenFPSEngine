@@ -17,7 +17,7 @@ public class Spellbook extends AbstractAbility {
 	private List<AbstractSpell> spells = new ArrayList<>();
 	
 	public Spellbook(GameModule module, PlayersAvatar _player) {
-		super(_player);
+		super(module, _player);
 		
 		//currentSpell = new WallSpell(module, _player);
 	}

@@ -2,6 +2,7 @@ package com.scs.multiplayervoxelworld.abilities;
 
 import com.jme3.math.Vector3f;
 import com.scs.multiplayervoxelworld.entities.PlayersAvatar;
+import com.scs.multiplayervoxelworld.modules.GameModule;
 
 public class JetPac extends AbstractAbility {
 
@@ -12,8 +13,8 @@ public class JetPac extends AbstractAbility {
 	private float fuel = 100;
 	private final Vector3f camUp = new Vector3f();
 
-	public JetPac(PlayersAvatar _player) {
-		super(_player);
+	public JetPac(GameModule module, PlayersAvatar _player) {
+		super(module, _player);
 	}
 
 

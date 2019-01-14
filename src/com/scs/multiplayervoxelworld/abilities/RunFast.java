@@ -2,6 +2,7 @@ package com.scs.multiplayervoxelworld.abilities;
 
 import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.entities.PlayersAvatar;
+import com.scs.multiplayervoxelworld.modules.GameModule;
 
 public class RunFast extends AbstractAbility {
 
@@ -10,8 +11,8 @@ public class RunFast extends AbstractAbility {
 	private float power;
 	private boolean isRunningFast;
 	
-	public RunFast(PlayersAvatar _player) {
-		super(_player);
+	public RunFast(GameModule module, PlayersAvatar _player) {
+		super(module, _player);
 	}
 
 	

@@ -23,13 +23,15 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
+import com.jme3.util.SkyFactory;
+import com.scs.multiplayervoxelworld.CollisionLogic;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.Settings.GameMode;
 import com.scs.multiplayervoxelworld.components.IAffectedByPhysics;
-import com.scs.multiplayervoxelworld.components.ICollideable;
 import com.scs.multiplayervoxelworld.components.IEntity;
 import com.scs.multiplayervoxelworld.components.IMustRemainInArena;
 import com.scs.multiplayervoxelworld.components.IProcessable;
@@ -67,6 +69,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 	public AudioNode audioExplode, audioSmallExplode;
 	private AudioNode audioMusic;
 	public DirectionalLight sun;
+	//private CollisionLogic collisionLogic = new CollisionLogic();
 
 	public GameModule(MultiplayerVoxelWorldMain _game) {
 		super();
@@ -98,18 +101,12 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 		mapData = new DefaultMap(game, this);
 		mapData.setup();
-		
-		if (Settings.DEBUG_NO_MAP) {
-			Collectable c = new Collectable(game, this, 5, 5, 5);
-			this.addEntity(c);
-		}
+
+		Collectable collectable = new Collectable(game, this, 5, 5, 5);
+		this.addEntity(collectable);
 
 		Joystick[] joysticks = game.getInputManager().getJoysticks();
 		int numPlayers = game.getNumPlayers();
-
-		// Clear existing mappings
-		//game.getInputManager().clearMappings();
-		//game.getInputManager().clearRawInputListeners();
 
 		// Auto-Create player 0
 		{
@@ -125,7 +122,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 					throw new RuntimeException("No gamepads found");
 				}
 			}
-			this.addPlayersAvatar(0, newCam, input, hud);
+			this.addPlayersAvatar(0, newCam, input, hud, 0);
 		}
 
 		// Create players for each joystick
@@ -139,7 +136,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 				HUD hud = this.createHUD(newCam, playerid);
 				//JoystickCamera_ORIG joyCam = new JoystickCamera_ORIG(newCam, j, game.getInputManager());
 				JoystickCamera2 joyCam = new JoystickCamera2(newCam, joysticks[joyid], game.getInputManager());
-				this.addPlayersAvatar(playerid, newCam, joyCam, hud);
+				this.addPlayersAvatar(playerid, newCam, joyCam, hud, 0);
 				//}
 				joyid++;
 				playerid++;
@@ -150,20 +147,20 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		if (Settings.ALWAYS_SHOW_4_CAMS) {
 			// Create extra cameras
 			for (int id=playerid ; id<=3 ; id++) {
-				Camera c = this.createCamera(id, numPlayers);
-				this.createHUD(c, id);
+				Camera cam = this.createCamera(id, numPlayers);
+				this.createHUD(cam, id);
 				switch (id) {
 				case 1:
-					c.setLocation(new Vector3f(2f, PlayersAvatar.PLAYER_HEIGHT, 2f));
+					cam.setLocation(new Vector3f(2f, PlayersAvatar.PLAYER_HEIGHT, 2f));
 					break;
 				case 2:
-					c.setLocation(new Vector3f(mapData.getWidth()-3, PlayersAvatar.PLAYER_HEIGHT, 2f));
+					cam.setLocation(new Vector3f(mapData.getWidth()-3, PlayersAvatar.PLAYER_HEIGHT, 2f));
 					break;
 				case 3:
-					c.setLocation(new Vector3f(2f, PlayersAvatar.PLAYER_HEIGHT, mapData.getDepth()-3));
+					cam.setLocation(new Vector3f(2f, PlayersAvatar.PLAYER_HEIGHT, mapData.getDepth()-3));
 					break;
 				}
-				c.lookAt(new Vector3f(mapData.getWidth()/2, PlayersAvatar.PLAYER_HEIGHT, mapData.getDepth()/2), Vector3f.UNIT_Y);
+				cam.lookAt(new Vector3f(mapData.getWidth()/2, PlayersAvatar.PLAYER_HEIGHT, mapData.getDepth()/2), Vector3f.UNIT_Y);
 			}
 		}
 
@@ -191,6 +188,9 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		BitmapFont guiFont_small = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");
 		game.getStateManager().attach(new StatsAppState(game.getGuiNode(), guiFont_small));
 		//}
+		
+		this.getRootNode().attachChild(SkyFactory.createSky(game.getAssetManager(), "Textures/BrightSky.dds", SkyFactory.EnvMapType.CubeMap));
+
 	}
 
 
@@ -271,7 +271,6 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		hudText.setLocalTranslation(newCam.getWidth() / 2 - hudText.getLineWidth()/2, newCam.getHeight() / 2 + hudText.getLineHeight(), 0); // position
 		game.getGuiNode().attachChild(hudText);
 
-
 		/*FilterPostProcessor fpp = new FilterPostProcessor(game.getAssetManager());
 		if (Settings.NEON) {
 			BloomFilter bloom = new BloomFilter(BloomFilter.GlowMode.Scene);
@@ -309,11 +308,8 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 	}
 
 
-	private void addPlayersAvatar(int id, Camera cam, IInputDevice input, HUD hud) {
-		PlayersAvatar player = new PlayersAvatar(game, this, id, cam, input, hud);
-		/*if (Settings.DEBUG_NO_MAP) {
-			player.getMainNode().setCullHint(CullHint.Always);
-		}*/
+	private void addPlayersAvatar(int id, Camera cam, IInputDevice input, HUD hud, int side) {
+		PlayersAvatar player = new PlayersAvatar(game, this, id, cam, input, hud, side);
 		this.addEntity(player);
 		player.moveToStartPostion(true);
 		// Look towards centre
@@ -338,7 +334,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		sun.setDirection(new Vector3f(-.5f, -.1f, -.5f).normalizeLocal());
 		game.getRootNode().addLight(sun);
 
-}
+	}
 
 
 	@Override
@@ -346,8 +342,6 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		addAndRemoveEntities();
 
 		boolean check = checkOutOfArena.hitInterval();
-
-		//this.game.getRootNode().getChild(5).getWorldBound();
 
 		for(IProcessable ip : this.entitiesForProcessing) {
 			ip.process(tpfSecs);
@@ -370,30 +364,29 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 	@Override
 	public void collision(PhysicsCollisionEvent event) {
 		AbstractPhysicalEntity a=null, b=null;
-		Object oa = event.getObjectA().getUserObject(); 
+		Object oa = event.getObjectA().getUserObject();
 		if (oa instanceof Spatial) {
-			Spatial ga = (Spatial)event.getObjectA().getUserObject(); 
-			a = ga.getUserData(Settings.ENTITY);
+			a = getEntityFromSpatial((Spatial)oa);
 		} else if (oa instanceof AbstractPhysicalEntity) {
 			a = (AbstractPhysicalEntity)oa;
 		}
 
 		Object ob = event.getObjectB().getUserObject(); 
 		if (ob instanceof Spatial) {
-			Spatial gb = (Spatial)event.getObjectB().getUserObject(); 
-			b = gb.getUserData(Settings.ENTITY);
+			b = getEntityFromSpatial((Spatial)ob);
 		} else if (oa instanceof AbstractPhysicalEntity) {
 			b = (AbstractPhysicalEntity)ob;
 		}
 
 		if (a != null && b != null) {
-			if (a instanceof ICollideable && b instanceof ICollideable) {
+			CollisionLogic.collision(this, a, b);
+			/*if (a instanceof INotifiedOfCollision && b instanceof INotifiedOfCollision) {
 				//Settings.p(a + " has collided with " + b);
-				ICollideable ica = (ICollideable)a;
-				ICollideable icb = (ICollideable)b;
+				INotifiedOfCollision ica = (INotifiedOfCollision)a;
+				INotifiedOfCollision icb = (INotifiedOfCollision)b;
 				ica.collidedWith(icb);
 				icb.collidedWith(ica);
-			}
+			}*/
 		} else {
 			if (a == null) {
 				Settings.p(oa + " has no entity data!");
@@ -529,4 +522,19 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 	}
 
 
+	public Node getRootNode() {
+		return game.getRootNode();
+	}
+
+
+	public static AbstractPhysicalEntity getEntityFromSpatial(Spatial ga) {
+		while (true) {
+			AbstractPhysicalEntity a = ga.getUserData(Settings.ENTITY);
+			if (a == null) {
+				ga = ga.getParent();
+			} else {
+				return a;
+			}
+		}
+	}
 }

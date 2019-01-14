@@ -5,7 +5,7 @@ import com.jme3.material.Material;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.texture.Texture;
-import com.scs.multiplayervoxelworld.jme.JMEFunctions;
+import com.scs.multiplayervoxelworld.jme.JMEModelFunctions;
 
 public class RobotModel extends Node {
 	
@@ -36,7 +36,7 @@ public class RobotModel extends Node {
 		mat.setTexture("DiffuseMap", t);
 		
 	    //this.setMaterial(mat);
-		JMEFunctions.SetMaterialOnSpatial(model, mat);
+		JMEModelFunctions.setMaterialOnSpatial(model, mat);
 
 	    this.attachChild(model);
 	}

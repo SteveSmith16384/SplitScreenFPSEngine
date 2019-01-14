@@ -9,14 +9,14 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
-import com.scs.multiplayervoxelworld.components.IBullet;
 import com.scs.multiplayervoxelworld.components.ICanShoot;
-import com.scs.multiplayervoxelworld.components.ICollideable;
+import com.scs.multiplayervoxelworld.components.ICausesHarmOnContact;
+import com.scs.multiplayervoxelworld.components.INotifiedOfCollision;
 import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.models.BeamLaserModel;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 
-public class LaserBullet extends AbstractPhysicalEntity implements IBullet, IProcessable, PhysicsTickListener {
+public class LaserBullet extends AbstractPhysicalEntity implements ICausesHarmOnContact, IProcessable, PhysicsTickListener, INotifiedOfCollision {
 
 	public ICanShoot shooter;
 	private float timeLeft = 3;
@@ -41,7 +41,6 @@ public class LaserBullet extends AbstractPhysicalEntity implements IBullet, IPro
 		rigidBodyControl.setLinearVelocity(shooter.getShootDir().mult(40));
 		rigidBodyControl.setGravity(Vector3f.ZERO);
 
-		this.getMainNode().setUserData(Settings.ENTITY, this);
 		ball_geo.setUserData(Settings.ENTITY, this);
 		rigidBodyControl.setUserObject(this);
 		module.addEntity(this);
@@ -72,7 +71,7 @@ public class LaserBullet extends AbstractPhysicalEntity implements IBullet, IPro
 
 
 	@Override
-	public void collidedWith(ICollideable other) {
+	public void notifiedOfCollision(AbstractPhysicalEntity other) {
 		if (other != this.shooter) {
 			//Settings.p("Laser collided with " + other);
 
@@ -102,6 +101,12 @@ public class LaserBullet extends AbstractPhysicalEntity implements IBullet, IPro
 	public void physicsTick(PhysicsSpace space, float tpf) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public int getSide() {
+		return shooter.getSide();
 	}
 
 

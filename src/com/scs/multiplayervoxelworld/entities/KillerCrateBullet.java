@@ -8,13 +8,12 @@ import com.jme3.scene.shape.Sphere;
 import com.jme3.scene.shape.Sphere.TextureMode;
 import com.jme3.texture.Texture;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
-import com.scs.multiplayervoxelworld.Settings;
-import com.scs.multiplayervoxelworld.components.IBullet;
 import com.scs.multiplayervoxelworld.components.ICanShoot;
-import com.scs.multiplayervoxelworld.components.ICollideable;
+import com.scs.multiplayervoxelworld.components.ICausesHarmOnContact;
+import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 
-public class KillerCrateBullet extends AbstractPhysicalEntity implements IBullet {
+public class KillerCrateBullet extends AbstractPhysicalEntity implements IProcessable, ICausesHarmOnContact {
 
 	public ICanShoot shooter;
 	private float timeLeft = 10;
@@ -48,7 +47,6 @@ public class KillerCrateBullet extends AbstractPhysicalEntity implements IBullet
 		/** Accelerate the physical ball to shoot it. */
 		rigidBodyControl.setLinearVelocity(shooter.getShootDir().mult(25));
 		
-		this.getMainNode().setUserData(Settings.ENTITY, this);
 		rigidBodyControl.setUserObject(this);
 		module.addEntity(this);
 
@@ -73,14 +71,14 @@ public class KillerCrateBullet extends AbstractPhysicalEntity implements IBullet
 
 
 	@Override
-	public void collidedWith(ICollideable other) {
-		
+	public float getDamageCaused() {
+		return 0;
 	}
 
 
 	@Override
-	public float getDamageCaused() {
-		return 0;
+	public int getSide() {
+		return shooter.getSide();
 	}
 
 

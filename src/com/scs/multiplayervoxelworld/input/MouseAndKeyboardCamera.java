@@ -133,7 +133,6 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 			ability1 = isPressed;
 		} else if (binding.equals("CycleAbility")) {
 			this.cycleAbility = isPressed;
-			//this.zoomCamera(10);
 		}		
 	}
 
@@ -184,16 +183,6 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 	public boolean isSelectNextAbilityPressed() {
 		return this.cycleAbility;
 	}        
-
-
-	/*@Override
-	public void resetFlags() {
-		/*left = false;
-		right = false;
-		up = false;
-		down = false;
-		
-	}*/
 
 
 }

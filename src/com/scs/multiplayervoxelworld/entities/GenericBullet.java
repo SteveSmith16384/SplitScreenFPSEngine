@@ -8,11 +8,11 @@ import com.jme3.scene.shape.Sphere;
 import com.jme3.scene.shape.Sphere.TextureMode;
 import com.jme3.texture.Texture;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
-import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.components.ICanShoot;
+import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 
-public class GenericBullet extends AbstractPhysicalEntity {
+public class GenericBullet extends AbstractPhysicalEntity implements IProcessable {
 
 	public ICanShoot shooter;
 	//private RigidBodyControl ball_phy;
@@ -48,7 +48,6 @@ public class GenericBullet extends AbstractPhysicalEntity {
 		/** Accelerate the physical ball to shoot it. */
 		rigidBodyControl.setLinearVelocity(shooter.getShootDir().mult(speed));
 		
-		this.getMainNode().setUserData(Settings.ENTITY, this);
 		rigidBodyControl.setUserObject(this);
 
 	}

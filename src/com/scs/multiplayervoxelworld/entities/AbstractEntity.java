@@ -46,12 +46,7 @@ public abstract class AbstractEntity implements IEntity, Savable {
 		return "E_" + name + "_" + id;
 	}
 
-/*
-	public void remove() {
-		module.markEntityForRemoval(this);
-	}
-	*/
-	
+
 	@Override
 	public void write(JmeExporter ex) throws IOException {
 		

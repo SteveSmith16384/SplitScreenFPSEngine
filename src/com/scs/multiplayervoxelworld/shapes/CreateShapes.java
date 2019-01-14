@@ -12,7 +12,6 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
-import com.scs.multiplayervoxelworld.Settings;
 
 public class CreateShapes {
 

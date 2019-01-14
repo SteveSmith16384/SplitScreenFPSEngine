@@ -17,15 +17,11 @@ import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.MyBetterCharacterControl;
 import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.Settings.GameMode;
+import com.scs.multiplayervoxelworld.abilities.AddBlockAbility;
 import com.scs.multiplayervoxelworld.abilities.IAbility;
-import com.scs.multiplayervoxelworld.abilities.Invisibility;
-import com.scs.multiplayervoxelworld.abilities.JetPac;
-import com.scs.multiplayervoxelworld.abilities.RunFast;
-import com.scs.multiplayervoxelworld.abilities.Spellbook;
 import com.scs.multiplayervoxelworld.components.IAffectedByPhysics;
-import com.scs.multiplayervoxelworld.components.IBullet;
 import com.scs.multiplayervoxelworld.components.ICanShoot;
-import com.scs.multiplayervoxelworld.components.ICollideable;
+import com.scs.multiplayervoxelworld.components.ICausesHarmOnContact;
 import com.scs.multiplayervoxelworld.components.IDamagable;
 import com.scs.multiplayervoxelworld.components.IEntity;
 import com.scs.multiplayervoxelworld.components.IProcessable;
@@ -38,14 +34,12 @@ import com.scs.multiplayervoxelworld.models.RobotModel;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 import com.scs.multiplayervoxelworld.weapons.LaserRifle;
 
-import ssmith.lang.NumberFunctions;
-
-public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessable, ICollideable, ICanShoot, IShowOnHUD, ITargetByAI, IAffectedByPhysics, IDamagable {
+public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessable, ICanShoot, IShowOnHUD, ITargetByAI, IAffectedByPhysics, IDamagable {
 
 	// Player dimensions
-	public static final float PLAYER_HEIGHT = 0.7f;
-	public static final float PLAYER_RAD = 0.2f;
-	private static final float WEIGHT = 3f;
+	public static final float PLAYER_HEIGHT = 1.5f;
+	public static final float PLAYER_RAD = 0.4f;
+	private static final float WEIGHT = 1f;
 
 	public final Vector3f walkDirection = new Vector3f();
 	public float moveSpeed = Settings.PLAYER_MOVE_SPEED;
@@ -63,18 +57,19 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 	public Spatial playerGeometry;
 	private float score = 0;
 	private float health;
+	private int side;
 
 	private boolean restarting = false;
 	private float restartTime, invulnerableTime;
-	private boolean hasBall = false;
+	//private boolean hasBall = false;
 	private float timeSinceLastMove = 0;
-
+	
 	private int numShots = 0;
 	private int numShotsHit = 0;
 
 	public AbstractHUDImage gamepadTest;
 
-	public PlayersAvatar(MultiplayerVoxelWorldMain _game, GameModule _module, int _playerID, Camera _cam, IInputDevice _input, HUD _hud) {
+	public PlayersAvatar(MultiplayerVoxelWorldMain _game, GameModule _module, int _playerID, Camera _cam, IInputDevice _input, HUD _hud, int _side) {
 		super(_game, _module, "Player");
 
 		playerID = _playerID;
@@ -82,7 +77,8 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		input = _input;
 		hud = _hud;
 		health = module.getPlayersHealth(playerID);
-
+		side = _side;
+		
 		{
 			int pid = playerID;
 			playerGeometry = getPlayersModel(game, pid);
@@ -92,17 +88,12 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		playerControl = new MyBetterCharacterControl(PLAYER_RAD, PLAYER_HEIGHT, WEIGHT);
 		playerControl.setJumpForce(new Vector3f(0, Settings.JUMP_FORCE, 0)); 
 		this.getMainNode().addControl(playerControl);
-		//module.bulletAppState.getPhysicsSpace().add(playerControl);
 
-		this.getMainNode().setUserData(Settings.ENTITY, this);
 		playerControl.getPhysicsRigidBody().setUserObject(this);
 
 		abilityGun = new LaserRifle(_game, _module, this);
-		if (Settings.DEBUG_SPELLS) {
-			this.abilityOther = new Spellbook(module, this);
-		} else {
-			this.abilityOther = new JetPac(this);// BoostFwd(this);//getRandomAbility(this);
-		}
+		//this.abilityOther = new RemoveBlockAbility(_module, this);
+		this.abilityOther = new AddBlockAbility(_module, this);
 
 		this.hud.setAbilityGunText(this.abilityGun.getHudText());
 		if (abilityOther != null) {
@@ -132,14 +123,14 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		}
 	}
 
-
-	private static IAbility getRandomAbility(PlayersAvatar _player) {
+/*
+	private static IAbility getRandomAbility(GameModule module, PlayersAvatar _player) {
 		int i = NumberFunctions.rnd(1, 3);
 		switch (i) {
 		case 1:
-			return new JetPac(_player);
+			return new JetPac(module, _player);
 		case 2:
-			return new Invisibility(_player);
+			return new Invisibility(module, _player);
 		case 3:
 			return new RunFast(_player);
 		default:
@@ -147,7 +138,7 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		}
 
 	}
-
+*/
 
 	public void moveToStartPostion(boolean invuln) {
 		Point p = module.mapData.getPlayerStartPos(playerID);
@@ -311,7 +302,7 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 	}
 
 
-	public void hitByBullet(IBullet bullet) {
+	public void hitByBullet(ICausesHarmOnContact bullet) {
 		if (invulnerableTime <= 0) {
 			float dam = bullet.getDamageCaused();
 			if (dam > 0) {
@@ -368,11 +359,11 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		}
 	}
 
-
+/*
 	@Override
-	public void collidedWith(ICollideable other) {
-		if (other instanceof IBullet) {
-			IBullet bullet = (IBullet)other;
+	public void collidedWith(INotifiedOfCollision other) {
+		if (other instanceof ICausesHarmOnContact) {
+			ICausesHarmOnContact bullet = (ICausesHarmOnContact)other;
 			if (bullet.getShooter() != null) {
 				if (bullet.getShooter() != this) {
 					if (Settings.PVP || !(bullet.getShooter() instanceof PlayersAvatar)) {
@@ -392,7 +383,7 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 
 		}
 	}
-
+*/
 
 	@Override
 	public void applyForce(Vector3f force) {
@@ -411,18 +402,6 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 	@Override
 	public void damaged(float amt, String reason) {
 		died(reason);
-	}
-
-
-
-	public boolean getHasBall() {
-		return this.hasBall;
-	}
-
-
-	public void setHasBall(boolean a) {
-		this.hasBall = a;
-		this.hud.updateHasBall(a);
 	}
 
 
@@ -459,6 +438,12 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		}
 
 		return null;
+	}
+
+
+	@Override
+	public int getSide() {
+		return side;
 	}
 
 }

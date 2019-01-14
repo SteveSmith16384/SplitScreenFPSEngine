@@ -216,7 +216,7 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 				GameModule.HELP_TEXT = "Dodgeball: Hit other players with the ball";
 				startGame();
 				break;
-				
+/*				
 			case Bladerunner:
 				// Bladerunner
 				int numPlayers = game.getNumPlayers();
@@ -228,7 +228,7 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 				GameModule.HELP_TEXT = "Hunt the rogue AI";
 				startGame();
 				break;
-				
+	*/			
 			case CloneWars:
 				// Clone Wars
 				Settings.NUM_SECTORS = 2;
@@ -236,16 +236,6 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 				Settings.NUM_AI = 0;
 				Settings.NUM_COLLECTABLES = 1;
 				GameModule.HELP_TEXT = "Clone Wars: Hunt the other players";
-				startGame();
-				break;
-
-			case Sorcerers:
-				// Clone Wars
-				Settings.NUM_SECTORS = 3;
-				Settings.PVP = true;
-				Settings.NUM_AI = 0;
-				Settings.NUM_COLLECTABLES = 3;
-				GameModule.HELP_TEXT = "Sorcerers: Use spells to defeat the other players";
 				startGame();
 				break;
 

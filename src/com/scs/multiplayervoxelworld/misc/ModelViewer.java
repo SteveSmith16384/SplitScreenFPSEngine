@@ -1,15 +1,15 @@
 package com.scs.multiplayervoxelworld.misc;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.asset.plugins.FileLocator;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.Light;
 import com.jme3.light.LightList;
 import com.jme3.math.ColorRGBA;
+import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Spatial;
-import com.scs.multiplayervoxelworld.jme.JMEFunctions;
+import com.scs.multiplayervoxelworld.jme.JMEModelFunctions;
 
 public class ModelViewer extends SimpleApplication { // todo - copy SteveTech version
 
@@ -23,19 +23,15 @@ public class ModelViewer extends SimpleApplication { // todo - copy SteveTech ve
 
 	@Override
 	public void simpleInitApp() {
-		super.getViewPort().setBackgroundColor(ColorRGBA.White);
+		super.getViewPort().setBackgroundColor(ColorRGBA.Black);
 
 		cam.setFrustumPerspective(60, settings.getWidth() / settings.getHeight(), .1f, 100);
 		
 		setupLight();
 
-		//Spatial model = assetManager.loadModel("Models/AbstractRTSModels/Player.obj");
-		Spatial model = assetManager.loadModel("Models/elvis/tinker.obj");
-		//model.updateModelBound();
-		model.scale(.1f);
+		Spatial model = assetManager.loadModel("Models/mese-crystal/mese.blend");
+		model.setQueueBucket(Bucket.Transparent);
 		
-		//JMEFunctions.SetTextureOnSpatial(assetManager, model, "Textures/sun.jpg");
-		//JMEFunctions.SetTextureOnSpatial(assetManager, model, "Textures/cells3.png");
 		//JMEFunctions.SetTextureOnSpatial(assetManager, model, "Textures/computerconsole2.jpg");
 		
 		model.setModelBound(new BoundingBox());
@@ -43,11 +39,11 @@ public class ModelViewer extends SimpleApplication { // todo - copy SteveTech ve
 
 		rootNode.attachChild(model);
 
-		this.rootNode.attachChild(JMEFunctions.GetGrid(assetManager, 10));
+		this.rootNode.attachChild(JMEModelFunctions.getGrid(assetManager, 10));
 
 		this.flyCam.setMoveSpeed(12f);
 
-		rootNode.updateGeometricState();
+		//rootNode.updateGeometricState();
 
 	}
 
@@ -62,10 +58,11 @@ public class ModelViewer extends SimpleApplication { // todo - copy SteveTech ve
 
 		// We add light so we see the scene
 		AmbientLight al = new AmbientLight();
-		al.setColor(ColorRGBA.White.mult(4f));
+		al.setColor(ColorRGBA.White);
 		rootNode.addLight(al);
 
 		DirectionalLight dirlight = new DirectionalLight(); // FSR need this for textures to show
+		dirlight.setColor(ColorRGBA.White);
 		rootNode.addLight(dirlight);
 
 	}

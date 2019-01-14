@@ -6,29 +6,24 @@ public class Settings {
 	public static final boolean RECORD_VID = false;
 
 	// DEBUG
-	public static final boolean DEBUG_NO_MAP = true;
-	public static final boolean USE_MODEL_FOR_PLAYERS = false;
+
 
 	// Unused debug
-	public static final boolean DEBUG_SIMPLE_MAP = false;
+	public static final boolean ALWAYS_SHOW_4_CAMS = false;
+	public static final boolean USE_MODEL_FOR_PLAYERS = true;
 	public static final boolean DEBUG_GAMEPAD_DIV_TPF = false;
 	public static final boolean DEBUG_GAMEPAD_MULT_VALUE = false;	
 	public static final boolean GAMEPAD_USE_AVG = false;
 	public static final boolean DEBUG_GAMEPAD_TURNING = false;
-	public static final boolean DEBUG_PYRAMID = false;
-	public static final boolean DEBUG_SPELLS = false;
-	public static final boolean DEBUG_WATCH_AI = false;
-	public static final boolean DEBUG_DEATH = false;
 	public static final boolean DEBUG_HUD = false;
 	public static final boolean DEBUG_TARGETTER = false;
 
 	public static final String VERSION = "0.01";
-	public static final boolean ALWAYS_SHOW_4_CAMS = false;
 	public static final boolean SHOW_FLASH_EXPLOSIONS = false;
 	public static final boolean PLAYER1_IS_MOUSE = true;
-	public static final int TEX_PER_SHEET = 2;
+	public static final int TEX_PER_SHEET = 32;
 
-	public enum GameMode {Skirmish, KingOfTheHill, Dodgeball, Bladerunner, CloneWars, Evolve, Sorcerers } // Evolve & Sorcerers not finished (hardly started...)
+	public enum GameMode {Skirmish, KingOfTheHill, Dodgeball, Bladerunner, CloneWars }
 	
 	// Game settings
 	public static GameMode GAME_MODE;

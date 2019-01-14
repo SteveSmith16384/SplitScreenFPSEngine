@@ -5,10 +5,10 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
-import com.scs.multiplayervoxelworld.components.IProcessable;
+import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 
-public abstract class AbstractPhysicalEntity extends AbstractEntity implements IProcessable {
+public abstract class AbstractPhysicalEntity extends AbstractEntity {
 
 	protected Node mainNode;
 	public RigidBodyControl rigidBodyControl;
@@ -17,6 +17,8 @@ public abstract class AbstractPhysicalEntity extends AbstractEntity implements I
 		super(_game, _module, _name);
 
 		mainNode = new Node(name + "_MainNode");
+		mainNode.setUserData(Settings.ENTITY, this);
+
 	}
 
 

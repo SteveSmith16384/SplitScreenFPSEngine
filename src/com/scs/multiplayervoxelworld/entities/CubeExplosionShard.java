@@ -12,9 +12,10 @@ import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
+import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 
-public class CubeExplosionShard extends AbstractPhysicalEntity {//implements IAffectedByPhysics, ICollideable {//,  { // IProcessable,  // Need ICollideable so lasers don't bounce off it
+public class CubeExplosionShard extends AbstractPhysicalEntity implements IProcessable {//implements IAffectedByPhysics, ICollideable {//,  { // IProcessable,  // Need ICollideable so lasers don't bounce off it
 
 	public static void Factory(MultiplayerVoxelWorldMain _game, GameModule _module, Vector3f pos, int num) {
 		for (int i=0 ; i<num ; i++) {
@@ -61,7 +62,6 @@ public class CubeExplosionShard extends AbstractPhysicalEntity {//implements IAf
 		module.getBulletAppState().getPhysicsSpace().add(rigidBodyControl);
 
 		geometry.setUserData(Settings.ENTITY, this);
-		mainNode.setUserData(Settings.ENTITY, this);
 		rigidBodyControl.setUserObject(this);
 		
 		module.addEntity(this);
