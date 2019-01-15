@@ -23,7 +23,7 @@ public class Settings {
 	public static final boolean PLAYER1_IS_MOUSE = true;
 	public static final int TEX_PER_SHEET = 32;
 
-	public enum GameMode {Skirmish, KingOfTheHill, Dodgeball, Bladerunner, CloneWars }
+	public enum GameMode {Skirmish, KingOfTheHill } // todo - delete these
 	
 	// Game settings
 	public static GameMode GAME_MODE;
@@ -50,6 +50,11 @@ public class Settings {
 	
 	public static void p(String s) {
 		System.out.println(System.currentTimeMillis() + ": " + s);
+	}
+
+	
+	public static void pe(String s) {
+		System.err.println(System.currentTimeMillis() + ": " + s);
 	}
 
 	

@@ -10,13 +10,22 @@ import com.scs.multiplayervoxelworld.modules.GameModule;
 
 public abstract class AbstractPhysicalEntity extends AbstractEntity {
 
-	protected Node mainNode;
+	protected Node mainNode, leftNode, rightNode;;
 	public RigidBodyControl rigidBodyControl;
 
 	public AbstractPhysicalEntity(MultiplayerVoxelWorldMain _game, GameModule _module, String _name) {
 		super(_game, _module, _name);
 
 		mainNode = new Node(name + "_MainNode");
+
+		leftNode = new Node("left_node");
+		mainNode.attachChild(leftNode);
+		leftNode.setLocalTranslation(-3, 0, 0);
+
+		rightNode = new Node("right_node");
+		mainNode.attachChild(rightNode);
+		rightNode.setLocalTranslation(3, 0, 0);
+
 		mainNode.setUserData(Settings.ENTITY, this);
 
 	}

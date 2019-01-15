@@ -9,6 +9,7 @@ import com.jme3.font.BitmapFont;
 import com.jme3.input.Joystick;
 import com.jme3.system.AppSettings;
 import com.scs.multiplayervoxelworld.Settings.GameMode;
+import com.scs.multiplayervoxelworld.games.TowerDefence;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 import com.scs.multiplayervoxelworld.modules.IModule;
 import com.scs.multiplayervoxelworld.modules.StartModule;
@@ -102,7 +103,7 @@ public class MultiplayerVoxelWorldMain extends SimpleApplication {
 		if (Settings.RELEASE_MODE) {
 			currentModule = new StartModule(this, GameMode.Skirmish);
 		} else {
-			currentModule = new GameModule(this);
+			currentModule = new GameModule(this, new TowerDefence());
 		}
 		currentModule.init();
 		

@@ -3,10 +3,12 @@ package com.scs.multiplayervoxelworld.models;
 
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
+import com.jme3.animation.LoopMode;
 import com.jme3.asset.AssetManager;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.jme.JMEModelFunctions;
 
 /**
@@ -14,6 +16,10 @@ import com.scs.multiplayervoxelworld.jme.JMEModelFunctions;
  *
  */
 public class GolemModel {
+
+	public static final int ANIM_IDLE = 0;
+	public static final int ANIM_WALK = 1;
+	public static final int ANIM_ATTACK = 2;
 
 	public static final float MODEL_WIDTH = 0.4f;
 	public static final float MODEL_HEIGHT = 0.7f;
@@ -41,48 +47,48 @@ public class GolemModel {
 		//return model;
 	}
 
-/*
+	/*
 	@Override
 	public Vector3f getCollisionBoxSize() {
 		return new Vector3f(MODEL_WIDTH, MODEL_HEIGHT, MODEL_WIDTH);
 	}
 
+	 */
 
-	@Override
 	public Spatial getModel() {
 		return model;
 	}
 
 
-	@Override
+
 	public void setAnim(int animCode) {
 		if (currAnimCode == animCode) {
 			return;			
 		}
 
 		switch (animCode) {
-		case AbstractAvatar.ANIM_IDLE:
+		case ANIM_IDLE:
 			channel.setLoopMode(LoopMode.Loop);
 			channel.setAnim("idle");
 			break;
 
-		case AbstractAvatar.ANIM_WALKING:
+		case ANIM_WALK:
 			channel.setLoopMode(LoopMode.Loop);
 			channel.setAnim("walk");
 			break;
 
-		case AbstractAvatar.ANIM_ATTACK:
+		case ANIM_ATTACK:
 			channel.setLoopMode(LoopMode.Loop);
 			channel.setAnim("smash");
 			break;
 
 		default:
-			Globals.pe(this.getClass().getSimpleName() + ": Unable to show anim " + animCode);
+			Settings.pe(this.getClass().getSimpleName() + ": Unable to show anim " + animCode);
 		}
 
 		currAnimCode = animCode;
 
 	}
-*/
+
 }
 

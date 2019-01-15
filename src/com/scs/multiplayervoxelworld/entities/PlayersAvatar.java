@@ -19,6 +19,7 @@ import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.Settings.GameMode;
 import com.scs.multiplayervoxelworld.abilities.AddBlockAbility;
 import com.scs.multiplayervoxelworld.abilities.IAbility;
+import com.scs.multiplayervoxelworld.abilities.RemoveBlockAbility;
 import com.scs.multiplayervoxelworld.components.IAffectedByPhysics;
 import com.scs.multiplayervoxelworld.components.ICanShoot;
 import com.scs.multiplayervoxelworld.components.ICausesHarmOnContact;
@@ -32,7 +33,6 @@ import com.scs.multiplayervoxelworld.hud.HUD;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
 import com.scs.multiplayervoxelworld.models.RobotModel;
 import com.scs.multiplayervoxelworld.modules.GameModule;
-import com.scs.multiplayervoxelworld.weapons.LaserRifle;
 
 public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessable, ICanShoot, IShowOnHUD, ITargetByAI, IAffectedByPhysics, IDamagable {
 
@@ -91,7 +91,7 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 
 		playerControl.getPhysicsRigidBody().setUserObject(this);
 
-		abilityGun = new LaserRifle(_game, _module, this);
+		abilityGun = new RemoveBlockAbility(_module, this); //LaserRifle(_game, _module, this);
 		//this.abilityOther = new RemoveBlockAbility(_module, this);
 		this.abilityOther = new AddBlockAbility(_module, this);
 
@@ -141,8 +141,8 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 */
 
 	public void moveToStartPostion(boolean invuln) {
-		Point p = module.mapData.getPlayerStartPos(playerID);
-		Vector3f warpPos = new Vector3f(p.x, module.mapData.getRespawnHeight(), p.y);
+		//Point p = module.level.getPlayerStartPos(playerID);
+		Vector3f warpPos = module.level.getPlayerStartPos(playerID);//new Vector3f(p.x, module.mapData.getRespawnHeight(), p.y);
 		Settings.p("Scheduling player to start position: " + warpPos);
 		this.playerControl.warp(warpPos);
 		if (invuln) {
@@ -231,13 +231,6 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 			this.hud.setAbilityGunText(this.abilityGun.getHudText());
 			if (abilityOther != null) {
 				this.hud.setAbilityOtherText(this.abilityOther.getHudText());
-			}
-
-			if (Settings.GAME_MODE == GameMode.CloneWars) {
-				if (this.timeSinceLastMove > 10) {
-					this.jump();
-					timeSinceLastMove -= 5;
-				}
 			}
 
 		}

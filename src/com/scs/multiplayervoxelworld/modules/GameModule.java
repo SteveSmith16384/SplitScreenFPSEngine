@@ -39,12 +39,11 @@ import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.Collectable;
 import com.scs.multiplayervoxelworld.entities.CubeExplosionShard;
 import com.scs.multiplayervoxelworld.entities.PlayersAvatar;
+import com.scs.multiplayervoxelworld.games.AbstractGame;
 import com.scs.multiplayervoxelworld.hud.HUD;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
 import com.scs.multiplayervoxelworld.input.JoystickCamera2;
 import com.scs.multiplayervoxelworld.input.MouseAndKeyboardCamera;
-import com.scs.multiplayervoxelworld.map.DefaultMap;
-import com.scs.multiplayervoxelworld.map.IPertinentMapData;
 
 import ssmith.util.RealtimeInterval;
 
@@ -63,18 +62,19 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 	private List<IEntity> entitiesToRemove = new LinkedList<>();
 	public BulletAppState bulletAppState;
 
-	public IPertinentMapData mapData;
+	//public IPertinentMapData mapData;
 	private RealtimeInterval checkOutOfArena = new RealtimeInterval(1000);
 
 	public AudioNode audioExplode, audioSmallExplode;
 	private AudioNode audioMusic;
 	public DirectionalLight sun;
-	//private CollisionLogic collisionLogic = new CollisionLogic();
-
-	public GameModule(MultiplayerVoxelWorldMain _game) {
+	public AbstractGame level;
+	
+	public GameModule(MultiplayerVoxelWorldMain _game, AbstractGame _level) {
 		super();
 
 		game = _game;
+		level = _level;
 	}
 
 
@@ -99,8 +99,8 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 		setUpLight();
 
-		mapData = new DefaultMap(game, this);
-		mapData.setup();
+		//mapData = new DefaultMap(game, this);
+		level.setup(game, this);
 
 		Collectable collectable = new Collectable(game, this, 5, 5, 5);
 		this.addEntity(collectable);
@@ -144,6 +144,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		}
 		playerid++;
 
+		/*
 		if (Settings.ALWAYS_SHOW_4_CAMS) {
 			// Create extra cameras
 			for (int id=playerid ; id<=3 ; id++) {
@@ -163,6 +164,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 				cam.lookAt(new Vector3f(mapData.getWidth()/2, PlayersAvatar.PLAYER_HEIGHT, mapData.getDepth()/2), Vector3f.UNIT_Y);
 			}
 		}
+*/
 
 		audioExplode = new AudioNode(game.getAssetManager(), "Sound/explode.wav", false);
 		audioExplode.setPositional(false);
@@ -313,7 +315,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		this.addEntity(player);
 		player.moveToStartPostion(true);
 		// Look towards centre
-		player.getMainNode().lookAt(new Vector3f(mapData.getWidth()/2, PlayersAvatar.PLAYER_HEIGHT, mapData.getDepth()/2), Vector3f.UNIT_Y);
+		//player.getMainNode().lookAt(new Vector3f(mapData.getWidth()/2, PlayersAvatar.PLAYER_HEIGHT, mapData.getDepth()/2), Vector3f.UNIT_Y);
 	}
 
 
@@ -341,11 +343,11 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 	public void update(float tpfSecs) {
 		addAndRemoveEntities();
 
-		boolean check = checkOutOfArena.hitInterval();
+		//boolean check = checkOutOfArena.hitInterval();
 
 		for(IProcessable ip : this.entitiesForProcessing) {
 			ip.process(tpfSecs);
-			if (check) {
+			/*if (check) {
 				if (ip instanceof IMustRemainInArena) { 
 					IMustRemainInArena mr = (IMustRemainInArena)ip;
 					Vector3f pos = mr.getLocation();
@@ -355,7 +357,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 						mr.respawn();
 					}
 				}
-			}
+			}*/
 		}
 
 	}
@@ -528,10 +530,16 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 
 	public static AbstractPhysicalEntity getEntityFromSpatial(Spatial ga) {
+		final Spatial ref = ga;
 		while (true) {
 			AbstractPhysicalEntity a = ga.getUserData(Settings.ENTITY);
 			if (a == null) {
 				ga = ga.getParent();
+				if (ga == null) {
+					//throw new RuntimeException("Unable to get entity for " + ref);
+					Settings.pe("No entity for " + ref);
+					return null;
+				}
 			} else {
 				return a;
 			}

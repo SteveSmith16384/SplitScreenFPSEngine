@@ -25,6 +25,7 @@ import com.jme3.ui.Picture;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.Settings.GameMode;
+import com.scs.multiplayervoxelworld.games.TowerDefence;
 import com.scs.multiplayervoxelworld.models.RobotModel;
 
 
@@ -206,39 +207,6 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 				startGame();
 				break;
 				
-			case Dodgeball:
-				// Dodgeball
-				Settings.NUM_SECTORS = 2;
-				//Settings.HAVE_BASE = false;
-				Settings.PVP = true;
-				Settings.NUM_AI = 0;
-				Settings.NUM_COLLECTABLES = 0;
-				GameModule.HELP_TEXT = "Dodgeball: Hit other players with the ball";
-				startGame();
-				break;
-/*				
-			case Bladerunner:
-				// Bladerunner
-				int numPlayers = game.getNumPlayers();
-				Settings.NUM_SECTORS = 2+numPlayers;
-				//Settings.HAVE_BASE = false;
-				Settings.PVP = false;
-				Settings.NUM_AI = Math.max(1, numPlayers-1) + (Settings.DEBUG_DEATH?4:0); // One less than num players, min of 1 
-				Settings.NUM_COLLECTABLES = 1;
-				GameModule.HELP_TEXT = "Hunt the rogue AI";
-				startGame();
-				break;
-	*/			
-			case CloneWars:
-				// Clone Wars
-				Settings.NUM_SECTORS = 2;
-				Settings.PVP = true;
-				Settings.NUM_AI = 0;
-				Settings.NUM_COLLECTABLES = 1;
-				GameModule.HELP_TEXT = "Clone Wars: Hunt the other players";
-				startGame();
-				break;
-
 			default:
 				throw new RuntimeException("Unknown Game Mode: " + gameMode);
 			}
@@ -247,11 +215,11 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 		} else if (name.equals("2")) {
 			game.setNextModule(new StartModule(game, GameMode.KingOfTheHill));
 		} else if (name.equals("3")) {
-			game.setNextModule(new StartModule(game, GameMode.Dodgeball));
+			//game.setNextModule(new StartModule(game, GameMode.Dodgeball));
 		} else if (name.equals("4")) {
-			game.setNextModule(new StartModule(game, GameMode.Bladerunner));
+			//game.setNextModule(new StartModule(game, GameMode.Bladerunner));
 		} else if (name.equals("5")) {
-			game.setNextModule(new StartModule(game, GameMode.CloneWars));
+			//game.setNextModule(new StartModule(game, GameMode.CloneWars));
 		} else if (name.equals(QUIT)) {
 			MultiplayerVoxelWorldMain.properties.saveProperties();
 			game.stop();
@@ -260,7 +228,7 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 
 
 	private void startGame() {
-		game.setNextModule(new GameModule(game));
+		game.setNextModule(new GameModule(game, new TowerDefence()));
 
 	}
 
