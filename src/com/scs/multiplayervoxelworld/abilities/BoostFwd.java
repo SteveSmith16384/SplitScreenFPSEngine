@@ -1,5 +1,6 @@
 package com.scs.multiplayervoxelworld.abilities;
 
+import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.entities.PlayersAvatar;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 
@@ -10,8 +11,8 @@ public class BoostFwd extends AbstractAbility {
 
 	private float fuel = 100;
 
-	public BoostFwd(GameModule module, PlayersAvatar _player) {
-		super(module, _player);
+	public BoostFwd(MultiplayerVoxelWorldMain _game, GameModule module, PlayersAvatar _player) {
+		super(_game, module, _player);
 
 	}
 

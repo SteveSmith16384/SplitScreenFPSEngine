@@ -24,6 +24,16 @@ public abstract class AbstractEntity implements IEntity, Savable {
 		game = _game;
 		module = _module;
 		name = _name;
+		
+		
+	}
+
+
+	@Override
+	public void actuallyRemove() {
+		if (!this.isMarkedForRemoval()) {
+			throw new RuntimeException("You must mark an item for removal!");
+		}
 	}
 
 
@@ -38,7 +48,7 @@ public abstract class AbstractEntity implements IEntity, Savable {
 	public boolean isMarkedForRemoval() {
 		return markedForRemoval;
 	}
-	
+
 	
 	
 	@Override

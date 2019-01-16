@@ -6,10 +6,19 @@ import com.scs.multiplayervoxelworld.modules.GameModule;
 
 public abstract class AbstractGame {
 
+	protected GameModule module;
+
 	public AbstractGame() {
-		// TODO Auto-generated constructor stub
+		super();
+		
+		//module = _module;
 	}
 
+	
+	public void setGameModule(GameModule _module) {
+		module = _module;
+	}
+	
 	
 	public abstract void setup(MultiplayerVoxelWorldMain game, GameModule module);
 	

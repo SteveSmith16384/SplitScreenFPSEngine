@@ -1,14 +1,12 @@
 package com.scs.multiplayervoxelworld.misc;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.bounding.BoundingBox;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.Light;
 import com.jme3.light.LightList;
 import com.jme3.math.ColorRGBA;
-import com.jme3.renderer.queue.RenderQueue.Bucket;
-import com.jme3.scene.Spatial;
+import com.jme3.scene.Node;
 import com.scs.multiplayervoxelworld.jme.JMEModelFunctions;
 
 public class ModelViewer extends SimpleApplication { // todo - copy SteveTech version
@@ -29,13 +27,13 @@ public class ModelViewer extends SimpleApplication { // todo - copy SteveTech ve
 		
 		setupLight();
 
-		Spatial model = assetManager.loadModel("Models/mese-crystal/mese.blend");
-		model.setQueueBucket(Bucket.Transparent);
+		Node model = (Node)assetManager.loadModel("Models/Turret_0/Base1.blend");
+		((Node)model.getChild(0)).getChild(0).removeFromParent();
+		JMEModelFunctions.setTextureOnSpatial(assetManager, model, "Models/Turret_0/Turret1_Albedo.png");
+		//model.setQueueBucket(Bucket.Transparent);
 		
-		//JMEFunctions.SetTextureOnSpatial(assetManager, model, "Textures/computerconsole2.jpg");
-		
-		model.setModelBound(new BoundingBox());
-		model.updateModelBound();
+		//model.setModelBound(new BoundingBox());
+		//model.updateModelBound();
 
 		rootNode.attachChild(model);
 

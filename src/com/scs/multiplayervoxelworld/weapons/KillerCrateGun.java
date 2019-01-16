@@ -23,4 +23,10 @@ public class KillerCrateGun extends AbstractGun implements IAbility {
 	}
 
 
+	@Override
+	public boolean onlyActivateOnClick() {
+		return true;
+	}
+
+
 }

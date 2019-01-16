@@ -166,7 +166,7 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 		return jump;
 	}
 
-
+/*
 	@Override
 	public boolean isShootPressed() {
 		return shoot;
@@ -178,11 +178,37 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 		return ability1;
 	}
 
+*/
+	@Override
+	public boolean isAbilityPressed(int num) {
+		if (num == 0) {
+			return shoot;
+		} else if (num == 1) {
+			return ability1;
+		} else {
+			throw new RuntimeException("Todo");
+		}
+	}
+
+
 
 	@Override
 	public boolean isSelectNextAbilityPressed() {
 		return this.cycleAbility;
 	}        
+
+
+	@Override
+	public void resetAbilitySwitch(int num) {
+		if (num == 0) {
+			shoot = false;
+		} else if (num == 1) {
+			ability1 = false;
+		} else {
+			throw new RuntimeException("Todo");
+		}
+		
+	}
 
 
 }

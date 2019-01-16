@@ -13,4 +13,6 @@ public interface IAbility {
 	boolean activate(float interpol);
 	
 	String getHudText();
+	
+	boolean onlyActivateOnClick();
 }

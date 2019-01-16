@@ -1,6 +1,5 @@
 package com.scs.multiplayervoxelworld.entities;
 
-import java.awt.Point;
 import java.util.List;
 
 import com.jme3.asset.TextureKey;
@@ -16,10 +15,9 @@ import com.jme3.texture.Texture;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.MyBetterCharacterControl;
 import com.scs.multiplayervoxelworld.Settings;
-import com.scs.multiplayervoxelworld.Settings.GameMode;
 import com.scs.multiplayervoxelworld.abilities.AddBlockAbility;
 import com.scs.multiplayervoxelworld.abilities.IAbility;
-import com.scs.multiplayervoxelworld.abilities.RemoveBlockAbility;
+import com.scs.multiplayervoxelworld.abilities.PlaceTurretAbility;
 import com.scs.multiplayervoxelworld.components.IAffectedByPhysics;
 import com.scs.multiplayervoxelworld.components.ICanShoot;
 import com.scs.multiplayervoxelworld.components.ICausesHarmOnContact;
@@ -53,7 +51,7 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 	public HUD hud;
 	public MyBetterCharacterControl playerControl;
 	public final int playerID;
-	private IAbility abilityGun, abilityOther;
+	private IAbility[] ability = new IAbility[2];
 	public Spatial playerGeometry;
 	private float score = 0;
 	private float health;
@@ -63,7 +61,7 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 	private float restartTime, invulnerableTime;
 	//private boolean hasBall = false;
 	private float timeSinceLastMove = 0;
-	
+
 	private int numShots = 0;
 	private int numShotsHit = 0;
 
@@ -78,7 +76,7 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		hud = _hud;
 		health = module.getPlayersHealth(playerID);
 		side = _side;
-		
+
 		{
 			int pid = playerID;
 			playerGeometry = getPlayersModel(game, pid);
@@ -91,13 +89,13 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 
 		playerControl.getPhysicsRigidBody().setUserObject(this);
 
-		abilityGun = new RemoveBlockAbility(_module, this); //LaserRifle(_game, _module, this);
+		ability[0] = new PlaceTurretAbility(game, _module, this); //LaserRifle(_game, _module, this);
 		//this.abilityOther = new RemoveBlockAbility(_module, this);
-		this.abilityOther = new AddBlockAbility(_module, this);
+		this.ability[1] = new AddBlockAbility(game, _module, this);
 
-		this.hud.setAbilityGunText(this.abilityGun.getHudText());
-		if (abilityOther != null) {
-			this.hud.setAbilityOtherText(this.abilityOther.getHudText());
+		this.hud.setAbilityGunText(this.ability[0].getHudText());
+		if (ability[1] != null) {
+			this.hud.setAbilityOtherText(this.ability[1].getHudText());
 		}
 	}
 
@@ -123,7 +121,7 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		}
 	}
 
-/*
+	/*
 	private static IAbility getRandomAbility(GameModule module, PlayersAvatar _player) {
 		int i = NumberFunctions.rnd(1, 3);
 		switch (i) {
@@ -138,7 +136,7 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		}
 
 	}
-*/
+	 */
 
 	public void moveToStartPostion(boolean invuln) {
 		//Point p = module.level.getPlayerStartPos(playerID);
@@ -175,19 +173,21 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 
 			timeSinceLastMove += tpf;
 
-			abilityGun.process(tpf);
-			if (this.abilityOther != null) {
-				abilityOther.process(tpf);
+			for (int num=0 ; num < 2 ; num++) {
+				if (this.ability[num] != null) {
+					ability[num].process(tpf);
+					if (input.isAbilityPressed(num)) { // Must be before we set the walkDirection & moveSpeed, as this method may affect it
+						//Settings.p("Using " + this.ability.toString());
+						this.ability[num].activate(tpf);
+						if (this.ability[num].onlyActivateOnClick()) {
+							input.resetAbilitySwitch(num);
+						}
+					}
+					this.hud.setAbilityGunText(this.ability[num].getHudText()); // todo - use diff hud fields
+				}
 			}
 
 			hud.process(tpf);
-
-			if (this.abilityOther != null) {
-				if (input.isAbilityOtherPressed()) { // Must be before we set the walkDirection & moveSpeed, as this method may affect it
-					//Settings.p("Using " + this.ability.toString());
-					this.abilityOther.activate(tpf);
-				}
-			}
 
 			/*
 			 * The direction of character is determined by the camera angle
@@ -222,17 +222,17 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 				this.jump();
 				timeSinceLastMove = 0;
 			}
+			/*
+				if (input.isShootPressed()) {
+					shoot();
+				}
 
-			if (input.isShootPressed()) {
-				shoot();
-			}
-
-			// These must be after we might use them, so the hud is correct 
-			this.hud.setAbilityGunText(this.abilityGun.getHudText());
-			if (abilityOther != null) {
-				this.hud.setAbilityOtherText(this.abilityOther.getHudText());
-			}
-
+				// These must be after we might use them, so the hud is correct
+				this.hud.setAbilityGunText(this.abilityGun.getHudText());
+				if (abilityOther != null) {
+					this.hud.setAbilityOtherText(this.abilityOther.getHudText());
+				}
+			 */
 		}
 
 		// Position camera at node
@@ -260,16 +260,19 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		return playerControl.isOnGround();
 	}
 
-
-	public void shoot() {
-		if (this.abilityGun.activate(0)) {
-			this.score--;
-			this.hud.setScore(this.score);
-			this.numShots++;
-			calcAccuracy();
+	/*
+		public void shoot() {
+			if (this.abilityGun.activate(0)) {
+				this.score--;
+				this.hud.setScore(this.score);
+				this.numShots++;
+				calcAccuracy();
+				if (this.abilityGun.onlyActivateOnClick()) {
+					this.abilityGun.turnOff();
+				}
+			}
 		}
-	}
-
+	 */
 
 	public FrustumIntersect getInsideOutside(AbstractPhysicalEntity entity) {
 		FrustumIntersect insideoutside = cam.contains(entity.getMainNode().getWorldBound());
@@ -352,7 +355,7 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		}
 	}
 
-/*
+	/*
 	@Override
 	public void collidedWith(INotifiedOfCollision other) {
 		if (other instanceof ICausesHarmOnContact) {
@@ -376,7 +379,7 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 
 		}
 	}
-*/
+	 */
 
 	@Override
 	public void applyForce(Vector3f force) {

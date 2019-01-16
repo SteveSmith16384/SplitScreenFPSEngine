@@ -19,4 +19,11 @@ public class LaserRifle extends AbstractMagazineGun implements IAbility {
 		
 	}
 	
+
+	@Override
+	public boolean onlyActivateOnClick() {
+		return false;
+	}
+
+
 }

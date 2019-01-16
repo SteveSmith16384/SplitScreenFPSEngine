@@ -33,19 +33,18 @@ import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.Settings.GameMode;
 import com.scs.multiplayervoxelworld.components.IAffectedByPhysics;
 import com.scs.multiplayervoxelworld.components.IEntity;
-import com.scs.multiplayervoxelworld.components.IMustRemainInArena;
 import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.Collectable;
 import com.scs.multiplayervoxelworld.entities.CubeExplosionShard;
 import com.scs.multiplayervoxelworld.entities.PlayersAvatar;
+import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
+import com.scs.multiplayervoxelworld.entities.nonphysical.ChangeBlocksInSweep;
 import com.scs.multiplayervoxelworld.games.AbstractGame;
 import com.scs.multiplayervoxelworld.hud.HUD;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
 import com.scs.multiplayervoxelworld.input.JoystickCamera2;
 import com.scs.multiplayervoxelworld.input.MouseAndKeyboardCamera;
-
-import ssmith.util.RealtimeInterval;
 
 public class GameModule implements IModule, PhysicsCollisionListener, ActionListener {
 
@@ -61,9 +60,6 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 	private List<IEntity> entitiesToAdd = new LinkedList<>();
 	private List<IEntity> entitiesToRemove = new LinkedList<>();
 	public BulletAppState bulletAppState;
-
-	//public IPertinentMapData mapData;
-	private RealtimeInterval checkOutOfArena = new RealtimeInterval(1000);
 
 	public AudioNode audioExplode, audioSmallExplode;
 	private AudioNode audioMusic;
@@ -345,7 +341,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 		//boolean check = checkOutOfArena.hitInterval();
 
-		for(IProcessable ip : this.entitiesForProcessing) {
+		for(IProcessable ip : this.entitiesForProcessing) { // this.entities
 			ip.process(tpfSecs);
 			/*if (check) {
 				if (ip instanceof IMustRemainInArena) { 
@@ -376,7 +372,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		Object ob = event.getObjectB().getUserObject(); 
 		if (ob instanceof Spatial) {
 			b = getEntityFromSpatial((Spatial)ob);
-		} else if (oa instanceof AbstractPhysicalEntity) {
+		} else if (ob instanceof AbstractPhysicalEntity) {
 			b = (AbstractPhysicalEntity)ob;
 		}
 
@@ -412,24 +408,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		}
 
 		if (name.equals(TEST)) {
-			for(IEntity e : entities) {
-				if (e instanceof PlayersAvatar) {
-					PlayersAvatar ip = (PlayersAvatar)e;
-
-					ip.damaged(999, "Test");
-
-					/*Vector3f pos = ip.getLocation().clone();
-					pos.x-=2;
-					pos.y = 0;
-					pos.z-=2;
-					doExplosion(pos);//, 5, 10);*/
-					//break;
-				}
-			}
-
-			/*Vector3f tmp = new Vector3f();
-			this.getBulletAppState().getPhysicsSpace().getGravity(tmp);
-			this.getBulletAppState().getPhysicsSpace().setGravity(tmp.mult(-1));*/
+			new ChangeBlocksInSweep(game, this, 100);
 		} else if (name.equals(QUIT)) {
 			game.setNextModule(new StartModule(game, GameMode.Skirmish));
 		}
@@ -544,5 +523,15 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 				return a;
 			}
 		}
+	}
+	
+	
+	public VoxelTerrainEntity getVoxelTerrainEntity() {
+		for(IEntity e : this.entities) {
+			if (e instanceof VoxelTerrainEntity) {
+				return (VoxelTerrainEntity)e;
+			}
+		}
+		return null;
 	}
 }

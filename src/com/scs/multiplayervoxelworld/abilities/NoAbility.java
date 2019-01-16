@@ -23,4 +23,11 @@ public class NoAbility implements IAbility {
 		return "[no ability]";
 	}
 
+
+	@Override
+	public boolean onlyActivateOnClick() {
+		return true;
+	}
+
+
 }

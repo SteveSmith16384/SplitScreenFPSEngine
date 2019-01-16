@@ -45,9 +45,7 @@ public abstract class AbstractPhysicalEntity extends AbstractEntity {
 
 	@Override
 	public void actuallyRemove() {
-		if (!this.isMarkedForRemoval()) {
-			throw new RuntimeException("You must mark an item for removal!");
-		}
+		super.actuallyRemove();
 		
 		this.mainNode.removeFromParent();
 		if (rigidBodyControl != null) {

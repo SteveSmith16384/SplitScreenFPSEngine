@@ -20,6 +20,7 @@ public class LaserBullet extends AbstractPhysicalEntity implements ICausesHarmOn
 
 	public ICanShoot shooter;
 	private float timeLeft = 3;
+	private boolean forceApplied = false;
 
 	public LaserBullet(MultiplayerVoxelWorldMain _game, GameModule _module, ICanShoot _shooter) {
 		super(_game, _module, "LaserBullet");
@@ -31,18 +32,16 @@ public class LaserBullet extends AbstractPhysicalEntity implements ICausesHarmOn
 		Node ball_geo = BeamLaserModel.Factory(game.getAssetManager(), origin, origin.add(shooter.getShootDir().multLocal(1)), ColorRGBA.Pink);
 
 		this.mainNode.attachChild(ball_geo);
-		game.getRootNode().attachChild(this.mainNode);
+		//game.getRootNode().attachChild(this.mainNode);
 		ball_geo.setLocalTranslation(shooter.getLocation().add(shooter.getShootDir().multLocal(PlayersAvatar.PLAYER_RAD*3)));
 		ball_geo.getLocalTranslation().y -= 0.1f; // Drop bullets slightly
 		rigidBodyControl = new RigidBodyControl(.1f);
 		ball_geo.addControl(rigidBodyControl);
-		//module.bulletAppState.getPhysicsSpace().add(rigidBodyControl);
-		/** Accelerate the physical ball to shoot it. */
-		rigidBodyControl.setLinearVelocity(shooter.getShootDir().mult(40));
 		rigidBodyControl.setGravity(Vector3f.ZERO);
 
 		ball_geo.setUserData(Settings.ENTITY, this);
 		rigidBodyControl.setUserObject(this);
+		
 		module.addEntity(this);
 
 		AudioNode audio_gun = new AudioNode(game.getAssetManager(), "Sound/laser3.wav", false);
@@ -92,14 +91,16 @@ public class LaserBullet extends AbstractPhysicalEntity implements ICausesHarmOn
 
 	@Override
 	public void prePhysicsTick(PhysicsSpace space, float tpf) {
-		// TODO Auto-generated method stub
+		if (!forceApplied) {
+			forceApplied = true;
+			rigidBodyControl.setLinearVelocity(shooter.getShootDir().mult(40));
+		}
 		
 	}
 
 
 	@Override
 	public void physicsTick(PhysicsSpace space, float tpf) {
-		// TODO Auto-generated method stub
 		
 	}
 

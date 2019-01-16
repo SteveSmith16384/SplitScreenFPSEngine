@@ -5,6 +5,7 @@ import com.jme3.collision.CollisionResults;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
+import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.PlayersAvatar;
@@ -16,14 +17,15 @@ import mygame.util.Vector3Int;
 
 public class RemoveBlockAbility extends AbstractAbility {
 
-	public RemoveBlockAbility(GameModule module, PlayersAvatar p) {
-		super(module, p);
+	public RemoveBlockAbility(MultiplayerVoxelWorldMain _game, GameModule module, PlayersAvatar p) {
+		super(_game, module, p);
 	}
 
 	@Override
 	public boolean process(float interpol) {
 		return false;
 	}
+	
 
 	@Override
 	public boolean activate(float interpol) {
@@ -55,6 +57,12 @@ public class RemoveBlockAbility extends AbstractAbility {
 	}
 
 
+	@Override
+	public boolean onlyActivateOnClick() {
+		return true;
+	}
+
+	
 	@Override
 	public String getHudText() {
 		return "[Remove Blocks]";

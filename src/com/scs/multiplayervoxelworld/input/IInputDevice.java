@@ -12,10 +12,11 @@ public interface IInputDevice {
 
 	boolean isJumpPressed();
 
-	boolean isShootPressed();
+	//boolean isShootPressed();
 
-	boolean isAbilityOtherPressed();
+	boolean isAbilityPressed(int num);
 	
 	boolean isSelectNextAbilityPressed();
 
+	void resetAbilitySwitch(int num);
 }

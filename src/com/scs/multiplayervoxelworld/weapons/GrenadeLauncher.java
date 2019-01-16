@@ -23,4 +23,10 @@ public class GrenadeLauncher extends AbstractGun implements IAbility {
 	}
 
 
+	@Override
+	public boolean onlyActivateOnClick() {
+		return true;
+	}
+
+
 }

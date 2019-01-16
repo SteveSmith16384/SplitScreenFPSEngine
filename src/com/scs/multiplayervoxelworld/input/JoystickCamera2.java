@@ -30,7 +30,8 @@ public class JoystickCamera2 extends FlyByCamera implements IInputDevice, RawInp
 	private float fwdVal, backVal, leftVal, rightVal;
 	private Vector2f joyPos = new Vector2f();
 	private Vector2f joyPosDir = new Vector2f();
-	private boolean jump = false, shoot = false, ability1 = false, cycleAbility = false;
+	private boolean jump = false;
+	private boolean shoot = false, ability1 = false, cycleAbility = false; // todo - use array
 	private int id;
 	private float prevLeft, prevRight, prevUp, prevDown;
 
@@ -112,14 +113,14 @@ public class JoystickCamera2 extends FlyByCamera implements IInputDevice, RawInp
 
 
 	@Override
-	public boolean isShootPressed() {
-		return shoot;
-	}
-
-
-	@Override
-	public boolean isAbilityOtherPressed() {
-		return ability1;
+	public boolean isAbilityPressed(int num) {
+		if (num == 0) {
+			return shoot;
+		} else if (num == 1) {
+			return ability1;
+		} else {
+			throw new RuntimeException("Todo");
+		}
 	}
 
 
@@ -310,6 +311,19 @@ public class JoystickCamera2 extends FlyByCamera implements IInputDevice, RawInp
 	public void onMouseButtonEvent(MouseButtonEvent evt) {}
 	public void onKeyEvent(KeyInputEvent evt) {}
 	public void onTouchEvent(TouchEvent evt) {}
+
+
+	@Override
+	public void resetAbilitySwitch(int num) {
+		if (num == 0) {
+			shoot = false;
+		} else if (num == 1) {
+			ability1 = false;
+		} else {
+			throw new RuntimeException("Todo");
+		}
+		
+	}
 
 
 	// End of Raw Input Listener

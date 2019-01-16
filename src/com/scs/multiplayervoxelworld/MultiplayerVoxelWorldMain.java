@@ -94,16 +94,16 @@ public class MultiplayerVoxelWorldMain extends SimpleApplication {
 		getInputManager().clearMappings();
 		getInputManager().clearRawInputListeners();
 		
-		//guiFont_small = getAssetManager().loadFont("Interface/Fonts/Console.fnt");
 		guiFont_small = getAssetManager().loadFont("Interface/Fonts/Console.fnt");
 		
 		cam.setFrustumPerspective(45f, (float) cam.getWidth() / cam.getHeight(), 0.01f, Settings.CAM_DIST);
-		//scs cam.setViewPort(0f, 0.5f, 0f, 0.5f); // BL
 
 		if (Settings.RELEASE_MODE) {
 			currentModule = new StartModule(this, GameMode.Skirmish);
 		} else {
+			TowerDefence td = new TowerDefence();
 			currentModule = new GameModule(this, new TowerDefence());
+			td.setGameModule((GameModule)currentModule);
 		}
 		currentModule.init();
 		

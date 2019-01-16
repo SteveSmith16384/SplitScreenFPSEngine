@@ -5,21 +5,17 @@ import com.jme3.collision.CollisionResults;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
-import com.scs.multiplayervoxelworld.BlockCodes;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.PlayersAvatar;
+import com.scs.multiplayervoxelworld.entities.Turret;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
-import com.scs.multiplayervoxelworld.entities.nonphysical.ChangeBlocksInSweep;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 
-import mygame.blocks.BlockTerrainControl;
-import mygame.util.Vector3Int;
+public class PlaceTurretAbility extends AbstractAbility {
 
-public class AddBlockAbility extends AbstractAbility {
-
-	public AddBlockAbility(MultiplayerVoxelWorldMain _game, GameModule module, PlayersAvatar p) {
+	public PlaceTurretAbility(MultiplayerVoxelWorldMain _game, GameModule module, PlayersAvatar p) {
 		super(_game, module, p);
 	}
 
@@ -44,12 +40,10 @@ public class AddBlockAbility extends AbstractAbility {
 				AbstractPhysicalEntity ape = (AbstractPhysicalEntity)GameModule.getEntityFromSpatial(g);
 				if (ape instanceof VoxelTerrainEntity) {
 					VoxelTerrainEntity vte = (VoxelTerrainEntity)ape;
-					BlockTerrainControl blocks = vte.blocks;
 					Vector3f position = result.getContactPoint();
-					Vector3Int blockPosition = blocks.getPointedBlockLocation(position, true);
-					Settings.p("Adding to " + blockPosition);
-					if (blocks.getBlock(blockPosition) == null) {
-						vte.addBlock_Block(blockPosition, BlockCodes.GRASS);
+					if (position.y == 1f) { // Must be on floor
+						//Vector3Int blockPosition = blocks.getPointedBlockLocation(position, true);
+						Turret turret = new Turret(game, module, position, this.player.getSide());
 					}
 				} else {
 					Settings.p(ape + " selected");
@@ -58,17 +52,17 @@ public class AddBlockAbility extends AbstractAbility {
 		}
 		return true;
 	}
-	
+
 
 	@Override
 	public boolean onlyActivateOnClick() {
 		return true;
 	}
 
-	
+
 	@Override
 	public String getHudText() {
-		return "[Add Blocks]";
+		return "[LayTrapAbility]";
 	}
 
 }
