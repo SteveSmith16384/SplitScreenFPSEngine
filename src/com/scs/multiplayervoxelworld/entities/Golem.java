@@ -119,10 +119,10 @@ public class Golem extends AbstractPhysicalEntity implements IProcessable {
 	@Override
 	public void notifiedOfCollision(AbstractPhysicalEntity other) {
 		if (other instanceof Golem || other instanceof VoxelTerrainEntity) {
-			aiMode = AIMode.AvoidBlockage;
+			Settings.p(this + " collided with " + other + " and is turning");
+			//aiMode = AIMode.AvoidBlockage;
 			avoidUntil = 5;
 		}
-		//Settings.p(this + " collided with " + other);
 
 	}
 	 */
