@@ -22,7 +22,7 @@ public class GolemModel {
 	public static final int ANIM_ATTACK = 2;
 
 	public static final float MODEL_WIDTH = 0.4f;
-	public static final float MODEL_HEIGHT = 0.7f;
+	public static final float MODEL_HEIGHT = 7f;//0.7f;
 
 	private AssetManager assetManager;
 	private Spatial model;
