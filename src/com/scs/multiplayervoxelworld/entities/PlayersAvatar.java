@@ -445,4 +445,10 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		return side;
 	}
 
+
+	@Override
+	public Vector3f getBulletStartPosition() {
+		return this.getMainNode().getWorldBound().getCenter();
+	}
+
 }

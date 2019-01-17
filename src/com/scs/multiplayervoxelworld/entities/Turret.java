@@ -11,6 +11,7 @@ import com.scs.multiplayervoxelworld.components.ICanShoot;
 import com.scs.multiplayervoxelworld.components.IEntity;
 import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.components.IShowOnHUD;
+import com.scs.multiplayervoxelworld.jme.JMEAngleFunctions;
 import com.scs.multiplayervoxelworld.jme.JMEModelFunctions;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 
@@ -21,7 +22,7 @@ public class Turret extends AbstractPhysicalEntity implements IShowOnHUD, IProce
 	private float timeUntilNextShot = 0;
 	private int side;
 	private AbstractPhysicalEntity currentTarget;
-	private Spatial rotatingTurret;
+	private Node rotatingTurret;
 
 	public Turret(MultiplayerVoxelWorldMain _game, GameModule _module, Vector3f pos, int _side) {
 		super(_game, _module, "Trap");
@@ -29,9 +30,15 @@ public class Turret extends AbstractPhysicalEntity implements IShowOnHUD, IProce
 		side = _side;
 
 		Spatial model = JMEModelFunctions.loadModel(game.getAssetManager(), "Models/Turret_0/Base1.blend"); //game.getAssetManager().loadModel("Models/Turret_0/Base1.blend");
-		rotatingTurret = ((Node)((Node)model).getChild(0)).getChild(0);
+		Spatial barrel = ((Node)((Node)model).getChild(0)).getChild(0);
+		barrel.removeFromParent();
+		JMEAngleFunctions.rotateToWorldDirection(barrel, new Vector3f(1, 0, 0)); // Point model fwds.  Must be before we attach it to a parent, otherwise the parent will be rotated
+
+		rotatingTurret = new Node("TurretNode");
+		rotatingTurret.attachChild(barrel);
+
 		JMEModelFunctions.setTextureOnSpatial(game.getAssetManager(), model, "Models/Turret_0/Turret1_Albedo.png");
-		model.setLocalScale(.3f);
+		model.setLocalScale(.25f);
 		model.setShadowMode(ShadowMode.CastAndReceive);
 
 		this.mainNode.attachChild(model);
@@ -62,12 +69,20 @@ public class Turret extends AbstractPhysicalEntity implements IShowOnHUD, IProce
 
 
 	private AbstractPhysicalEntity findTarget() {
+		AbstractPhysicalEntity closest = null;
+		float closestDist = 9999;
 		for (IEntity e : module.entities) {
 			if (e instanceof Golem) {
+				Golem golem = (Golem)e;
+				float dist = this.distance(golem);
+				if (dist < closestDist) {
+					closestDist = dist;
+					
+				}
 				return (Golem)e;
 			}
 		}
-		return null;
+		return closest;
 	}
 
 
@@ -78,6 +93,12 @@ public class Turret extends AbstractPhysicalEntity implements IShowOnHUD, IProce
 		if (currentTarget != null) {
 			new LaserBullet(game, module, this);
 		}
+	}
+
+
+	@Override
+	public Vector3f getBulletStartPosition() {
+		return this.getMainNode().getWorldBound().getCenter();
 	}
 
 

@@ -4,7 +4,6 @@ import com.jme3.math.Vector3f;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.MyBetterCharacterControl;
 import com.scs.multiplayervoxelworld.Settings;
-import com.scs.multiplayervoxelworld.components.INotifiedOfCollision;
 import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.jme.JMEAngleFunctions;
 import com.scs.multiplayervoxelworld.models.GolemModel;

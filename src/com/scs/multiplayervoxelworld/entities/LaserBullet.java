@@ -27,19 +27,19 @@ public class LaserBullet extends AbstractPhysicalEntity implements ICausesHarmOn
 
 		this.shooter = _shooter;
 
-		Vector3f origin = shooter.getLocation().clone();
+		Vector3f origin = shooter.getBulletStartPosition().clone();
 
-		Node ball_geo = BeamLaserModel.Factory(game.getAssetManager(), origin, origin.add(shooter.getShootDir().multLocal(1)), ColorRGBA.Pink);
+		Node laserBeam = BeamLaserModel.Factory(game.getAssetManager(), origin, origin.add(shooter.getShootDir().multLocal(1)), ColorRGBA.Pink);
 
-		this.mainNode.attachChild(ball_geo);
-		//game.getRootNode().attachChild(this.mainNode);
-		ball_geo.setLocalTranslation(shooter.getLocation().add(shooter.getShootDir().multLocal(PlayersAvatar.PLAYER_RAD*3)));
-		ball_geo.getLocalTranslation().y -= 0.1f; // Drop bullets slightly
+		this.mainNode.attachChild(laserBeam);
+		laserBeam.setLocalTranslation(origin.add(shooter.getShootDir().multLocal(PlayersAvatar.PLAYER_RAD*3)));
+		laserBeam.getLocalTranslation().y -= 0.1f; // Drop bullets slightly
+		
 		rigidBodyControl = new RigidBodyControl(.1f);
-		ball_geo.addControl(rigidBodyControl);
+		laserBeam.addControl(rigidBodyControl);
 		rigidBodyControl.setGravity(Vector3f.ZERO);
 
-		ball_geo.setUserData(Settings.ENTITY, this);
+		laserBeam.setUserData(Settings.ENTITY, this);
 		rigidBodyControl.setUserObject(this);
 		
 		module.addEntity(this);

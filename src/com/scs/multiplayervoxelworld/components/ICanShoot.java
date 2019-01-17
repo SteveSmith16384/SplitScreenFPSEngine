@@ -11,7 +11,7 @@ public interface ICanShoot {
 
 	int getSide();
 	
-	Vector3f getLocation();
+	Vector3f getBulletStartPosition();
 
 	Vector3f getShootDir();
 	
