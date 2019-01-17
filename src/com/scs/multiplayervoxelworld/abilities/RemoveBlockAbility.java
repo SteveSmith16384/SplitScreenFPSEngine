@@ -7,12 +7,14 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
+import com.scs.multiplayervoxelworld.blocks.StoneBlock;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.PlayersAvatar;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 
 import mygame.blocks.BlockTerrainControl;
+import mygame.blocks.IBlock;
 import mygame.util.Vector3Int;
 
 public class RemoveBlockAbility extends AbstractAbility {
@@ -45,7 +47,11 @@ public class RemoveBlockAbility extends AbstractAbility {
 				Vector3Int blockPosition = blocks.getPointedBlockLocation(position);
 				Settings.p("Clicked on " + blockPosition +  "(collision point: " + position + ")");
 				if (blockPosition.getY() > 0) {
-					blocks.removeBlock(blockPosition);
+					IBlock block = blocks.getBlock(blockPosition);
+					if (block instanceof StoneBlock) {
+						blocks.removeBlock(blockPosition);
+						player.resources++;
+					}
 				} else {
 					Settings.p("Cannot remove floor!");
 				}

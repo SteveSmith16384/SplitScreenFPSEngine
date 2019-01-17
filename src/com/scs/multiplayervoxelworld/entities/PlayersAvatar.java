@@ -15,7 +15,7 @@ import com.jme3.texture.Texture;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.MyBetterCharacterControl;
 import com.scs.multiplayervoxelworld.Settings;
-import com.scs.multiplayervoxelworld.abilities.AddBlockAbility;
+import com.scs.multiplayervoxelworld.abilities.CycleThroughAbilitiesAbility;
 import com.scs.multiplayervoxelworld.abilities.IAbility;
 import com.scs.multiplayervoxelworld.abilities.PlaceTurretAbility;
 import com.scs.multiplayervoxelworld.components.IAffectedByPhysics;
@@ -51,11 +51,14 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 	public HUD hud;
 	public MyBetterCharacterControl playerControl;
 	public final int playerID;
-	private IAbility[] ability = new IAbility[2];
-	public Spatial playerGeometry;
+	public IAbility[] ability = new IAbility[2];
+	private Spatial playerGeometry;
+	
+	// Stats
 	private float score = 0;
 	private float health;
 	private int side;
+	public int resources = 10;
 
 	private boolean restarting = false;
 	private float restartTime, invulnerableTime;
@@ -91,7 +94,7 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 
 		ability[0] = new PlaceTurretAbility(game, _module, this); //LaserRifle(_game, _module, this);
 		//this.abilityOther = new RemoveBlockAbility(_module, this);
-		this.ability[1] = new AddBlockAbility(game, _module, this);
+		this.ability[1] = new CycleThroughAbilitiesAbility(game, _module, this);
 
 		this.hud.setAbilityGunText(this.ability[0].getHudText());
 		if (ability[1] != null) {

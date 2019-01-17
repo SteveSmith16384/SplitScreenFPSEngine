@@ -10,12 +10,14 @@ import com.scs.multiplayervoxelworld.jme.JMEAngleFunctions;
 import com.scs.multiplayervoxelworld.models.GolemModel;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 
-public class Golem extends AbstractPhysicalEntity implements IProcessable, INotifiedOfCollision {
+import ssmith.util.RealtimeInterval;
+
+public class Golem extends AbstractPhysicalEntity implements IProcessable {
 
 	private static final float TURN_SPEED = 1f;
 
-	private static final float PLAYER_HEIGHT = 1.5f;
-	private static final float PLAYER_RAD = 0.4f;
+	private static final float PLAYER_HEIGHT = 3f;
+	//private static final float PLAYER_RAD = 0.4f;
 	private static final float WEIGHT = 1f;
 
 	private enum AIMode {WalkToCrystal, AvoidBlockage}; 
@@ -26,6 +28,9 @@ public class Golem extends AbstractPhysicalEntity implements IProcessable, INoti
 	private Vector3f targetPos;
 	private float avoidUntil = 0;
 
+	private RealtimeInterval checkPosInterval = new RealtimeInterval(2000);
+	private Vector3f prevPos = new Vector3f();
+
 	public Golem(MultiplayerVoxelWorldMain _game, GameModule _module, Vector3f startPos, Vector3f _targetPos) {
 		super(_game, _module, "Golem");
 
@@ -35,7 +40,7 @@ public class Golem extends AbstractPhysicalEntity implements IProcessable, INoti
 		this.getMainNode().attachChild(model.getModel());
 		this.getMainNode().setLocalTranslation(startPos);
 
-		playerControl = new MyBetterCharacterControl(PLAYER_RAD, PLAYER_HEIGHT, WEIGHT);
+		playerControl = new MyBetterCharacterControl(PLAYER_HEIGHT/3, PLAYER_HEIGHT, WEIGHT);
 		playerControl.setJumpForce(new Vector3f(0, Settings.JUMP_FORCE, 0)); 
 		this.getMainNode().addControl(playerControl);
 
@@ -47,6 +52,15 @@ public class Golem extends AbstractPhysicalEntity implements IProcessable, INoti
 	@Override
 	public void process(float tpfSecs) {
 		model.setAnim(GolemModel.ANIM_WALK);
+
+		if (checkPosInterval.hitInterval()) {
+			if (this.mainNode.getWorldTranslation().distance(this.prevPos) < .5f) {
+				Settings.p(this + " stuck, changing dir");
+				this.aiMode = AIMode.AvoidBlockage;
+			}
+			prevPos.set(this.mainNode.getWorldTranslation());
+		}
+
 		if (this.aiMode == AIMode.WalkToCrystal) {
 			this.turnTowardsDestination();
 		} else {
@@ -57,6 +71,7 @@ public class Golem extends AbstractPhysicalEntity implements IProcessable, INoti
 			}
 		}
 		this.moveFwds();
+
 	}
 
 
@@ -100,7 +115,7 @@ public class Golem extends AbstractPhysicalEntity implements IProcessable, INoti
 
 	}
 
-
+	/*
 	@Override
 	public void notifiedOfCollision(AbstractPhysicalEntity other) {
 		if (other instanceof Golem || other instanceof VoxelTerrainEntity) {
@@ -110,6 +125,6 @@ public class Golem extends AbstractPhysicalEntity implements IProcessable, INoti
 		//Settings.p(this + " collided with " + other);
 
 	}
-
+	 */
 
 }

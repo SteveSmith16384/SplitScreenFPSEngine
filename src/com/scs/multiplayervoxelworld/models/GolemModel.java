@@ -34,7 +34,7 @@ public class GolemModel {
 	public GolemModel(AssetManager _assetManager) {
 		assetManager = _assetManager;
 
-		model = assetManager.loadModel("Models/golem/golem_clean.blend");
+		model = JMEModelFunctions.loadModel(assetManager, "Models/golem/golem_clean.blend");//assetManager.loadModel("Models/golem/golem_clean.blend");
 		JMEModelFunctions.setTextureOnSpatial(assetManager, model, "Textures/lavarock.jpg");
 		model.setShadowMode(ShadowMode.CastAndReceive);
 		JMEModelFunctions.scaleModelToHeight(model, MODEL_HEIGHT);

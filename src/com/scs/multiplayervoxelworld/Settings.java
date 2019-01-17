@@ -25,12 +25,16 @@ public class Settings {
 
 	public enum GameMode {Skirmish, KingOfTheHill } // todo - delete these
 	
+	// Resource costs
+	public static final int TURRET_COST = 5;
+	
+	
 	// Game settings
 	public static GameMode GAME_MODE;
-	public static boolean PVP = true;
-	public static int NUM_AI = 0;
-	public static int NUM_COLLECTABLES = 0;
-	public static int NUM_SECTORS = 3;
+	//public static boolean PVP = true;
+	//public static int NUM_AI = 0;
+	//public static int NUM_COLLECTABLES = 0;
+	//public static int NUM_SECTORS = 3;
 	
 	// Our movement speed
 	public static final float PLAYER_MOVE_SPEED = 3f;

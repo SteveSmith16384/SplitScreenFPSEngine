@@ -28,7 +28,7 @@ public class ModelViewer extends SimpleApplication { // todo - copy SteveTech ve
 		setupLight();
 
 		Node model = (Node)assetManager.loadModel("Models/Turret_0/Base1.blend");
-		((Node)model.getChild(0)).getChild(0).removeFromParent();
+		//((Node)model.getChild(0)).getChild(0).removeFromParent();
 		JMEModelFunctions.setTextureOnSpatial(assetManager, model, "Models/Turret_0/Turret1_Albedo.png");
 		//model.setQueueBucket(Bucket.Transparent);
 		

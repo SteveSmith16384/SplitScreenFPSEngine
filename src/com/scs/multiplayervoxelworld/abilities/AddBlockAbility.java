@@ -49,7 +49,7 @@ public class AddBlockAbility extends AbstractAbility {
 					Vector3Int blockPosition = blocks.getPointedBlockLocation(position, true);
 					Settings.p("Adding to " + blockPosition);
 					if (blocks.getBlock(blockPosition) == null) {
-						vte.addBlock_Block(blockPosition, BlockCodes.GRASS);
+						vte.addBlock_Block(blockPosition, BlockCodes.STONE);
 					}
 				} else {
 					Settings.p(ape + " selected");

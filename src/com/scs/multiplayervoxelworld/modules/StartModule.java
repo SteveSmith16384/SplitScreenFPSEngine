@@ -189,20 +189,20 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 			Settings.GAME_MODE = gameMode;
 			switch (gameMode) {
 			case Skirmish:
-				Settings.NUM_SECTORS = 3;
+				/*Settings.NUM_SECTORS = 3;
 				Settings.PVP = true;
 				Settings.NUM_AI = 0;
 				Settings.NUM_COLLECTABLES = 1;
-				GameModule.HELP_TEXT = "Skirmish: Hunt the other players";
+				GameModule.HELP_TEXT = "Skirmish: Hunt the other players";*/
 				startGame();
 				break;
 				
 			case KingOfTheHill:
 				// King of the Hill
-				Settings.NUM_SECTORS = 3;
+				/*Settings.NUM_SECTORS = 3;
 				Settings.PVP = true;
 				Settings.NUM_AI = 0;
-				Settings.NUM_COLLECTABLES = 0;
+				Settings.NUM_COLLECTABLES = 0;*/
 				GameModule.HELP_TEXT = "King of the Hill: Dominate the base";
 				startGame();
 				break;

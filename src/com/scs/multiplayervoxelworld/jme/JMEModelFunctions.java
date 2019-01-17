@@ -40,17 +40,14 @@ public class JMEModelFunctions {
 
 
 	public static Spatial loadModel(AssetManager assetManager, String path) {
-		boolean LOAD_JME_VERSION = false;
-
 		Spatial ship = null;
 		String j30_path = path.substring(path.lastIndexOf("/")+1) + ".j3o";
 		try {
-			if (LOAD_JME_VERSION) {
-				String filename = "Models/" + j30_path;
-				System.out.println("Loading " + filename);
-			}
+			String filename = "Models/" + j30_path;
+			System.out.println("Loading " + filename);
+			ship = assetManager.loadModel(filename);
 		} catch (AssetNotFoundException | IllegalArgumentException ex) {
-			// Do nothing
+			ex.printStackTrace();
 		}
 		if (ship == null) {
 			System.err.println("WARNING!! Loading original model! " + path);
@@ -145,10 +142,6 @@ public class JMEModelFunctions {
 
 
 	public static void centreXZ(Spatial model) {
-		/*Node parent = model.getParent();
-		if (parent == null) {
-
-		}*/
 		BoundingBox bb = (BoundingBox)model.getWorldBound();
 		Vector3f pos = model.getLocalTranslation();
 		model.setLocalTranslation(-bb.getCenter().x, pos.y, -bb.getCenter().z);

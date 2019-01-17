@@ -42,7 +42,7 @@ public class HUD extends Node implements IEntity, IProcessable {
 	private List<Picture> targetting_reticules = new ArrayList<>();
 	private MultiplayerVoxelWorldMain game;
 	private GameModule module;
-	private BitmapText abilityGun, abilityOther, score, haveBall, accuracy;
+	private BitmapText abilityGun, abilityOther, score, accuracy;
 	public BitmapText helpText;
 	private float showHelpUntil = 5;
 
@@ -77,10 +77,6 @@ public class HUD extends Node implements IEntity, IProcessable {
 		abilityOther.setColor(ColorRGBA.Green);
 		abilityOther.setLocalTranslation(10, hud_height-45, 0);
 		this.attachChild(abilityOther);
-
-		haveBall = new BitmapText(font_small, false);
-		haveBall.setLocalTranslation(10, hud_height-60, 0);
-		this.attachChild(haveBall);
 
 		accuracy = new BitmapText(font_small, false);
 		accuracy.setLocalTranslation(10, hud_height-75, 0);
@@ -235,15 +231,6 @@ public class HUD extends Node implements IEntity, IProcessable {
 	}
 	
 	
-	public void updateHasBall(boolean a) {
-		if (a) {
-			this.haveBall.setText("YOU HAVE THE BALL");
-		} else {
-			this.haveBall.setText("");
-		}
-	}
-
-
 	public void showDamageBox() {
 		process_damage_box = true;
 		this.dam_box_col.a = .5f;

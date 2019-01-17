@@ -28,7 +28,7 @@ public class Turret extends AbstractPhysicalEntity implements IShowOnHUD, IProce
 
 		side = _side;
 
-		Spatial model = game.getAssetManager().loadModel("Models/Turret_0/Base1.blend");
+		Spatial model = JMEModelFunctions.loadModel(game.getAssetManager(), "Models/Turret_0/Base1.blend"); //game.getAssetManager().loadModel("Models/Turret_0/Base1.blend");
 		rotatingTurret = ((Node)((Node)model).getChild(0)).getChild(0);
 		JMEModelFunctions.setTextureOnSpatial(game.getAssetManager(), model, "Models/Turret_0/Turret1_Albedo.png");
 		model.setLocalScale(.3f);
@@ -50,6 +50,10 @@ public class Turret extends AbstractPhysicalEntity implements IShowOnHUD, IProce
 	@Override
 	public void process(float tpfSecs) {
 		timeUntilNextShot -= tpfSecs;
+		if (currentTarget != null) {
+			Vector3f targetPos = currentTarget.getMainNode().getWorldBound().getCenter();
+			rotatingTurret.lookAt(targetPos, Vector3f.UNIT_Y); // currentTarget.getMainNode().getLocalTranslation()
+		}
 		if (timeUntilNextShot <= 0) {
 			shoot();
 		}
@@ -71,7 +75,6 @@ public class Turret extends AbstractPhysicalEntity implements IShowOnHUD, IProce
 		Settings.p("Turret shooting");
 		timeUntilNextShot = SHOT_INTERVAL;
 		currentTarget = findTarget();
-		rotatingTurret.lookAt(currentTarget.getMainNode().getLocalTranslation(), Vector3f.UNIT_Y);
 		if (currentTarget != null) {
 			new LaserBullet(game, module, this);
 		}
@@ -86,7 +89,8 @@ public class Turret extends AbstractPhysicalEntity implements IShowOnHUD, IProce
 
 	@Override
 	public Vector3f getShootDir() {
-		return currentTarget.getMainNode().getLocalTranslation().subtract(this.getMainNode().getLocalTranslation()).normalizeLocal();
+		Vector3f targetPos = currentTarget.getMainNode().getWorldBound().getCenter();
+		return targetPos.subtract(this.getMainNode().getLocalTranslation()).normalizeLocal();
 	}
 
 

@@ -98,8 +98,8 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		//mapData = new DefaultMap(game, this);
 		level.setup(game, this);
 
-		Collectable collectable = new Collectable(game, this, 5, 5, 5);
-		this.addEntity(collectable);
+		//Collectable collectable = new Collectable(game, this, 5, 5, 5);
+		//this.addEntity(collectable);
 
 		Joystick[] joysticks = game.getInputManager().getJoysticks();
 		int numPlayers = game.getNumPlayers();

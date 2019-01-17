@@ -28,6 +28,10 @@ public class PlaceTurretAbility extends AbstractAbility {
 
 	@Override
 	public boolean activate(float interpol) {
+		if (this.player.resources < Settings.TURRET_COST) {
+			Settings.p("Not enough resources");
+			return false;
+		}
 		Ray ray = new Ray(this.player.getCamera().getLocation(), this.player.getCamera().getDirection());
 
 		CollisionResults results = new CollisionResults();
@@ -44,13 +48,15 @@ public class PlaceTurretAbility extends AbstractAbility {
 					if (position.y == 1f) { // Must be on floor
 						//Vector3Int blockPosition = blocks.getPointedBlockLocation(position, true);
 						Turret turret = new Turret(game, module, position, this.player.getSide());
+						player.resources -= Settings.TURRET_COST;
+						return true;
 					}
 				} else {
 					Settings.p(ape + " selected");
 				}
 			}
 		}
-		return true;
+		return false;
 	}
 
 
