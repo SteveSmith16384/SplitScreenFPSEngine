@@ -7,7 +7,7 @@ import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.math.ColorRGBA;
 
-public class TextArea extends BitmapText {
+public class TextArea extends BitmapText { // todo - delete this
 
 	private volatile List<String> lines;
 	private int max;

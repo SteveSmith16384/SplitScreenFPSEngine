@@ -22,7 +22,7 @@ public class GenerateMVWTextureSheet {
 
 	public GenerateMVWTextureSheet() throws IOException {
 		String[][] tiles = {
-				{"grass.jpg", "lavarock.jpg", "stone.png"}, 
+				{"grass.jpg", "lavarock.jpg", "stone.png", "scarybark.jpg", "leaves.jpg"}, 
 				{"road2.png", "sand.jpg"}
 		}; // Keep these in the same order!
 

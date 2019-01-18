@@ -35,7 +35,6 @@ import com.scs.multiplayervoxelworld.components.IAffectedByPhysics;
 import com.scs.multiplayervoxelworld.components.IEntity;
 import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
-import com.scs.multiplayervoxelworld.entities.Collectable;
 import com.scs.multiplayervoxelworld.entities.CubeExplosionShard;
 import com.scs.multiplayervoxelworld.entities.PlayersAvatar;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
@@ -65,7 +64,8 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 	private AudioNode audioMusic;
 	public DirectionalLight sun;
 	public AbstractGame level;
-	
+	private boolean gameOver = false;
+
 	public GameModule(MultiplayerVoxelWorldMain _game, AbstractGame _level) {
 		super();
 
@@ -76,8 +76,8 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 	@Override
 	public void init() {
-		game.getCamera().setLocation(new Vector3f(0f, 0f, 10f));
-		game.getCamera().lookAt(new Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y);
+		//game.getCamera().setLocation(new Vector3f(0f, 0f, 10f));
+		//game.getCamera().lookAt(new Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y);
 
 		game.getInputManager().addMapping(QUIT, new KeyTrigger(KeyInput.KEY_ESCAPE));
 		game.getInputManager().addListener(this, QUIT);            
@@ -95,11 +95,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 		setUpLight();
 
-		//mapData = new DefaultMap(game, this);
 		level.setup(game, this);
-
-		//Collectable collectable = new Collectable(game, this, 5, 5, 5);
-		//this.addEntity(collectable);
 
 		Joystick[] joysticks = game.getInputManager().getJoysticks();
 		int numPlayers = game.getNumPlayers();
@@ -107,7 +103,6 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		// Auto-Create player 0
 		{
 			Camera newCam = this.createCamera(0, numPlayers);
-			HUD hud = this.createHUD(newCam, 0);
 			IInputDevice input = null;
 			if (Settings.PLAYER1_IS_MOUSE) {
 				input = new MouseAndKeyboardCamera(newCam, game.getInputManager());
@@ -118,7 +113,9 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 					throw new RuntimeException("No gamepads found");
 				}
 			}
-			this.addPlayersAvatar(0, newCam, input, hud, 0);
+			PlayersAvatar player = this.addPlayersAvatar(0, newCam, input, 0);
+			HUD hud = this.createHUD(newCam, player);
+			player.setHUD(hud);
 		}
 
 		// Create players for each joystick
@@ -129,10 +126,11 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 			while (joyid < joysticks.length) {
 				//for (Joystick j : joysticks) {
 				Camera newCam = this.createCamera(playerid, numPlayers);
-				HUD hud = this.createHUD(newCam, playerid);
 				//JoystickCamera_ORIG joyCam = new JoystickCamera_ORIG(newCam, j, game.getInputManager());
 				JoystickCamera2 joyCam = new JoystickCamera2(newCam, joysticks[joyid], game.getInputManager());
-				this.addPlayersAvatar(playerid, newCam, joyCam, hud, 0);
+				PlayersAvatar player = this.addPlayersAvatar(playerid, newCam, joyCam, 0);
+				HUD hud = this.createHUD(newCam, player);
+				player.setHUD(hud);
 				//}
 				joyid++;
 				playerid++;
@@ -160,7 +158,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 				cam.lookAt(new Vector3f(mapData.getWidth()/2, PlayersAvatar.PLAYER_HEIGHT, mapData.getDepth()/2), Vector3f.UNIT_Y);
 			}
 		}
-*/
+		 */
 
 		audioExplode = new AudioNode(game.getAssetManager(), "Sound/explode.wav", false);
 		audioExplode.setPositional(false);
@@ -182,11 +180,6 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		game.getRootNode().attachChild(audioMusic);
 		//audioMusic.play(); // play continuously! - todo - re-add?
 
-		//if (Settings.SHOW_FPS) {
-		BitmapFont guiFont_small = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");
-		game.getStateManager().attach(new StatsAppState(game.getGuiNode(), guiFont_small));
-		//}
-		
 		this.getRootNode().attachChild(SkyFactory.createSky(game.getAssetManager(), "Textures/BrightSky.dds", SkyFactory.EnvMapType.CubeMap));
 
 	}
@@ -251,16 +244,18 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 		}
 
-		final ViewPort view2 = game.getRenderManager().createMainView("viewport_"+newCam.toString(), newCam);
+		final ViewPort view2 = game.getRenderManager().createMainView("viewport_" + newCam.toString(), newCam);
 		view2.setBackgroundColor(ColorRGBA.Cyan);
 		view2.setClearFlags(true, true, true);
 		view2.attachScene(game.getRootNode());
 
+		// Add shadows to this viewport
 		final int SHADOWMAP_SIZE = 2048;
 		DirectionalLightShadowRenderer dlsr = new DirectionalLightShadowRenderer(game.getAssetManager(), SHADOWMAP_SIZE, 2);
 		dlsr.setLight(sun);
 		view2.addProcessor(dlsr);
 
+		// Add targetting recticule
 		BitmapFont guiFont = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");
 		BitmapText hudText = new BitmapText(guiFont, false);
 		hudText.setSize(guiFont.getCharSet().getRenderedSize()+2);
@@ -287,31 +282,32 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 	}
 
 
-	private HUD createHUD(Camera c, int id) {
-		BitmapFont guiFont_small = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");
+	private HUD createHUD(Camera c, PlayersAvatar player) {
+		//BitmapFont guiFont_small = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");
 		// HUD coords are full screen co-ords!
 		// cam.getWidth() = 640x480, cam.getViewPortLeft() = 0.5f
 		float xBL = c.getWidth() * c.getViewPortLeft();
 		//float y = (c.getHeight() * c.getViewPortTop())-(c.getHeight()/2);
 		float yBL = c.getHeight() * c.getViewPortBottom();
 
-		//Settings.p("Created HUD for " + id + ": " + xBL + "," +yBL);
+		Settings.p("Created HUD for " + player + ": " + xBL + "," +yBL);
 
 		float w = c.getWidth() * (c.getViewPortRight()-c.getViewPortLeft());
 		float h = c.getHeight() * (c.getViewPortTop()-c.getViewPortBottom());
-		HUD hud = new HUD(game, this, xBL, yBL, w, h, guiFont_small, id, c);
-		game.getGuiNode().attachChild(hud);
+		HUD hud = new HUD(game, this, player, xBL, yBL, w, h, c);
+		//game.getGuiNode().attachChild(hud);
 		return hud;
 
 	}
 
 
-	private void addPlayersAvatar(int id, Camera cam, IInputDevice input, HUD hud, int side) {
-		PlayersAvatar player = new PlayersAvatar(game, this, id, cam, input, hud, side);
+	private PlayersAvatar addPlayersAvatar(int id, Camera cam, IInputDevice input, int side) {
+		PlayersAvatar player = new PlayersAvatar(game, this, id, cam, input, side);
 		this.addEntity(player);
 		player.moveToStartPostion(true);
 		// Look towards centre
 		//player.getMainNode().lookAt(new Vector3f(mapData.getWidth()/2, PlayersAvatar.PLAYER_HEIGHT, mapData.getDepth()/2), Vector3f.UNIT_Y);
+		return player;
 	}
 
 
@@ -378,13 +374,6 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 
 		if (a != null && b != null) {
 			CollisionLogic.collision(this, a, b);
-			/*if (a instanceof INotifiedOfCollision && b instanceof INotifiedOfCollision) {
-				//Settings.p(a + " has collided with " + b);
-				INotifiedOfCollision ica = (INotifiedOfCollision)a;
-				INotifiedOfCollision icb = (INotifiedOfCollision)b;
-				ica.collidedWith(icb);
-				icb.collidedWith(ica);
-			}*/
 		} else {
 			if (a == null) {
 				Settings.p(oa + " has no entity data!");
@@ -524,8 +513,8 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 			}
 		}
 	}
-	
-	
+
+
 	public VoxelTerrainEntity getVoxelTerrainEntity() {
 		for(IEntity e : this.entities) {
 			if (e instanceof VoxelTerrainEntity) {
@@ -533,5 +522,16 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 			}
 		}
 		return null;
+	}
+
+
+	public void gameOver() {
+		Settings.p("Game over!");
+		//todo this.gameOver = true;
+	}
+
+
+	public boolean isGameOver() {
+		return this.gameOver;
 	}
 }

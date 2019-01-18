@@ -9,8 +9,8 @@ import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.PlayersAvatar;
-import com.scs.multiplayervoxelworld.entities.Turret;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
+import com.scs.multiplayervoxelworld.entities.towerdef.Turret;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 
 public class PlaceTurretAbility extends AbstractAbility {

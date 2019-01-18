@@ -85,7 +85,7 @@ public class LaserBullet extends AbstractPhysicalEntity implements ICausesHarmOn
 
 	@Override
 	public float getDamageCaused() {
-		return 10;
+		return 1;
 	}
 
 
@@ -93,7 +93,7 @@ public class LaserBullet extends AbstractPhysicalEntity implements ICausesHarmOn
 	public void prePhysicsTick(PhysicsSpace space, float tpf) {
 		if (!forceApplied) {
 			forceApplied = true;
-			rigidBodyControl.setLinearVelocity(shooter.getShootDir().mult(40));
+			rigidBodyControl.setLinearVelocity(shooter.getShootDir().mult(35));//40));
 		}
 		
 	}

@@ -3,11 +3,13 @@ package com.scs.multiplayervoxelworld.hud;
 import java.util.ArrayList;
 import java.util.List;
 
-import ssmith.lang.NumberFunctions;
-
+import com.atr.jme.font.TrueTypeFont;
+import com.atr.jme.font.TrueTypeMesh;
+import com.atr.jme.font.asset.TrueTypeKeyMesh;
+import com.atr.jme.font.shape.TrueTypeContainer;
+import com.atr.jme.font.util.StringContainer;
+import com.atr.jme.font.util.Style;
 import com.jme3.bounding.BoundingBox;
-import com.jme3.font.BitmapFont;
-import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
@@ -22,8 +24,10 @@ import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.components.IEntity;
 import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.components.IShowOnHUD;
-import com.scs.multiplayervoxelworld.gui.TextArea;
+import com.scs.multiplayervoxelworld.entities.PlayersAvatar;
 import com.scs.multiplayervoxelworld.modules.GameModule;
+
+import ssmith.util.RealtimeInterval;
 
 /*
  * Positioning text = the co-ords of BitmapText are for the top-left of the first line of text, and they go down from there.
@@ -31,29 +35,29 @@ import com.scs.multiplayervoxelworld.modules.GameModule;
  */
 public class HUD extends Node implements IEntity, IProcessable {
 
-	public TextArea log_ta;
 	public float hud_width, hud_height;
 
-	private int playerId;
+	private MultiplayerVoxelWorldMain game;
+	private GameModule module;
+	private PlayersAvatar player; 
+
+	private RealtimeInterval updateInt = new RealtimeInterval(500);
+	
 	private Camera cam;
 	private Geometry damage_box;
 	private ColorRGBA dam_box_col = new ColorRGBA(1, 0, 0, 0.0f);
 	private boolean process_damage_box;
 	private List<Picture> targetting_reticules = new ArrayList<>();
-	private MultiplayerVoxelWorldMain game;
-	private GameModule module;
-	private BitmapText abilityGun, abilityOther, score, accuracy;
-	public BitmapText helpText;
-	private float showHelpUntil = 5;
+	private TrueTypeContainer textArea; // For showing all other stats 
 
-	public HUD(MultiplayerVoxelWorldMain _game, GameModule _module, float xBL, float yBL, float w, float h, BitmapFont font_small, int id, Camera _cam) {
+	public HUD(MultiplayerVoxelWorldMain _game, GameModule _module, PlayersAvatar _player, float xBL, float yBL, float w, float h, Camera _cam) {
 		super("HUD");
 
 		game = _game;
 		module =_module;
+		player = _player;
 		hud_width = w;
 		hud_height = h;
-		playerId = id;
 		cam = _cam;
 
 		super.setLocalTranslation(xBL, yBL, 0);
@@ -62,7 +66,14 @@ public class HUD extends Node implements IEntity, IProcessable {
 		health.setLocalTranslation(10, hud_height-20, 0);
 		this.attachChild(health);
 		this.setHealth(100);*/
+		
+		TrueTypeKeyMesh ttkSmall = new TrueTypeKeyMesh("Fonts/ERASBD.TTF", Style.Bold, (int)30);
+		TrueTypeFont ttfSmall = (TrueTypeMesh)_game.getAssetManager().loadAsset(ttkSmall);
+		textArea = ttfSmall.getFormattedText(new StringContainer(ttfSmall, "KILL THE N00BS!"), ColorRGBA.Yellow);
+		textArea.setLocalTranslation(10, (int)(cam.getHeight()*1), 0);
+		this.attachChild(textArea);
 
+/*
 		score = new BitmapText(font_small, false);
 		score.setLocalTranslation(10, hud_height-15, 0);
 		this.attachChild(score);
@@ -87,7 +98,7 @@ public class HUD extends Node implements IEntity, IProcessable {
 		helpText.setText(GameModule.HELP_TEXT);
 		helpText.setLocalTranslation(10, hud_height-75, 0);
 		this.attachChild(helpText);
-
+*/
 		// Damage box
 		{
 			Material mat = new Material(game.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
@@ -132,12 +143,11 @@ public class HUD extends Node implements IEntity, IProcessable {
 			this.attachChild(pic);
 		}*/
 
-
+/*
 		this.updateGeometricState();
-
 		this.setModelBound(new BoundingBox());
 		this.updateModelBound();
-
+*/
 		module.addEntity(this);
 
 	}
@@ -145,18 +155,10 @@ public class HUD extends Node implements IEntity, IProcessable {
 
 	@Override
 	public void process(float tpf) {
-		if (showHelpUntil > 0) {
-			showHelpUntil -= tpf;
-			if (showHelpUntil <= 0) {
-				this.helpText.removeFromParent();
-			}
+		if (this.updateInt.hitInterval()) {
+			this.updateTextArea();
 		}
 		
-		if (Settings.DEBUG_HUD) {
-			this.abilityGun.setText("" + NumberFunctions.rnd(1000,  9999));
-			this.score.setText("" + NumberFunctions.rnd(1000,  9999));
-		}
-
 		// Test reticle
 		if (Settings.DEBUG_TARGETTER) {
 			int id = 0;
@@ -191,21 +193,29 @@ public class HUD extends Node implements IEntity, IProcessable {
 				process_damage_box = false;
 			}
 		}
+	}
 
 
-
+	private void updateTextArea() {
+		StringBuilder str = new StringBuilder();
+		str.append(player.ability[0].getHudText() + "\n");
+		str.append(player.ability[1].getHudText() + "\n");
+		str.append("Resources: " + player.resources + "\n");
+		str.append("Score: " + player.getScore() + "\n");
+		this.textArea.setText(str.toString());
+		this.textArea.updateGeometry();
 	}
 
 
 	public void log(String s) {
-		this.log_ta.addLine(s);
+		//this.log_ta.addLine(s);
 	}
 
-
+/*
 	public void setScore(float s) {
-		this.score.setText("SCORE: " + (int)s);
+		//this.score.setText("SCORE: " + (int)s);
 	}
-
+*/
 
 	/*public void setHealth(float h) {
 		if (!Settings.DEBUG_HUD) {
@@ -215,7 +225,7 @@ public class HUD extends Node implements IEntity, IProcessable {
 		}
 	}*/
 
-
+/*
 	public void setAbilityGunText(String s) {
 		this.abilityGun.setText(s);
 	}
@@ -224,13 +234,8 @@ public class HUD extends Node implements IEntity, IProcessable {
 	public void setAbilityOtherText(String s) {
 		this.abilityOther.setText(s);
 	}
+*/
 
-
-	public void setAccuracy(int a)  {
-		this.accuracy.setText("Accuracy: " + a + "%");
-	}
-	
-	
 	public void showDamageBox() {
 		process_damage_box = true;
 		this.dam_box_col.a = .5f;
@@ -264,7 +269,7 @@ public class HUD extends Node implements IEntity, IProcessable {
 
 	@Override
 	public void actuallyAdd() {
-		// TODO Auto-generated method stub
+		this.game.getGuiNode().attachChild(this);
 		
 	}
 
@@ -278,7 +283,7 @@ public class HUD extends Node implements IEntity, IProcessable {
 
 	@Override
 	public void actuallyRemove() {
-		// TODO Auto-generated method stub
+		this.removeFromParent();
 		
 	}
 }

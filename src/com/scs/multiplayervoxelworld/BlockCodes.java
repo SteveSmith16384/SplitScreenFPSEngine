@@ -14,7 +14,7 @@ public class BlockCodes {
 	public static final int STONE = 3;
 	public static final int LAVA = 4;
 
-	
+	/*
 	public static Class<? extends IBlock> getClassFromCode(int code) {
 		switch (code) {
 		case GRASS: return GrassBlock.class;
@@ -24,5 +24,5 @@ public class BlockCodes {
 
 		default: throw new RuntimeException("code: " + code);
 		}
-	}
+	}*/
 }

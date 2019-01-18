@@ -19,6 +19,8 @@ import mygame.util.Vector3Int;
 
 public class RemoveBlockAbility extends AbstractAbility {
 
+	private static final float MAX_RANGE = 4;
+
 	public RemoveBlockAbility(MultiplayerVoxelWorldMain _game, GameModule module, PlayersAvatar p) {
 		super(_game, module, p);
 	}
@@ -27,7 +29,7 @@ public class RemoveBlockAbility extends AbstractAbility {
 	public boolean process(float interpol) {
 		return false;
 	}
-	
+
 
 	@Override
 	public boolean activate(float interpol) {
@@ -38,25 +40,29 @@ public class RemoveBlockAbility extends AbstractAbility {
 
 		CollisionResult result = results.getClosestCollision();
 		if (result != null) {
-			Geometry g = result.getGeometry();
-			AbstractPhysicalEntity ape = (AbstractPhysicalEntity)GameModule.getEntityFromSpatial(g);
-			if (ape instanceof VoxelTerrainEntity) {
-				VoxelTerrainEntity vte = (VoxelTerrainEntity)ape;
-				BlockTerrainControl blocks = vte.blocks;
-				Vector3f position = result.getContactPoint();
-				Vector3Int blockPosition = blocks.getPointedBlockLocation(position);
-				Settings.p("Clicked on " + blockPosition +  "(collision point: " + position + ")");
-				if (blockPosition.getY() > 0) {
-					IBlock block = blocks.getBlock(blockPosition);
-					if (block instanceof StoneBlock) {
-						blocks.removeBlock(blockPosition);
-						player.resources++;
+			if (result.getDistance() <= MAX_RANGE) {
+				Geometry g = result.getGeometry();
+				AbstractPhysicalEntity ape = (AbstractPhysicalEntity)GameModule.getEntityFromSpatial(g);
+				if (ape instanceof VoxelTerrainEntity) {
+					VoxelTerrainEntity vte = (VoxelTerrainEntity)ape;
+					BlockTerrainControl blocks = vte.blocks;
+					Vector3f position = result.getContactPoint();
+					Vector3Int blockPosition = blocks.getPointedBlockLocation(position);
+					Settings.p("Clicked on " + blockPosition +  "(collision point: " + position + ")");
+					if (blockPosition.getY() > 0) {
+						IBlock block = blocks.getBlock(blockPosition);
+						if (block instanceof StoneBlock) {
+							blocks.removeBlock(blockPosition);
+							player.resources++;
+						}
+					} else {
+						Settings.p("Cannot remove floor!");
 					}
 				} else {
-					Settings.p("Cannot remove floor!");
+					Settings.p(ape + " selected");
 				}
 			} else {
-				Settings.p(ape + " selected");
+				Settings.p("Too far away");
 			}
 		}
 		return true;
@@ -68,7 +74,7 @@ public class RemoveBlockAbility extends AbstractAbility {
 		return true;
 	}
 
-	
+
 	@Override
 	public String getHudText() {
 		return "[Remove Blocks]";

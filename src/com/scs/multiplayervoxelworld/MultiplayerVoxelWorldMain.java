@@ -1,11 +1,10 @@
 package com.scs.multiplayervoxelworld;
 
-import java.util.Random;
 import java.util.prefs.BackingStoreException;
 
+import com.atr.jme.font.asset.TrueTypeLoader;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.VideoRecorderAppState;
-import com.jme3.font.BitmapFont;
 import com.jme3.input.Joystick;
 import com.jme3.system.AppSettings;
 import com.scs.multiplayervoxelworld.Settings.GameMode;
@@ -20,10 +19,8 @@ public class MultiplayerVoxelWorldMain extends SimpleApplication {
 	public static float MAX_TURN_SPEED = -1;
 	public static float BASE_SCORE_INC = 0.005f;
 
-	public static final Random rnd = new Random();
-
 	private IModule currentModule, pendingModule;
-	public static BitmapFont guiFont_small; // = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");
+	//public static BitmapFont guiFont_small; // = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");
 	public static AppSettings settings;
 	public static MultiplayerVoxelWorldProperties properties;
 	
@@ -90,11 +87,13 @@ public class MultiplayerVoxelWorldMain extends SimpleApplication {
 	
 	@Override
 	public void simpleInitApp() {
+		getAssetManager().registerLoader(TrueTypeLoader.class, "ttf");
+
 		// Clear existing mappings
 		getInputManager().clearMappings();
 		getInputManager().clearRawInputListeners();
 		
-		guiFont_small = getAssetManager().loadFont("Interface/Fonts/Console.fnt");
+		//guiFont_small = getAssetManager().loadFont("Interface/Fonts/Console.fnt");
 		
 		cam.setFrustumPerspective(45f, (float) cam.getWidth() / cam.getHeight(), 0.01f, Settings.CAM_DIST);
 

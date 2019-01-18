@@ -1,32 +1,40 @@
-package com.scs.multiplayervoxelworld.entities;
+package com.scs.multiplayervoxelworld.entities.towerdef;
 
 import com.jme3.math.Vector3f;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.MyBetterCharacterControl;
 import com.scs.multiplayervoxelworld.Settings;
+import com.scs.multiplayervoxelworld.components.IDamagable;
+import com.scs.multiplayervoxelworld.components.INotifiedOfCollision;
 import com.scs.multiplayervoxelworld.components.IProcessable;
+import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
+import com.scs.multiplayervoxelworld.entities.Crystal;
 import com.scs.multiplayervoxelworld.jme.JMEAngleFunctions;
 import com.scs.multiplayervoxelworld.models.GolemModel;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 
 import ssmith.util.RealtimeInterval;
 
-public class Golem extends AbstractPhysicalEntity implements IProcessable {
+public class Golem extends AbstractPhysicalEntity implements IProcessable, IDamagable, INotifiedOfCollision {
 
 	private static final float TURN_SPEED = 1f;
 
 	private static final float PLAYER_HEIGHT = 3f;
-	//private static final float PLAYER_RAD = 0.4f;
 	private static final float WEIGHT = 1f;
 
 	private enum AIMode {WalkToCrystal, AvoidBlockage}; 
 
 	private GolemModel model;
 	private MyBetterCharacterControl playerControl;
+
+	private float health = 1;
+	private boolean dead = false;
+	private long removeAt;
+
+	// AI
 	private AIMode aiMode = AIMode.WalkToCrystal;
 	private Vector3f targetPos;
 	private float avoidUntil = 0;
-
 	private RealtimeInterval checkPosInterval = new RealtimeInterval(2000);
 	private Vector3f prevPos = new Vector3f();
 
@@ -39,7 +47,7 @@ public class Golem extends AbstractPhysicalEntity implements IProcessable {
 		this.getMainNode().attachChild(model.getModel());
 		this.getMainNode().setLocalTranslation(startPos);
 
-		playerControl = new MyBetterCharacterControl(PLAYER_HEIGHT/3, PLAYER_HEIGHT, WEIGHT);
+		playerControl = new MyBetterCharacterControl(PLAYER_HEIGHT/3, PLAYER_HEIGHT, WEIGHT); // todo - calc from model size
 		playerControl.setJumpForce(new Vector3f(0, Settings.JUMP_FORCE, 0)); 
 		this.getMainNode().addControl(playerControl);
 
@@ -50,27 +58,35 @@ public class Golem extends AbstractPhysicalEntity implements IProcessable {
 
 	@Override
 	public void process(float tpfSecs) {
-		model.setAnim(GolemModel.ANIM_WALK);
-
-		if (checkPosInterval.hitInterval()) {
-			if (this.mainNode.getWorldTranslation().distance(this.prevPos) < .5f) {
-				Settings.p(this + " stuck, changing dir");
-				this.aiMode = AIMode.AvoidBlockage;
-			}
-			prevPos.set(this.mainNode.getWorldTranslation());
+		if (module.isGameOver()) {
+			return;
 		}
+		if (!dead) {
+			model.setAnim(GolemModel.ANIM_WALK);
 
-		if (this.aiMode == AIMode.WalkToCrystal) {
-			this.turnTowardsDestination();
+			if (checkPosInterval.hitInterval()) {
+				if (this.mainNode.getWorldTranslation().distance(this.prevPos) < .5f) {
+					Settings.p(this + " stuck, changing dir");
+					this.aiMode = AIMode.AvoidBlockage;
+				}
+				prevPos.set(this.mainNode.getWorldTranslation());
+			}
+
+			if (this.aiMode == AIMode.WalkToCrystal) {
+				this.turnTowardsDestination();
+			} else {
+				turnAwayFromDestination();
+				this.avoidUntil -= tpfSecs;
+				if (avoidUntil < 0) {
+					aiMode = AIMode.WalkToCrystal;
+				}
+			}
+			this.moveFwds();
 		} else {
-			turnAwayFromDestination();
-			this.avoidUntil -= tpfSecs;
-			if (avoidUntil < 0) {
-				aiMode = AIMode.WalkToCrystal;
+			if (this.removeAt < System.currentTimeMillis()) {
+				this.markForRemoval();
 			}
 		}
-		this.moveFwds();
-
 	}
 
 
@@ -102,7 +118,7 @@ public class Golem extends AbstractPhysicalEntity implements IProcessable {
 		Vector3f walkDirection = this.playerControl.getViewDirection();
 		walkDirection.y = 0;
 		//Globals.p("Ant dir: " + walkDirection);
-		playerControl.setWalkDirection(walkDirection.mult(1));//2.4f));
+		playerControl.setWalkDirection(walkDirection.mult(.3f));//1));
 
 	}
 
@@ -114,16 +130,36 @@ public class Golem extends AbstractPhysicalEntity implements IProcessable {
 
 	}
 
-	/*
+
 	@Override
-	public void notifiedOfCollision(AbstractPhysicalEntity other) {
-		if (other instanceof Golem || other instanceof VoxelTerrainEntity) {
-			Settings.p(this + " collided with " + other + " and is turning");
-			//aiMode = AIMode.AvoidBlockage;
-			avoidUntil = 5;
+	public int getSide() {
+		return 1;
+	}
+
+
+	@Override
+	public void damaged(float amt, String reason) {
+		if (dead) {
+			return;
+		}
+		this.health -= amt;
+		if (this.health <= 0) {
+			Settings.p(this + " killed");
+			dead = true;
+			model.setAnim(GolemModel.ANIM_IDLE);
+			removeAt = System.currentTimeMillis() + 2000;
 		}
 
 	}
-	 */
+
+
+	@Override
+	public void notifiedOfCollision(AbstractPhysicalEntity other) {
+		if (other instanceof Crystal) {
+			Settings.p(this + " collided with " + other);
+			module.gameOver();
+		}
+
+	}
 
 }

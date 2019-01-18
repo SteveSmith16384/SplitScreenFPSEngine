@@ -2,6 +2,12 @@ package com.scs.multiplayervoxelworld.modules;
 
 import java.util.List;
 
+import com.atr.jme.font.TrueTypeFont;
+import com.atr.jme.font.TrueTypeMesh;
+import com.atr.jme.font.asset.TrueTypeKeyMesh;
+import com.atr.jme.font.shape.TrueTypeContainer;
+import com.atr.jme.font.util.StringContainer;
+import com.atr.jme.font.util.Style;
 import com.jme3.audio.AudioNode;
 import com.jme3.font.BitmapText;
 import com.jme3.input.JoystickButton;
@@ -107,19 +113,23 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 			game.getGuiNode().attachChild(pic);
 		}
 
-		BitmapText screenText = new BitmapText(MultiplayerVoxelWorldMain.guiFont_small, false);
-		screenText.setColor(ColorRGBA.Green);
+		TrueTypeKeyMesh ttkSmall = new TrueTypeKeyMesh("Fonts/ERASBD.TTF", Style.Bold, 15);
+		TrueTypeFont ttfSmall = (TrueTypeMesh)game.getAssetManager().loadAsset(ttkSmall);
+
+		TrueTypeContainer screenText = ttfSmall.getFormattedText(new StringContainer(ttfSmall, "KILL THE N00BS!"), ColorRGBA.Green);
+		//screenText.setColor(ColorRGBA.Green);
 		screenText.setText(Settings.NAME +  " (version " + Settings.VERSION + ")\n\n" + gameMode.toString() + " Selected.\n\nSelect a different game mode, or press 0 to start:\n" +
 				"1 - Skirmish\n" +
 				"2 - King of the Hill\n" +
 				"3 - Dodgeball\n" +
 				"4 - Bladerunner\n" +
 				"5 - Clone Wars");
+		screenText.updateGeometry();
 		screenText.setLocalTranslation(20, game.getCamera().getHeight()-20, 0);
 		game.getGuiNode().attachChild(screenText);
 
-		BitmapText gameModeSpecificText = new BitmapText(MultiplayerVoxelWorldMain.guiFont_small, false);
-		gameModeSpecificText.setColor(ColorRGBA.Green);
+		TrueTypeContainer gameModeSpecificText = ttfSmall.getFormattedText(new StringContainer(ttfSmall, "KILL THE N00BS!"), ColorRGBA.Yellow);
+		//gameModeSpecificText.setColor(ColorRGBA.Green);
 		gameModeSpecificText.setLocalTranslation(20, game.getCamera().getHeight()-160, 0);
 		game.getGuiNode().attachChild(gameModeSpecificText);
 
@@ -144,9 +154,11 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 		
 		game.getRootNode().attachChild(robot);
 		gameModeSpecificText.setText(gameMode.toString() + ": " + gameModeSpecificText.getText() + "\n\nThe winner is the first player to 100 points.");
-
-		BitmapText numPlayerText = new BitmapText(MultiplayerVoxelWorldMain.guiFont_small, false);
+		gameModeSpecificText.updateGeometry();
+		
+		TrueTypeContainer numPlayerText = ttfSmall.getFormattedText(new StringContainer(ttfSmall, "KILL THE N00BS!"), ColorRGBA.Magenta);
 		numPlayerText.setText(game.getNumPlayers() + " player(s) found.");
+		numPlayerText.updateGeometry();
 		numPlayerText.setLocalTranslation(20, game.getCamera().getHeight()-280, 0);
 		game.getGuiNode().attachChild(numPlayerText);
 

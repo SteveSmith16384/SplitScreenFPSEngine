@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
-import com.scs.multiplayervoxelworld.abilities.spells.AbstractSpell;
+import com.scs.multiplayervoxelworld.abilities.chaos.AbstractSpell;
 import com.scs.multiplayervoxelworld.entities.PlayersAvatar;
 import com.scs.multiplayervoxelworld.modules.GameModule;
 

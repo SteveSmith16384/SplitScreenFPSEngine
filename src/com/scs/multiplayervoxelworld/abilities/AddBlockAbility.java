@@ -8,6 +8,7 @@ import com.jme3.scene.Geometry;
 import com.scs.multiplayervoxelworld.BlockCodes;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
+import com.scs.multiplayervoxelworld.blocks.StoneBlock;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.PlayersAvatar;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
@@ -49,7 +50,7 @@ public class AddBlockAbility extends AbstractAbility {
 					Vector3Int blockPosition = blocks.getPointedBlockLocation(position, true);
 					Settings.p("Adding to " + blockPosition);
 					if (blocks.getBlock(blockPosition) == null) {
-						vte.addBlock_Block(blockPosition, BlockCodes.STONE);
+						vte.addBlock_Block(blockPosition, StoneBlock.class);
 					}
 				} else {
 					Settings.p(ape + " selected");

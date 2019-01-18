@@ -13,6 +13,7 @@ import com.scs.multiplayervoxelworld.modules.GameModule;
 import mygame.BlockSettings;
 import mygame.blocks.BlockTerrainControl;
 import mygame.blocks.ChunkControl;
+import mygame.blocks.IBlock;
 import mygame.blocks.IBlockTerrainListener;
 import mygame.util.Vector3Int;
 
@@ -66,44 +67,44 @@ public class VoxelTerrainEntity extends AbstractPhysicalEntity implements IProce
 	}
 
 
-	public void addBlock_Actual(Vector3Int pos, int blockType) {
+	public void addBlock_Actual(Vector3Int pos, Class<? extends IBlock> blockType) {
 		Vector3Int blockPosition = blocks.getPointedBlockLocation(pos);
 		//Globals.p("Adding block at " + blockPosition);
-		blocks.setBlock(blockPosition, BlockCodes.getClassFromCode(blockType));
+		blocks.setBlock(blockPosition, blockType);
 
 	}
 
 
-	public void addBlock_Block(Vector3Int pos, int blockType) {
+	public void addBlock_Block(Vector3Int pos, Class<? extends IBlock> blockType) {
 		//Vector3Int blockPosition = blocks.getPointedBlockLocation(pos);//, false);
 		//Globals.p("Adding block at " + blockPosition);
-		blocks.setBlock(pos, BlockCodes.getClassFromCode(blockType));
+		blocks.setBlock(pos, blockType);
 
 	}
 
 
-	public void addRectRange_Actual(int blockType, Vector3Int pos, Vector3Int size) {
+	public void addRectRange_Actual(Vector3Int pos, Vector3Int size, Class<? extends IBlock> blockType) {
 		int scale = (int)(1/blockSize);
 		pos.multLocal(scale);
 		size.multLocal(scale);
-		this.addRectRange_Blocks(blockType, pos, size);
+		this.addRectRange_Blocks(pos, size, blockType);
 	}
 
 
-	public void addRectRange_Blocks(int blockType, Vector3Int blockPos, Vector3Int size) {
-		blocks.setBlockArea(blockPos, size, BlockCodes.getClassFromCode(blockType));
+	public void addRectRange_Blocks(Vector3Int blockPos, Vector3Int size, Class<? extends IBlock> blockType) {
+		blocks.setBlockArea(blockPos, size, blockType);
 
 	}
 
 
-	public void addArrayRange_Blocks(int blockType, Vector3Int blockPos, int[][] heights) {
-		blocks.setBlockHeightsFromArray(blockPos, heights, BlockCodes.getClassFromCode(blockType));
+	public void addArrayRange_Blocks(Vector3Int blockPos, int[][] heights, Class<? extends IBlock> blockType) {
+		blocks.setBlockHeightsFromArray(blockPos, heights, blockType);
 	}
 
 
-	public void addSphereRange_Blocks(int blockType, Vector3f worldPos, int size) {
+	public void addSphereRange_Blocks(Vector3f worldPos, int size, Class<? extends IBlock> blockType) {
 		Vector3Int blockPos = new Vector3Int(worldPos.subtract(this.mainNode.getWorldTranslation()).multLocal(1/blockSize));
-		blocks.setBlockAreaBySphere(blockPos, size, BlockCodes.getClassFromCode(blockType));
+		blocks.setBlockAreaBySphere(blockPos, size, blockType);
 	}
 
 

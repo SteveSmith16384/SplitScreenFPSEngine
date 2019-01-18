@@ -1,4 +1,4 @@
-package com.scs.multiplayervoxelworld.abilities.spells;
+package com.scs.multiplayervoxelworld.abilities.chaos;
 
 import com.scs.multiplayervoxelworld.abilities.IAbility;
 import com.scs.multiplayervoxelworld.entities.PlayersAvatar;

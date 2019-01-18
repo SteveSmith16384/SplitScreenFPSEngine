@@ -55,14 +55,13 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 	private Spatial playerGeometry;
 	
 	// Stats
-	private float score = 0;
+	private int score = 0;
 	private float health;
 	private int side;
 	public int resources = 10;
 
 	private boolean restarting = false;
 	private float restartTime, invulnerableTime;
-	//private boolean hasBall = false;
 	private float timeSinceLastMove = 0;
 
 	private int numShots = 0;
@@ -70,13 +69,13 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 
 	public AbstractHUDImage gamepadTest;
 
-	public PlayersAvatar(MultiplayerVoxelWorldMain _game, GameModule _module, int _playerID, Camera _cam, IInputDevice _input, HUD _hud, int _side) {
+	public PlayersAvatar(MultiplayerVoxelWorldMain _game, GameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side) {
 		super(_game, _module, "Player");
 
 		playerID = _playerID;
 		cam = _cam;
 		input = _input;
-		hud = _hud;
+		//hud = _hud;
 		health = module.getPlayersHealth(playerID);
 		side = _side;
 
@@ -96,12 +95,16 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		//this.abilityOther = new RemoveBlockAbility(_module, this);
 		this.ability[1] = new CycleThroughAbilitiesAbility(game, _module, this);
 
-		this.hud.setAbilityGunText(this.ability[0].getHudText());
+		/*this.hud.setAbilityGunText(this.ability[0].getHudText());
 		if (ability[1] != null) {
 			this.hud.setAbilityOtherText(this.ability[1].getHudText());
-		}
+		}*/
 	}
 
+	
+	public void setHUD(HUD _hud) {
+		hud = _hud;
+	}
 
 	public static Spatial getPlayersModel(MultiplayerVoxelWorldMain game, int pid) {
 		if (Settings.USE_MODEL_FOR_PLAYERS) {
@@ -144,7 +147,7 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 	public void moveToStartPostion(boolean invuln) {
 		//Point p = module.level.getPlayerStartPos(playerID);
 		Vector3f warpPos = module.level.getPlayerStartPos(playerID);//new Vector3f(p.x, module.mapData.getRespawnHeight(), p.y);
-		Settings.p("Scheduling player to start position: " + warpPos);
+		//Settings.p("Scheduling player to start position: " + warpPos);
 		this.playerControl.warp(warpPos);
 		if (invuln) {
 			invulnerableTime = MultiplayerVoxelWorldMain.properties.GetInvulnerableTimeSecs();
@@ -186,11 +189,11 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 							input.resetAbilitySwitch(num);
 						}
 					}
-					this.hud.setAbilityGunText(this.ability[num].getHudText()); // todo - use diff hud fields
+					//this.hud.setAbilityGunText(this.ability[num].getHudText()); // todo - use diff hud fields
 				}
 			}
 
-			hud.process(tpf);
+			//hud.process(tpf);
 
 			/*
 			 * The direction of character is determined by the camera angle
@@ -338,20 +341,14 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 		//new AbstractHUDImage(game, module, this.hud, "Textures/text/hit.png", this.hud.hud_width, this.hud.hud_height, 2);
 		this.hud.showCollectBox();
 		numShotsHit++;
-		calcAccuracy();
-	}
-
-
-	private void calcAccuracy() {
-		int a = (int)((this.numShotsHit * 100f) / this.numShots);
-		hud.setAccuracy(a);
+		//calcAccuracy();
 	}
 
 
 	public void incScore(float amt, String reason) {
 		Settings.p("Inc score: +" + amt + ", " + reason);
 		this.score += amt;
-		this.hud.setScore(this.score);
+		//this.hud.setScore(this.score);
 
 		if (this.score >= 100) {
 			new AbstractHUDImage(game, module, this.hud, "Textures/text/winner.png", this.hud.hud_width, this.hud.hud_height, 10);
@@ -446,6 +443,11 @@ public class PlayersAvatar extends AbstractPhysicalEntity implements IProcessabl
 	}
 
 
+	public int getScore() {
+		return score;
+	}
+
+	
 	@Override
 	public Vector3f getBulletStartPosition() {
 		return this.getMainNode().getWorldBound().getCenter();
