@@ -30,7 +30,7 @@ public class PlaceTurretAbility extends AbstractAbility {
 	public boolean activate(float interpol) {
 		if (this.player.resources < Settings.TURRET_COST) {
 			Settings.p("Not enough resources");
-			return false;
+			//return false;
 		}
 		Ray ray = new Ray(this.player.getCamera().getLocation(), this.player.getCamera().getDirection());
 

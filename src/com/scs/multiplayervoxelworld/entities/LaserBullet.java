@@ -36,8 +36,8 @@ public class LaserBullet extends AbstractPhysicalEntity implements ICausesHarmOn
 		laserBeam.getLocalTranslation().y -= 0.1f; // Drop bullets slightly
 		
 		rigidBodyControl = new RigidBodyControl(.1f);
-		laserBeam.addControl(rigidBodyControl);
-		rigidBodyControl.setGravity(Vector3f.ZERO);
+		mainNode.addControl(rigidBodyControl);
+		//rigidBodyControl.setGravity(Vector3f.ZERO);
 
 		laserBeam.setUserData(Settings.ENTITY, this);
 		rigidBodyControl.setUserObject(this);

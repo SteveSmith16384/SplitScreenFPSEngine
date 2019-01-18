@@ -60,8 +60,8 @@ public abstract class AbstractPhysicalEntity extends AbstractEntity {
 
 
 	public float distance(AbstractPhysicalEntity o) {
-		//return distance(o.getMainNode().getWorldTranslation());
-		return distance(o.rigidBodyControl.getPhysicsLocation());
+		return distance(o.getMainNode().getWorldTranslation());
+		//return distance(o.rigidBodyControl.getPhysicsLocation()); Sometimes rbc is null!
 	}
 
 

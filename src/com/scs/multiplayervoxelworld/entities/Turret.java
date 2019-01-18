@@ -32,13 +32,14 @@ public class Turret extends AbstractPhysicalEntity implements IShowOnHUD, IProce
 		Spatial model = JMEModelFunctions.loadModel(game.getAssetManager(), "Models/Turret_0/Base1.blend"); //game.getAssetManager().loadModel("Models/Turret_0/Base1.blend");
 		Spatial barrel = ((Node)((Node)model).getChild(0)).getChild(0);
 		barrel.removeFromParent();
-		JMEAngleFunctions.rotateToWorldDirection(barrel, new Vector3f(1, 0, 0)); // Point model fwds.  Must be before we attach it to a parent, otherwise the parent will be rotated
+		JMEAngleFunctions.rotateToWorldDirection(barrel, new Vector3f(-1, 0, 0)); // Point model fwds.  Must be before we attach it to a parent, otherwise the parent will be rotated
 
 		rotatingTurret = new Node("TurretNode");
 		rotatingTurret.attachChild(barrel);
+		this.getMainNode().attachChild(rotatingTurret);
 
-		JMEModelFunctions.setTextureOnSpatial(game.getAssetManager(), model, "Models/Turret_0/Turret1_Albedo.png");
-		model.setLocalScale(.25f);
+		JMEModelFunctions.setTextureOnSpatial(game.getAssetManager(), this.getMainNode(), "Models/Turret_0/Turret1_Albedo.png");
+		this.getMainNode().setLocalScale(.25f);
 		model.setShadowMode(ShadowMode.CastAndReceive);
 
 		this.mainNode.attachChild(model);
@@ -77,7 +78,7 @@ public class Turret extends AbstractPhysicalEntity implements IShowOnHUD, IProce
 				float dist = this.distance(golem);
 				if (dist < closestDist) {
 					closestDist = dist;
-					
+					closest = golem;
 				}
 				return (Golem)e;
 			}

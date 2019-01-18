@@ -45,7 +45,7 @@ public class JMEModelFunctions {
 		try {
 			String filename = "Models/" + j30_path;
 			System.out.println("Loading " + filename);
-			ship = assetManager.loadModel(filename);
+			//ship = assetManager.loadModel(filename);
 		} catch (AssetNotFoundException | IllegalArgumentException ex) {
 			ex.printStackTrace();
 		}

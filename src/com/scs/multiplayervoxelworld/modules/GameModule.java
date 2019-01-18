@@ -180,7 +180,7 @@ public class GameModule implements IModule, PhysicsCollisionListener, ActionList
 		audioMusic.setPositional(false);
 		audioMusic.setVolume(3);
 		game.getRootNode().attachChild(audioMusic);
-		audioMusic.play(); // play continuously!
+		//audioMusic.play(); // play continuously! - todo - re-add?
 
 		//if (Settings.SHOW_FPS) {
 		BitmapFont guiFont_small = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");
