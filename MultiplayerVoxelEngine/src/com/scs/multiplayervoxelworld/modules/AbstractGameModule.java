@@ -43,7 +43,7 @@ import com.scs.multiplayervoxelworld.input.IInputDevice;
 import com.scs.multiplayervoxelworld.input.JoystickCamera;
 import com.scs.multiplayervoxelworld.input.MouseAndKeyboardCamera;
 
-public abstract class GameModule implements IModule, PhysicsCollisionListener, ActionListener { // todo - rename to Abstract
+public abstract class AbstractGameModule implements IModule, PhysicsCollisionListener, ActionListener {
 
 	private static final String QUIT = "Quit";
 	private static final String TEST = "Test";
@@ -64,7 +64,7 @@ public abstract class GameModule implements IModule, PhysicsCollisionListener, A
 	//public AbstractGame level;
 	private boolean gameOver = false;
 
-	public GameModule(MultiplayerVoxelWorldMain _game) {//, AbstractGame _level) {
+	public AbstractGameModule(MultiplayerVoxelWorldMain _game) {//, AbstractGame _level) {
 		super();
 
 		game = _game;
@@ -314,7 +314,7 @@ public abstract class GameModule implements IModule, PhysicsCollisionListener, A
 	}
 
 
-	protected abstract AbstractPlayersAvatar getPlayersAvatar(MultiplayerVoxelWorldMain _game, GameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side);
+	protected abstract AbstractPlayersAvatar getPlayersAvatar(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side);
 	
 	private void setUpLight() {
 		// Remove existing lights

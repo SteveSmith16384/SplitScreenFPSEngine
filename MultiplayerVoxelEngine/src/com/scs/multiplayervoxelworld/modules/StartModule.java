@@ -193,7 +193,7 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 				Settings.PVP = true;
 				Settings.NUM_AI = 0;
 				Settings.NUM_COLLECTABLES = 0;*/
-				GameModule.HELP_TEXT = "King of the Hill: Dominate the base";
+				AbstractGameModule.HELP_TEXT = "King of the Hill: Dominate the base";
 				startGame();
 				break;
 				

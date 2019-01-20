@@ -12,7 +12,7 @@ import com.scs.multiplayervoxelworld.blocks.WoodBlock;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 import com.scs.samescreentowerdefence.entities.Crystal;
 import com.scs.samescreentowerdefence.entities.Golem;
 import com.scs.samescreentowerdefence.entities.TDPlayersAvatar;
@@ -20,7 +20,7 @@ import com.scs.samescreentowerdefence.entities.TDPlayersAvatar;
 import mygame.util.Vector3Int;
 import ssmith.lang.NumberFunctions;
 
-public class TowerDefence extends GameModule {
+public class TowerDefence extends AbstractGameModule {
 
 	private static final int MAP_SIZE = 100;
 
@@ -103,7 +103,7 @@ public class TowerDefence extends GameModule {
 
 
 	@Override
-	protected AbstractPlayersAvatar getPlayersAvatar(MultiplayerVoxelWorldMain _game, GameModule _module, int _playerID,
+	protected AbstractPlayersAvatar getPlayersAvatar(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, int _playerID,
 			Camera _cam, IInputDevice _input, int _side) {
 		return new TDPlayersAvatar(_game, this, _playerID, _cam, _input, _side);
 	}

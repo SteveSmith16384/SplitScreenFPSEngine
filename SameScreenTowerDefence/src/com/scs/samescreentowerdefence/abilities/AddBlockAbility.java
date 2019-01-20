@@ -14,14 +14,14 @@ import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
 import com.scs.multiplayervoxelworld.entities.nonphysical.ChangeBlocksInSweep;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 import mygame.blocks.BlockTerrainControl;
 import mygame.util.Vector3Int;
 
 public class AddBlockAbility extends AbstractAbility {
 
-	public AddBlockAbility(MultiplayerVoxelWorldMain _game, GameModule module, AbstractPlayersAvatar p) {
+	public AddBlockAbility(MultiplayerVoxelWorldMain _game, AbstractGameModule module, AbstractPlayersAvatar p) {
 		super(_game, module, p);
 	}
 
@@ -43,7 +43,7 @@ public class AddBlockAbility extends AbstractAbility {
 		if (result != null) {
 			if (result.getDistance() > 1f) { // So we don't build a block on top of ourselves
 				Geometry g = result.getGeometry();
-				AbstractPhysicalEntity ape = (AbstractPhysicalEntity)GameModule.getEntityFromSpatial(g);
+				AbstractPhysicalEntity ape = (AbstractPhysicalEntity)AbstractGameModule.getEntityFromSpatial(g);
 				if (ape instanceof VoxelTerrainEntity) {
 					VoxelTerrainEntity vte = (VoxelTerrainEntity)ape;
 					BlockTerrainControl blocks = vte.blocks;

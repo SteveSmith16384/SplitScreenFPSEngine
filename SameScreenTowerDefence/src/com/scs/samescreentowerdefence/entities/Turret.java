@@ -14,7 +14,7 @@ import com.scs.multiplayervoxelworld.components.IShowOnHUD;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.jme.JMEAngleFunctions;
 import com.scs.multiplayervoxelworld.jme.JMEModelFunctions;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public class Turret extends AbstractPhysicalEntity implements IShowOnHUD, IProcessable, ICanShoot {
 
@@ -27,7 +27,7 @@ public class Turret extends AbstractPhysicalEntity implements IShowOnHUD, IProce
 	private Node rotatingTurret;
 	private Node launchPos = new Node();
 
-	public Turret(MultiplayerVoxelWorldMain _game, GameModule _module, Vector3f pos, int _side) {
+	public Turret(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, Vector3f pos, int _side) {
 		super(_game, _module, "Turret");
 
 		side = _side;

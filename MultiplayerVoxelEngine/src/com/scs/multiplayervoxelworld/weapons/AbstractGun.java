@@ -3,19 +3,19 @@ package com.scs.multiplayervoxelworld.weapons;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.abilities.IAbility;
 import com.scs.multiplayervoxelworld.components.ICanShoot;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 import ssmith.util.RealtimeInterval;
 
 public abstract class AbstractGun implements IAbility {
 
 	protected MultiplayerVoxelWorldMain game;
-	protected GameModule module;
+	protected AbstractGameModule module;
 	protected ICanShoot shooter;
 	protected String name;
 	protected RealtimeInterval shotInterval;
 
-	public AbstractGun(MultiplayerVoxelWorldMain _game, GameModule _module, String _name, long shotIntervalMS, ICanShoot _shooter) {
+	public AbstractGun(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, String _name, long shotIntervalMS, ICanShoot _shooter) {
 		game = _game;
 		module = _module;
 		name = _name;

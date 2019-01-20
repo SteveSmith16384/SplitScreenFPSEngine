@@ -6,14 +6,14 @@ import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.abilities.AbstractAbility;
 import com.scs.multiplayervoxelworld.abilities.IAbility;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public class CycleThroughAbilitiesAbility extends AbstractAbility {
 	
 	private ArrayList<IAbility> abilities = new ArrayList();
 	private int index;
 
-	public CycleThroughAbilitiesAbility(MultiplayerVoxelWorldMain _game, GameModule module, AbstractPlayersAvatar p) {
+	public CycleThroughAbilitiesAbility(MultiplayerVoxelWorldMain _game, AbstractGameModule module, AbstractPlayersAvatar p) {
 		super(_game, module, p);
 		
 		abilities.add(new AddBlockAbility(game, module, p));

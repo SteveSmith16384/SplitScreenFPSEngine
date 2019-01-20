@@ -5,15 +5,15 @@ import com.jme3.ui.Picture;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.components.IEntity;
 import com.scs.multiplayervoxelworld.components.IProcessable;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public class AbstractHUDImage extends Picture implements IEntity, IProcessable {
 
 	MultiplayerVoxelWorldMain game;
-	private GameModule module;
+	private AbstractGameModule module;
 	private float timeLeft;
 
-	public AbstractHUDImage(MultiplayerVoxelWorldMain _game, GameModule _module, Node guiNode, String tex, float w, float h, float dur) {
+	public AbstractHUDImage(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, Node guiNode, String tex, float w, float h, float dur) {
 		super("AbstractHUDImage");
 
 		game = _game;

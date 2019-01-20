@@ -7,7 +7,7 @@ import com.jme3.export.JmeImporter;
 import com.jme3.export.Savable;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.components.IEntity;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public abstract class AbstractEntity implements IEntity, Savable {
 	
@@ -15,11 +15,11 @@ public abstract class AbstractEntity implements IEntity, Savable {
 	
 	public final int id;
 	protected MultiplayerVoxelWorldMain game;
-	protected GameModule module;
+	protected AbstractGameModule module;
 	public String name;
 	private boolean markedForRemoval = false;
 
-	public AbstractEntity(MultiplayerVoxelWorldMain _game, GameModule _module, String _name) {
+	public AbstractEntity(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, String _name) {
 		id = nextId++;
 		game = _game;
 		module = _module;

@@ -3,7 +3,7 @@ package com.scs.samescreentowerdefence.abilities;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.abilities.AbstractAbility;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public class BoostFwd extends AbstractAbility {
 
@@ -12,7 +12,7 @@ public class BoostFwd extends AbstractAbility {
 
 	private float fuel = 100;
 
-	public BoostFwd(MultiplayerVoxelWorldMain _game, GameModule module, AbstractPlayersAvatar _player) {
+	public BoostFwd(MultiplayerVoxelWorldMain _game, AbstractGameModule module, AbstractPlayersAvatar _player) {
 		super(_game, module, _player);
 
 	}

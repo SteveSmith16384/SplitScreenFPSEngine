@@ -6,7 +6,7 @@ import com.jme3.app.state.VideoRecorderAppState;
 import com.jme3.input.Joystick;
 import com.jme3.system.AppSettings;
 import com.scs.multiplayervoxelworld.Settings.GameMode;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 import com.scs.multiplayervoxelworld.modules.IModule;
 import com.scs.multiplayervoxelworld.modules.StartModule;
 
@@ -76,7 +76,7 @@ public abstract class MultiplayerVoxelWorldMain extends SimpleApplication {
 
 */
 
-	public abstract GameModule getGameModule();
+	public abstract AbstractGameModule getGameModule();
 
 
 	public int getNumPlayers() {

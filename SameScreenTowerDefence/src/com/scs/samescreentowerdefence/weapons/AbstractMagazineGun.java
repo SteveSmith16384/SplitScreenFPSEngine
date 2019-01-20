@@ -3,12 +3,12 @@ package com.scs.samescreentowerdefence.weapons;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.abilities.IAbility;
 import com.scs.multiplayervoxelworld.components.ICanShoot;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public abstract class AbstractMagazineGun implements IAbility {
 
 	protected MultiplayerVoxelWorldMain game;
-	protected GameModule module;
+	protected AbstractGameModule module;
 	protected ICanShoot shooter;
 	protected String name;
 
@@ -17,7 +17,7 @@ public abstract class AbstractMagazineGun implements IAbility {
 	protected int bulletsLeftInMag;
 	protected float shotInterval, reloadInterval; 
 
-	public AbstractMagazineGun(MultiplayerVoxelWorldMain _game, GameModule _module, String _name, ICanShoot _shooter, float shotInt, float reloadInt, int magSize) {
+	public AbstractMagazineGun(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, String _name, ICanShoot _shooter, float shotInt, float reloadInt, int magSize) {
 		super();
 
 		game = _game;
@@ -32,7 +32,7 @@ public abstract class AbstractMagazineGun implements IAbility {
 	}
 
 
-	public abstract void launchBullet(MultiplayerVoxelWorldMain _game, GameModule _module, ICanShoot _shooter);
+	public abstract void launchBullet(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, ICanShoot _shooter);
 
 
 	@Override

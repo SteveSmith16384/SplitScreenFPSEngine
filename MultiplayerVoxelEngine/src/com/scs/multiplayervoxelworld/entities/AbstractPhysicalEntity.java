@@ -6,14 +6,14 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public abstract class AbstractPhysicalEntity extends AbstractEntity {
 
 	protected Node mainNode, leftNode, rightNode;;
 	public RigidBodyControl rigidBodyControl;
 
-	public AbstractPhysicalEntity(MultiplayerVoxelWorldMain _game, GameModule _module, String _name) {
+	public AbstractPhysicalEntity(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, String _name) {
 		super(_game, _module, _name);
 
 		mainNode = new Node(name + "_MainNode");

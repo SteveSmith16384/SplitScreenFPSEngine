@@ -17,7 +17,7 @@ import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.CubeExplosionShard;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
 import com.scs.multiplayervoxelworld.models.BeamLaserModel;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public class LaserBullet extends AbstractPhysicalEntity implements ICausesHarmOnContact, IProcessable, PhysicsTickListener, INotifiedOfCollision {
 
@@ -25,7 +25,7 @@ public class LaserBullet extends AbstractPhysicalEntity implements ICausesHarmOn
 	private float timeLeft = 3;
 	private boolean forceApplied = false;
 
-	public LaserBullet(MultiplayerVoxelWorldMain _game, GameModule _module, ICanShoot _shooter) {
+	public LaserBullet(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, ICanShoot _shooter) {
 		super(_game, _module, "LaserBullet");
 
 		this.shooter = _shooter;

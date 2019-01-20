@@ -13,11 +13,11 @@ import com.jme3.texture.Texture.WrapMode;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.components.IProcessable;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public class CubeExplosionShard extends AbstractPhysicalEntity implements IProcessable {//implements IAffectedByPhysics, ICollideable {//,  { // IProcessable,  // Need ICollideable so lasers don't bounce off it
 
-	public static void Factory(MultiplayerVoxelWorldMain _game, GameModule _module, Vector3f pos, int num) {
+	public static void Factory(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, Vector3f pos, int num) {
 		for (int i=0 ; i<num ; i++) {
 			CubeExplosionShard s = new CubeExplosionShard(_game, _module, pos.x, pos.y, pos.z);
 			_game.getRootNode().attachChild(s.getMainNode());
@@ -28,7 +28,7 @@ public class CubeExplosionShard extends AbstractPhysicalEntity implements IProce
 	
 	private float timeLeft = 8f; 
 
-	private CubeExplosionShard(MultiplayerVoxelWorldMain _game, GameModule _module, float x, float y, float z) {
+	private CubeExplosionShard(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, float x, float y, float z) {
 		super(_game, _module, "CubeExplosionShard");
 
 		float s = .1f;

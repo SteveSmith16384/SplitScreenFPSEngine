@@ -12,13 +12,13 @@ import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.BufferUtils;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public class FloorOrCeiling extends AbstractPhysicalEntity {
 
 	public Geometry geometry;
 	
-	public FloorOrCeiling(MultiplayerVoxelWorldMain _game, GameModule _module, float x, float yTop, float z, float w, float h, float d, String tex) {
+	public FloorOrCeiling(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, float x, float yTop, float z, float w, float h, float d, String tex) {
 		super(_game, _module, "FloorOrCeiling");
 
 		Box box1 = new Box(w/2, h/2, d/2);

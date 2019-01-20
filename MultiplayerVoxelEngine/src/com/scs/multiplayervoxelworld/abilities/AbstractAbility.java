@@ -2,15 +2,15 @@ package com.scs.multiplayervoxelworld.abilities;
 
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public abstract class AbstractAbility implements IAbility {
 	
 	protected AbstractPlayersAvatar player;
 	protected MultiplayerVoxelWorldMain game;
-	protected GameModule module;
+	protected AbstractGameModule module;
 
-	public AbstractAbility(MultiplayerVoxelWorldMain _game, GameModule _module, AbstractPlayersAvatar p) {
+	public AbstractAbility(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, AbstractPlayersAvatar p) {
 		super();
 		
 		game = _game;

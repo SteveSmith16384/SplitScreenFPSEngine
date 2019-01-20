@@ -6,7 +6,7 @@ import com.jme3.system.AppSettings;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldProperties;
 import com.scs.multiplayervoxelworld.Settings;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public class TowerDefenceMain extends MultiplayerVoxelWorldMain {
 
@@ -57,7 +57,7 @@ public class TowerDefenceMain extends MultiplayerVoxelWorldMain {
 
 
 	@Override
-	public GameModule getGameModule() {
+	public AbstractGameModule getGameModule() {
 		return new TowerDefence(this);
 	}
 

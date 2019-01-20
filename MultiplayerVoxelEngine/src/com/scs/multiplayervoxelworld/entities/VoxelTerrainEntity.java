@@ -8,7 +8,7 @@ import com.scs.multiplayervoxelworld.BlockCodes;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.components.IProcessable;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 import mygame.BlockSettings;
 import mygame.blocks.BlockTerrainControl;
@@ -22,7 +22,7 @@ public class VoxelTerrainEntity extends AbstractPhysicalEntity implements IProce
 	public BlockTerrainControl blocks;
 	private float blockSize;
 
-	public VoxelTerrainEntity(MultiplayerVoxelWorldMain _game, GameModule _module, float x, float y, float z, Vector3Int worldSizeBlocks, int chunkSize, float _blockSize, float friction) {
+	public VoxelTerrainEntity(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, float x, float y, float z, Vector3Int worldSizeBlocks, int chunkSize, float _blockSize, float friction) {
 		super(_game, _module, "VoxelTerrainEntity");
 
 		blockSize = _blockSize;

@@ -5,11 +5,11 @@ import com.scs.multiplayervoxelworld.components.ICausesHarmOnContact;
 import com.scs.multiplayervoxelworld.components.IDamagable;
 import com.scs.multiplayervoxelworld.components.INotifiedOfCollision;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public class CollisionLogic {
 
-	public static void collision(GameModule game, AbstractPhysicalEntity a, AbstractPhysicalEntity b) {
+	public static void collision(AbstractGameModule game, AbstractPhysicalEntity a, AbstractPhysicalEntity b) {
 		if (a.getMainNode().getParent() == null) { // Prevent collisions after changing level
 			return;
 		}
@@ -34,7 +34,7 @@ public class CollisionLogic {
 	}
 	
 	
-	private static void harmed(GameModule game, IDamagable damagable, ICausesHarmOnContact col) {
+	private static void harmed(AbstractGameModule game, IDamagable damagable, ICausesHarmOnContact col) {
 		if (col.getSide() != damagable.getSide()) {
 			//todo
 		}

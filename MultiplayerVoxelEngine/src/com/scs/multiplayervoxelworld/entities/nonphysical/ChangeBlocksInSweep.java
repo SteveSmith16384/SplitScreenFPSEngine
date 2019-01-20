@@ -6,7 +6,7 @@ import com.scs.multiplayervoxelworld.blocks.LavaBlock;
 import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.entities.AbstractEntity;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 import mygame.blocks.IBlock;
 import mygame.util.Vector3Int;
@@ -17,7 +17,7 @@ public class ChangeBlocksInSweep extends AbstractEntity implements IProcessable 
 	private int maxZ;
 	private VoxelTerrainEntity vte;
 
-	public ChangeBlocksInSweep(MultiplayerVoxelWorldMain _game, GameModule _module, int _maxZ) {
+	public ChangeBlocksInSweep(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, int _maxZ) {
 		super(_game, _module, "ChangeBlocksInSweep");
 
 		vte = module.getVoxelTerrainEntity();

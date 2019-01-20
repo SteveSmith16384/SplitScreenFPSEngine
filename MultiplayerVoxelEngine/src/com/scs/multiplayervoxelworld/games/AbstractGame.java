@@ -2,7 +2,7 @@ package com.scs.multiplayervoxelworld.games;
 
 import com.jme3.math.Vector3f;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 /*
 public abstract class AbstractGame {
 

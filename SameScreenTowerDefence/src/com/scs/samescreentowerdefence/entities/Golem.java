@@ -9,7 +9,7 @@ import com.scs.multiplayervoxelworld.components.INotifiedOfCollision;
 import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.jme.JMEAngleFunctions;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 import com.scs.samescreentowerdefence.models.GolemModel;
 
 import ssmith.util.RealtimeInterval;
@@ -37,7 +37,7 @@ public class Golem extends AbstractPhysicalEntity implements IProcessable, IDama
 	private RealtimeInterval checkPosInterval = new RealtimeInterval(2000);
 	private Vector3f prevPos = new Vector3f();
 
-	public Golem(MultiplayerVoxelWorldMain _game, GameModule _module, Vector3f startPos, Vector3f _targetPos) {
+	public Golem(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, Vector3f startPos, Vector3f _targetPos) {
 		super(_game, _module, "Golem");
 
 		targetPos = _targetPos;

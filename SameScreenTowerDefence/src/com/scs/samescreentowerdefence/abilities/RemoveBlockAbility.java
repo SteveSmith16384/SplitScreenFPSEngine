@@ -12,7 +12,7 @@ import com.scs.multiplayervoxelworld.blocks.StoneBlock;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 import mygame.blocks.BlockTerrainControl;
 import mygame.blocks.IBlock;
@@ -22,7 +22,7 @@ public class RemoveBlockAbility extends AbstractAbility {
 
 	private static final float MAX_RANGE = 4;
 
-	public RemoveBlockAbility(MultiplayerVoxelWorldMain _game, GameModule module, AbstractPlayersAvatar p) {
+	public RemoveBlockAbility(MultiplayerVoxelWorldMain _game, AbstractGameModule module, AbstractPlayersAvatar p) {
 		super(_game, module, p);
 	}
 
@@ -43,7 +43,7 @@ public class RemoveBlockAbility extends AbstractAbility {
 		if (result != null) {
 			if (result.getDistance() <= MAX_RANGE) {
 				Geometry g = result.getGeometry();
-				AbstractPhysicalEntity ape = (AbstractPhysicalEntity)GameModule.getEntityFromSpatial(g);
+				AbstractPhysicalEntity ape = (AbstractPhysicalEntity)AbstractGameModule.getEntityFromSpatial(g);
 				if (ape instanceof VoxelTerrainEntity) {
 					VoxelTerrainEntity vte = (VoxelTerrainEntity)ape;
 					BlockTerrainControl blocks = vte.blocks;

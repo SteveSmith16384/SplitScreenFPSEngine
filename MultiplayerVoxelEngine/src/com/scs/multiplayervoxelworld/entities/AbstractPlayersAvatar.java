@@ -28,7 +28,7 @@ import com.scs.multiplayervoxelworld.hud.AbstractHUDImage;
 import com.scs.multiplayervoxelworld.hud.HUD;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
 import com.scs.multiplayervoxelworld.models.RobotModel;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity implements IProcessable, ICanShoot, IShowOnHUD, ITargetByAI, IAffectedByPhysics, IDamagable {
 
@@ -67,7 +67,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 
 	public AbstractHUDImage gamepadTest;
 
-	public AbstractPlayersAvatar(MultiplayerVoxelWorldMain _game, GameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side) {
+	public AbstractPlayersAvatar(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side) {
 		super(_game, _module, "Player");
 
 		playerID = _playerID;

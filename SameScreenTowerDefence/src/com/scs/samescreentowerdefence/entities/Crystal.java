@@ -10,13 +10,13 @@ import com.scs.multiplayervoxelworld.components.IAffectedByPhysics;
 import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.components.IShowOnHUD;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public class Crystal extends AbstractPhysicalEntity implements IShowOnHUD, IProcessable {
 
 	//private static final float SIZE = .1f;
 
-	public Crystal(MultiplayerVoxelWorldMain _game, GameModule _module, Vector3f pos) {
+	public Crystal(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, Vector3f pos) {
 		super(_game, _module, "Crystal");
 
 		Spatial model = game.getAssetManager().loadModel("Models/mese-crystal/mese.blend");

@@ -12,14 +12,14 @@ import com.scs.multiplayervoxelworld.components.ICanShoot;
 import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
-import com.scs.multiplayervoxelworld.modules.GameModule;
+import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public class Grenade extends AbstractPhysicalEntity implements IProcessable  {//implements ICausesHarm {
 
 	public ICanShoot shooter;
 	private float timeLeft = 2f;
 	
-	public Grenade(MultiplayerVoxelWorldMain _game, GameModule _module, ICanShoot _shooter) {
+	public Grenade(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, ICanShoot _shooter) {
 		super(_game, _module, "Grenade");
 
 		this.shooter = _shooter;
