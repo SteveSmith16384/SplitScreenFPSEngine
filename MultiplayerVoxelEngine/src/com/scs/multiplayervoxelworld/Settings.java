@@ -6,6 +6,7 @@ public class Settings {
 	public static final boolean RECORD_VID = false;
 
 	// DEBUG
+	public static final boolean DEBUG_ROTATING_CAM = true;
 
 
 	// Unused debug

@@ -6,6 +6,7 @@ import com.jme3.system.AppSettings;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldProperties;
 import com.scs.multiplayervoxelworld.Settings;
+import com.scs.multiplayervoxelworld.modules.GameModule;
 
 public class TowerDefenceMain extends MultiplayerVoxelWorldMain {
 
@@ -29,7 +30,7 @@ public class TowerDefenceMain extends MultiplayerVoxelWorldMain {
 			}
 
 			MAX_TURN_SPEED = MultiplayerVoxelWorldMain.properties.GetMaxTurnSpeed();
-			BASE_SCORE_INC = MultiplayerVoxelWorldMain.properties.GetBaseScoreInc();
+			//BASE_SCORE_INC = MultiplayerVoxelWorldMain.properties.GetBaseScoreInc();
 			
 			TowerDefenceMain app = new TowerDefenceMain();
 			app.setSettings(settings);
@@ -52,6 +53,12 @@ public class TowerDefenceMain extends MultiplayerVoxelWorldMain {
 
 	public TowerDefenceMain() {
 		// TODO Auto-generated constructor stub
+	}
+
+
+	@Override
+	public GameModule getGameModule() {
+		return new TowerDefence(this);
 	}
 
 }

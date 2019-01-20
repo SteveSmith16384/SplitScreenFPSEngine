@@ -9,6 +9,7 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.renderer.Camera;
+import com.scs.multiplayervoxelworld.Settings;
 
 public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListener, IInputDevice { 
 
@@ -79,13 +80,11 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 		if (!enabled) {
 			return;
 		}
-		
-		/*if (Settings.DEBUG_GAMEPAD_DIV_TPF) {
-			value /= tpf; // SCS
-		}*/
 
-		//Settings.p("name=" + name);
-		//Settings.p("CAM=" +this.cam.getName());
+		if (Settings.DEBUG_ROTATING_CAM) {
+			Settings.p("name=" + name + ", value=" + value);
+			//Settings.p("CAM=" +this.cam.getName());
+		}
 
 		if (name.equals("mFLYCAM_Left")){
 			//Settings.p("name=" + name);
@@ -195,7 +194,7 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 		} else {
 			throw new RuntimeException("Todo");
 		}
-		
+
 	}
 
 

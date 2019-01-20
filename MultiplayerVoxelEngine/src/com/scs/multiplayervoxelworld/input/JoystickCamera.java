@@ -19,7 +19,7 @@ import com.jme3.renderer.Camera;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
 
-public class JoystickCamera2 extends FlyByCamera implements IInputDevice, RawInputListener {
+public class JoystickCamera extends FlyByCamera implements IInputDevice, RawInputListener {
 
 	private static final float LOOK_UD_ADJ = MultiplayerVoxelWorldMain.properties.GetGamepadUpDownAdjust();// .4f;//.75f;//.5f;
 	private static final float MOVE_SPEED = MultiplayerVoxelWorldMain.properties.GetGamepadMoveSpeed();// 5;
@@ -35,7 +35,7 @@ public class JoystickCamera2 extends FlyByCamera implements IInputDevice, RawInp
 	private int id;
 	private float prevLeft, prevRight, prevUp, prevDown;
 
-	public JoystickCamera2(Camera _cam, Joystick _joystick, InputManager _inputManager) {
+	public JoystickCamera(Camera _cam, Joystick _joystick, InputManager _inputManager) {
 		super(_cam);
 
 		super.initialUpVec = Vector3f.UNIT_Y;
@@ -135,9 +135,11 @@ public class JoystickCamera2 extends FlyByCamera implements IInputDevice, RawInp
 			return;
 		}
 
-		//----------- CAMERA DIRECTION
+		if (Settings.DEBUG_ROTATING_CAM) {
+			Settings.p("name=" + name + ", value=" + value);
+			//Settings.p("CAM=" +this.cam.getName());
+		}
 
-		float tmp = value;
 
 		if (name.equals("jFLYCAM_Left" + id)) {
 			if (Settings.DEBUG_GAMEPAD_DIV_TPF) {
@@ -188,6 +190,9 @@ public class JoystickCamera2 extends FlyByCamera implements IInputDevice, RawInp
 				value = (value + prevUp) / 2;
 				prevUp = value; //tmp;
 			}
+
+			value -= 0.01f;
+
 			if (Settings.DEBUG_GAMEPAD_MULT_VALUE) {
 				rotateCamera(-value*value * LOOK_UD_ADJ * TURN_SPEED * (invertY ? -1 : 1), cam.getLeft());
 			} else {
@@ -322,7 +327,7 @@ public class JoystickCamera2 extends FlyByCamera implements IInputDevice, RawInp
 		} else {
 			throw new RuntimeException("Todo");
 		}
-		
+
 	}
 
 

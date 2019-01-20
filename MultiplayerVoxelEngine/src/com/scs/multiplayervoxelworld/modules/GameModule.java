@@ -40,10 +40,10 @@ import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
 import com.scs.multiplayervoxelworld.entities.nonphysical.ChangeBlocksInSweep;
 import com.scs.multiplayervoxelworld.hud.HUD;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
-import com.scs.multiplayervoxelworld.input.JoystickCamera2;
+import com.scs.multiplayervoxelworld.input.JoystickCamera;
 import com.scs.multiplayervoxelworld.input.MouseAndKeyboardCamera;
 
-public abstract class GameModule implements IModule, PhysicsCollisionListener, ActionListener { // todo - name abstract 
+public abstract class GameModule implements IModule, PhysicsCollisionListener, ActionListener { // todo - rename to Abstract
 
 	private static final String QUIT = "Quit";
 	private static final String TEST = "Test";
@@ -106,7 +106,7 @@ public abstract class GameModule implements IModule, PhysicsCollisionListener, A
 				input = new MouseAndKeyboardCamera(newCam, game.getInputManager());
 			} else {
 				if (joysticks.length > 0) {
-					input = new JoystickCamera2(newCam, joysticks[0], game.getInputManager());
+					input = new JoystickCamera(newCam, joysticks[0], game.getInputManager());
 				} else {
 					throw new RuntimeException("No gamepads found");
 				}
@@ -125,7 +125,7 @@ public abstract class GameModule implements IModule, PhysicsCollisionListener, A
 				//for (Joystick j : joysticks) {
 				Camera newCam = this.createCamera(playerid, numPlayers);
 				//JoystickCamera_ORIG joyCam = new JoystickCamera_ORIG(newCam, j, game.getInputManager());
-				JoystickCamera2 joyCam = new JoystickCamera2(newCam, joysticks[joyid], game.getInputManager());
+				JoystickCamera joyCam = new JoystickCamera(newCam, joysticks[joyid], game.getInputManager());
 				AbstractPlayersAvatar player = this.addPlayersAvatar(playerid, newCam, joyCam, 0);
 				HUD hud = this.createHUD(newCam, player);
 				player.setHUD(hud);

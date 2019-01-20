@@ -51,7 +51,7 @@ public class TowerDefence extends GameModule {
 			this.createTree(vte, new Vector3f(p.x, 1, p.y));
 		}
 
-
+/*
 		Crystal c = new Crystal(game, this, CRYSTAL_POS);
 		this.addEntity(c);
 
@@ -63,6 +63,7 @@ public class TowerDefence extends GameModule {
 		this.addEntity(golem3);
 		Golem golem4 = new Golem(game, this, new Vector3f(MAP_SIZE-1, 5, MAP_SIZE-1), CRYSTAL_POS);
 		this.addEntity(golem4);
+		*/
 	}
 
 
