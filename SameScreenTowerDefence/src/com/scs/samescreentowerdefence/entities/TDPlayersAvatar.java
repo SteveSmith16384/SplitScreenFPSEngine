@@ -1,12 +1,14 @@
 package com.scs.samescreentowerdefence.entities;
 
 import com.jme3.renderer.Camera;
+import com.jme3.scene.Spatial;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
 import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 import com.scs.samescreentowerdefence.abilities.CycleThroughAbilitiesAbility;
 import com.scs.samescreentowerdefence.abilities.PlaceTurretAbility;
+import com.scs.samescreentowerdefence.models.RobotModel;
 
 public class TDPlayersAvatar extends AbstractPlayersAvatar {
 
@@ -18,5 +20,10 @@ public class TDPlayersAvatar extends AbstractPlayersAvatar {
 		this.ability[1] = new CycleThroughAbilitiesAbility(game, _module, this);
 
 }
+
+	@Override
+	protected Spatial getPlayersModel(MultiplayerVoxelWorldMain game, int pid) {
+		return new RobotModel(game.getAssetManager(), pid);
+	}
 
 }

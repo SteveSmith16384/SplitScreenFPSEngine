@@ -27,7 +27,7 @@ import com.scs.multiplayervoxelworld.components.ITargetByAI;
 import com.scs.multiplayervoxelworld.hud.AbstractHUDImage;
 import com.scs.multiplayervoxelworld.hud.HUD;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
-import com.scs.multiplayervoxelworld.models.RobotModel;
+import com.scs.multiplayervoxelworld.models.TestModel;
 import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity implements IProcessable, ICanShoot, IShowOnHUD, ITargetByAI, IAffectedByPhysics, IDamagable {
@@ -51,7 +51,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	public final int playerID;
 	public IAbility[] ability = new IAbility[2];
 	private Spatial playerGeometry;
-	
+
 	// Stats
 	private int score = 0;
 	private float health;
@@ -74,14 +74,12 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		cam = _cam;
 		input = _input;
 		//hud = _hud;
-		health = module.getPlayersHealth(playerID);
+		health = 100;//module.getPlayersHealth(playerID);
 		side = _side;
 
-		{
-			int pid = playerID;
-			playerGeometry = getPlayersModel(game, pid);
-			this.getMainNode().attachChild(playerGeometry);
-		}
+		int pid = playerID;
+		playerGeometry = getPlayersModel(game, pid);
+		this.getMainNode().attachChild(playerGeometry);
 
 		playerControl = new MyBetterCharacterControl(PLAYER_RAD, PLAYER_HEIGHT, WEIGHT);
 		playerControl.setJumpForce(new Vector3f(0, Settings.JUMP_FORCE, 0)); 
@@ -91,12 +89,16 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 
 	}
 
-	
+
 	public void setHUD(HUD _hud) {
 		hud = _hud;
 	}
 
-	public static Spatial getPlayersModel(MultiplayerVoxelWorldMain game, int pid) {
+
+	protected abstract Spatial getPlayersModel(MultiplayerVoxelWorldMain game, int pid);
+
+		/*
+	private Spatial getPlayersModel(MultiplayerVoxelWorldMain game, int pid) {
 		if (Settings.USE_MODEL_FOR_PLAYERS) {
 			return new RobotModel(game.getAssetManager(), pid);
 		} else {
@@ -116,23 +118,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 			return playerGeometry;
 		}
 	}
-
-	/*
-	private static IAbility getRandomAbility(GameModule module, PlayersAvatar _player) {
-		int i = NumberFunctions.rnd(1, 3);
-		switch (i) {
-		case 1:
-			return new JetPac(module, _player);
-		case 2:
-			return new Invisibility(module, _player);
-		case 3:
-			return new RunFast(_player);
-		default:
-			throw new RuntimeException("Unknown ability: " + i);
-		}
-
-	}
-	 */
+*/
 
 	public void moveToStartPostion(boolean invuln) {
 		//Point p = module.level.getPlayerStartPos(playerID);
@@ -183,14 +169,6 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 				}
 			}
 
-			//hud.process(tpf);
-
-			/*
-			 * The direction of character is determined by the camera angle
-			 * the Y direction is set to zero to keep our character from
-			 * lifting of terrain. For free flying games simply add speed 
-			 * to Y axis
-			 */
 			camDir.set(cam.getDirection()).multLocal(moveSpeed, 0.0f, moveSpeed);
 			camLeft.set(cam.getLeft()).multLocal(moveSpeed);
 			if (input.getFwdValue() > 0) {	
@@ -256,19 +234,6 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		return playerControl.isOnGround();
 	}
 
-	/*
-		public void shoot() {
-			if (this.abilityGun.activate(0)) {
-				this.score--;
-				this.hud.setScore(this.score);
-				this.numShots++;
-				calcAccuracy();
-				if (this.abilityGun.onlyActivateOnClick()) {
-					this.abilityGun.turnOff();
-				}
-			}
-		}
-	 */
 
 	public FrustumIntersect getInsideOutside(AbstractPhysicalEntity entity) {
 		FrustumIntersect insideoutside = cam.contains(entity.getMainNode().getWorldBound());
@@ -437,7 +402,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		return score;
 	}
 
-	
+
 	@Override
 	public Vector3f getBulletStartPosition() {
 		return this.getMainNode().getWorldBound().getCenter();

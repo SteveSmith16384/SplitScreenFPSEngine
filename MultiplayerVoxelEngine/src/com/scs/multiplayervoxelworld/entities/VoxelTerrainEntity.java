@@ -19,6 +19,8 @@ import mygame.util.Vector3Int;
 
 public class VoxelTerrainEntity extends AbstractPhysicalEntity implements IProcessable {
 
+	public static final int TEX_PER_SHEET = 32;
+
 	public BlockTerrainControl blocks;
 	private float blockSize;
 
@@ -31,9 +33,10 @@ public class VoxelTerrainEntity extends AbstractPhysicalEntity implements IProce
 		blockSettings.setChunkSize(new Vector3Int(chunkSize, chunkSize, chunkSize));
 		blockSettings.setBlockSize(blockSize);
 		blockSettings.setMaterial(game.getAssetManager().loadMaterial("Materials/BlockTexture.j3m"));
-		worldSizeBlocks.set(worldSizeBlocks.getX() / chunkSize + 1, worldSizeBlocks.getY() / chunkSize + 1, worldSizeBlocks.getZ() / chunkSize + 1);
-		blockSettings.setWorldSizeInChunks(worldSizeBlocks);//new Vector3Int(s+1, s+1, s+1));
-		blockSettings.texturesPerSheet = Settings.TEX_PER_SHEET;
+		Vector3Int worldSizeChunks = new Vector3Int(worldSizeBlocks.getX() / chunkSize + 1, worldSizeBlocks.getY() / chunkSize + 1, worldSizeBlocks.getZ() / chunkSize + 1);
+		//worldSizeBlocks.set(worldSizeBlocks.getX() / chunkSize + 1, worldSizeBlocks.getY() / chunkSize + 1, worldSizeBlocks.getZ() / chunkSize + 1);
+		blockSettings.setWorldSizeInChunks(worldSizeChunks);//new Vector3Int(s+1, s+1, s+1));
+		blockSettings.texturesPerSheet = TEX_PER_SHEET;
 
 		blocks = new BlockTerrainControl(blockSettings);
 

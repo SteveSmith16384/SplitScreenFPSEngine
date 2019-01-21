@@ -12,7 +12,7 @@ import com.scs.multiplayervoxelworld.modules.StartModule;
 
 public abstract class MultiplayerVoxelWorldMain extends SimpleApplication {
 
-	private static final String PROPS_FILE = Settings.NAME.replaceAll(" ", "") + "_settings.txt";
+	//private static final String PROPS_FILE = Settings.NAME.replaceAll(" ", "") + "_settings.txt";
 	public static float MAX_TURN_SPEED = -1;
 	//public static float BASE_SCORE_INC = 0.005f;
 
@@ -94,17 +94,11 @@ public abstract class MultiplayerVoxelWorldMain extends SimpleApplication {
 		getInputManager().clearMappings();
 		getInputManager().clearRawInputListeners();
 		
-		//guiFont_small = getAssetManager().loadFont("Interface/Fonts/Console.fnt");
-		
 		cam.setFrustumPerspective(45f, (float) cam.getWidth() / cam.getHeight(), 0.01f, Settings.CAM_DIST);
 
 		if (Settings.RELEASE_MODE) {
 			currentModule = new StartModule(this, GameMode.Skirmish);
 		} else {
-			/*TowerDefence td = new TowerDefence();
-			currentModule = new GameModule(this, new TowerDefence());
-			td.setGameModule((GameModule)currentModule);
-			*/
 			currentModule = this.getGameModule();
 		}
 		currentModule.init();

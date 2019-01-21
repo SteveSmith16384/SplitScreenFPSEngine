@@ -37,10 +37,10 @@ public class TowerDefence extends AbstractGameModule {
 	
 	@Override
 	public void setupLevel() {
-		VoxelTerrainEntity vte = new VoxelTerrainEntity(game, this, 0, 0, 0, new Vector3Int(200, 20, 200), 16, 1, 1);
+		VoxelTerrainEntity vte = new VoxelTerrainEntity(game, this, 0, 0, 0, new Vector3Int(MAP_SIZE, 20, MAP_SIZE), 16, 1, 1);
 		this.addEntity(vte);
 
-		vte.addRectRange_Blocks(new Vector3Int(0, 0, 0), new Vector3Int(100, 1, 100), GrassBlock.class);
+		vte.addRectRange_Blocks(new Vector3Int(0, 0, 0), new Vector3Int(MAP_SIZE, 1, MAP_SIZE), GrassBlock.class);
 		//vte.addRectRange_Blocks(BlockCodes.SAND, new Vector3Int(10, 1, 10), new Vector3Int(1, 1, 1));
 		for (int i=0 ; i<20 ; i++) {
 			Point p = this.getRandomBlockPos();

@@ -8,8 +8,6 @@ import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
-import com.jme3.font.BitmapFont;
-import com.jme3.font.BitmapText;
 import com.jme3.input.Joystick;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
@@ -20,12 +18,13 @@ import com.jme3.light.Light;
 import com.jme3.light.LightList;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.post.FilterPostProcessor;
+import com.jme3.post.filters.DepthOfFieldFilter;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
-import com.jme3.util.SkyFactory;
 import com.scs.multiplayervoxelworld.CollisionLogic;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
@@ -34,8 +33,8 @@ import com.scs.multiplayervoxelworld.components.IAffectedByPhysics;
 import com.scs.multiplayervoxelworld.components.IEntity;
 import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
-import com.scs.multiplayervoxelworld.entities.CubeExplosionShard;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
+import com.scs.multiplayervoxelworld.entities.CubeExplosionShard;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
 import com.scs.multiplayervoxelworld.entities.nonphysical.ChangeBlocksInSweep;
 import com.scs.multiplayervoxelworld.hud.HUD;
@@ -64,19 +63,15 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	//public AbstractGame level;
 	private boolean gameOver = false;
 
-	public AbstractGameModule(MultiplayerVoxelWorldMain _game) {//, AbstractGame _level) {
+	public AbstractGameModule(MultiplayerVoxelWorldMain _game) {
 		super();
 
 		game = _game;
-		//level = _level;
 	}
 
 
 	@Override
 	public void init() {
-		//game.getCamera().setLocation(new Vector3f(0f, 0f, 10f));
-		//game.getCamera().lookAt(new Vector3f(0f, 0f, 0f), Vector3f.UNIT_Y);
-
 		game.getInputManager().addMapping(QUIT, new KeyTrigger(KeyInput.KEY_ESCAPE));
 		game.getInputManager().addListener(this, QUIT);            
 
@@ -92,8 +87,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		game.getRenderManager().removeMainView(game.getViewPort()); // Since we create new ones for each player
 
 		setUpLight();
-
-		setupLevel();//(game, this);
+		setupLevel();
 
 		Joystick[] joysticks = game.getInputManager().getJoysticks();
 		int numPlayers = game.getNumPlayers();
@@ -120,16 +114,13 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		int joyid = Settings.PLAYER1_IS_MOUSE ? 0 : 1;
 		int playerid = Settings.PLAYER1_IS_MOUSE ? 1 : 0;
 		if (joysticks != null && joysticks.length > 0) {
-			//for (int id=nextid ; id<joysticks.length ; id++) {
 			while (joyid < joysticks.length) {
-				//for (Joystick j : joysticks) {
 				Camera newCam = this.createCamera(playerid, numPlayers);
-				//JoystickCamera_ORIG joyCam = new JoystickCamera_ORIG(newCam, j, game.getInputManager());
 				JoystickCamera joyCam = new JoystickCamera(newCam, joysticks[joyid], game.getInputManager());
 				AbstractPlayersAvatar player = this.addPlayersAvatar(playerid, newCam, joyCam, 0);
 				HUD hud = this.createHUD(newCam, player);
 				player.setHUD(hud);
-				//}
+
 				joyid++;
 				playerid++;
 			}
@@ -178,16 +169,16 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		game.getRootNode().attachChild(audioMusic);
 		//audioMusic.play(); // play continuously! - todo - re-add?
 
-		this.getRootNode().attachChild(SkyFactory.createSky(game.getAssetManager(), "Textures/BrightSky.dds", SkyFactory.EnvMapType.CubeMap));
+		//this.getRootNode().attachChild(SkyFactory.createSky(game.getAssetManager(), "Textures/BrightSky.dds", SkyFactory.EnvMapType.CubeMap));
 
 	}
 
 
 	protected abstract void setupLevel();
-	
+
 	public abstract Vector3f getPlayerStartPos(int id);
-	
-	
+
+
 	private Camera createCamera(int id, int numPlayers) {
 		Camera newCam = null;
 		if (id == 0) {
@@ -197,7 +188,6 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		}
 
 		if (Settings.ALWAYS_SHOW_4_CAMS || numPlayers > 2) {
-			//newCam.resize(Overwatch.settings.getWidth()/2, Overwatch.settings.getHeight()/2, true);
 			newCam.setFrustumPerspective(45f, (float) newCam.getWidth() / newCam.getHeight(), 0.01f, Settings.CAM_DIST);
 			switch (id) { // left/right/bottom/top, from bottom-left!
 			case 0: // TL
@@ -220,7 +210,6 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 				throw new RuntimeException("Unknown player id: " + id);
 			}
 		} else if (numPlayers == 2) {
-			//newCam.resize(Overwatch.settings.getWidth(), Overwatch.settings.getHeight()/2, true);
 			newCam.setFrustumPerspective(45f, (float) (newCam.getWidth()*2) / newCam.getHeight(), 0.01f, Settings.CAM_DIST);
 			switch (id) { // left/right/bottom/top, from bottom-left!
 			case 0: // TL
@@ -237,7 +226,6 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 				throw new RuntimeException("Unknown player id: " + id);
 			}
 		} else if (numPlayers == 1) {
-			//newCam.resize(Overwatch.settings.getWidth(), Overwatch.settings.getHeight(), true);
 			newCam.setFrustumPerspective(45f, (float) newCam.getWidth() / newCam.getHeight(), 0.01f, Settings.CAM_DIST);
 			//Settings.p("Creating full-screen camera");
 			newCam.setViewPort(0f, 1f, 0f, 1f);
@@ -248,7 +236,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		}
 
 		final ViewPort view2 = game.getRenderManager().createMainView("viewport_" + newCam.toString(), newCam);
-		view2.setBackgroundColor(ColorRGBA.Cyan);
+		view2.setBackgroundColor(ColorRGBA.Black);
 		view2.setClearFlags(true, true, true);
 		view2.attachScene(game.getRootNode());
 
@@ -258,35 +246,17 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		dlsr.setLight(sun);
 		view2.addProcessor(dlsr);
 
-		// Add targetting recticule
-		BitmapFont guiFont = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");
-		BitmapText hudText = new BitmapText(guiFont, false);
-		hudText.setSize(guiFont.getCharSet().getRenderedSize()+2);
-		hudText.setColor(ColorRGBA.White);
-		hudText.setText("+");
-		hudText.setLocalTranslation(newCam.getWidth() / 2 - hudText.getLineWidth()/2, newCam.getHeight() / 2 + hudText.getLineHeight(), 0); // position
-		game.getGuiNode().attachChild(hudText);
-
-		/*FilterPostProcessor fpp = new FilterPostProcessor(game.getAssetManager());
-		if (Settings.NEON) {
-			BloomFilter bloom = new BloomFilter(BloomFilter.GlowMode.Scene);
-			bloom.setEnabled(true);
-			bloom.setBloomIntensity(40f);//50f);
-			bloom.setBlurScale(6f);//3f);//10f);
-			fpp.addFilter(bloom);
-
-			// test filter
-			//RadialBlurFilter blur = new RadialBlurFilter();
-			//fpp.addFilter(blur);
-		}
-		view2.addProcessor(fpp);*/
+		// DepthOfFieldFilter
+		FilterPostProcessor fpp = new FilterPostProcessor(game.getAssetManager());
+		DepthOfFieldFilter dff = new DepthOfFieldFilter(); 
+		fpp.addFilter(dff);
+		view2.addProcessor(fpp);
 
 		return newCam;
 	}
 
 
 	private HUD createHUD(Camera c, AbstractPlayersAvatar player) {
-		//BitmapFont guiFont_small = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");
 		// HUD coords are full screen co-ords!
 		// cam.getWidth() = 640x480, cam.getViewPortLeft() = 0.5f
 		float xBL = c.getWidth() * c.getViewPortLeft();
@@ -308,17 +278,15 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		AbstractPlayersAvatar player = getPlayersAvatar(game, this, id, cam, input, side);
 		this.addEntity(player);
 		player.moveToStartPostion(true);
-		// Look towards centre
-		//player.getMainNode().lookAt(new Vector3f(mapData.getWidth()/2, PlayersAvatar.PLAYER_HEIGHT, mapData.getDepth()/2), Vector3f.UNIT_Y);
 		return player;
 	}
 
 
 	protected abstract AbstractPlayersAvatar getPlayersAvatar(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side);
-	
+
 	private void setUpLight() {
 		// Remove existing lights
-		this.game.getRootNode().getWorldLightList().clear(); //this.rootNode.getWorldLightList().size();
+		this.game.getRootNode().getWorldLightList().clear();
 		LightList list = this.game.getRootNode().getWorldLightList();
 		for (Light it : list) {
 			this.game.getRootNode().removeLight(it);
@@ -340,21 +308,8 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	public void update(float tpfSecs) {
 		addAndRemoveEntities();
 
-		//boolean check = checkOutOfArena.hitInterval();
-
 		for(IProcessable ip : this.entitiesForProcessing) { // this.entities
 			ip.process(tpfSecs);
-			/*if (check) {
-				if (ip instanceof IMustRemainInArena) { 
-					IMustRemainInArena mr = (IMustRemainInArena)ip;
-					Vector3f pos = mr.getLocation();
-					if (pos.x < 0 || pos.z < 0 || pos.x > mapData.getWidth() || pos.z > mapData.getDepth()) {
-						Settings.p("Respawning " + mr);
-						mr.markForRemoval();
-						mr.respawn();
-					}
-				}
-			}*/
 		}
 
 	}
@@ -434,15 +389,6 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		}
 
 		CubeExplosionShard.Factory(game, this, pos, 10);
-	}
-
-
-	public float getPlayersHealth(int id) {
-		if (Settings.GAME_MODE == GameMode.KingOfTheHill) {
-			return 100f;
-		} else {
-			return 1f; // Die immed
-		}
 	}
 
 

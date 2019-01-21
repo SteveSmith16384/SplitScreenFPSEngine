@@ -12,6 +12,7 @@ import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
 import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
+import com.scs.samescreentowerdefence.TDSettings;
 import com.scs.samescreentowerdefence.entities.Turret;
 
 public class PlaceTurretAbility extends AbstractAbility {
@@ -29,7 +30,7 @@ public class PlaceTurretAbility extends AbstractAbility {
 
 	@Override
 	public boolean activate(float interpol) {
-		if (this.player.resources < Settings.TURRET_COST) {
+		if (this.player.resources < TDSettings.TURRET_COST) {
 			Settings.p("Not enough resources");
 			//return false;
 		}
@@ -49,7 +50,7 @@ public class PlaceTurretAbility extends AbstractAbility {
 					if (position.y == 1f) { // Must be on floor
 						//Vector3Int blockPosition = blocks.getPointedBlockLocation(position, true);
 						Turret turret = new Turret(game, module, position, this.player.getSide());
-						player.resources -= Settings.TURRET_COST;
+						player.resources -= TDSettings.TURRET_COST;
 						return true;
 					}
 				} else {

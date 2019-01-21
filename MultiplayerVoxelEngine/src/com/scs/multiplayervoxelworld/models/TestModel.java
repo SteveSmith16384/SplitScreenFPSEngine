@@ -7,9 +7,9 @@ import com.jme3.scene.Spatial;
 import com.jme3.texture.Texture;
 import com.scs.multiplayervoxelworld.jme.JMEModelFunctions;
 
-public class RobotModel extends Node {
+public class TestModel extends Node {
 	
-	public RobotModel(AssetManager assetManager, int playerid) {
+	public TestModel(AssetManager assetManager, int playerid) {
 		super("RobotModel");
 		
 		Spatial model = assetManager.loadModel("Models/AbstractRTSModels/Player.obj");

@@ -20,7 +20,7 @@ import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
-import com.scs.multiplayervoxelworld.models.RobotModel;
+import com.scs.multiplayervoxelworld.models.TestModel;
 
 public class GamepadModule implements IModule, ActionListener {
 
@@ -72,7 +72,7 @@ public class GamepadModule implements IModule, ActionListener {
 		//game.getInputManager().addRawInputListener(this);
 		initFloor();
 		
-		RobotModel robot = new RobotModel(game.getAssetManager(), 1);
+		TestModel robot = new TestModel(game.getAssetManager(), 1);
 		robot.setLocalTranslation(0, -1.5f, 2f);
 		robot.scale(4);
 		game.getRootNode().attachChild(robot);

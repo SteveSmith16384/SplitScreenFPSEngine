@@ -10,6 +10,8 @@ import com.atr.jme.font.shape.TrueTypeContainer;
 import com.atr.jme.font.util.StringContainer;
 import com.atr.jme.font.util.Style;
 import com.jme3.bounding.BoundingBox;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
@@ -148,6 +150,16 @@ public class HUD extends Node implements IEntity, IProcessable {
 		this.setModelBound(new BoundingBox());
 		this.updateModelBound();
 */
+
+		// Add targetting recticule
+		BitmapFont guiFont = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");
+		BitmapText hudText = new BitmapText(guiFont, false);
+		hudText.setSize(guiFont.getCharSet().getRenderedSize()+2);
+		hudText.setColor(ColorRGBA.White);
+		hudText.setText("+");
+		hudText.setLocalTranslation(w / 2 - hudText.getLineWidth()/2,h / 2 + hudText.getLineHeight(), 0); // position
+		this.attachChild(hudText);
+
 		module.addEntity(this);
 
 	}
@@ -269,7 +281,7 @@ public class HUD extends Node implements IEntity, IProcessable {
 
 	@Override
 	public void actuallyAdd() {
-		this.game.getGuiNode().attachChild(this);
+		//todo - add to correct gui! this.game.getGuiNode().attachChild(this);
 		
 	}
 

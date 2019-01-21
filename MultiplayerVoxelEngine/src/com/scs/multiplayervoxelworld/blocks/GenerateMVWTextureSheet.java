@@ -2,7 +2,7 @@ package com.scs.multiplayervoxelworld.blocks;
 
 import java.io.IOException;
 
-import com.scs.multiplayervoxelworld.Settings;
+import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
 
 import mygame.texturesheet.TextureSheetGenerator;
 
@@ -27,7 +27,7 @@ public class GenerateMVWTextureSheet {
 		}; // Keep these in the same order!
 
 		TextureSheetGenerator gen = new TextureSheetGenerator();
-		gen.generateTextureSheet("assets/Textures/blocks", tiles, Settings.TEX_PER_SHEET, TILE_SIZE_PIXELS, "mvw_tiles", 4, true);
+		gen.generateTextureSheet("assets/Textures/blocks", tiles, VoxelTerrainEntity.TEX_PER_SHEET, TILE_SIZE_PIXELS, "mvw_tiles", 4, true);
 
 	}
 

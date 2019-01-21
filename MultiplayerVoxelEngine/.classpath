@@ -28,6 +28,5 @@
 	<classpathentry kind="lib" path="libs/mp3/mp3spi1.9.4.jar"/>
 	<classpathentry kind="lib" path="libs/mp3/tritonus_share.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Blocky"/>
-	<classpathentry kind="lib" path="C:/code/jME3.2-stable/sources/jme3-testdata-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

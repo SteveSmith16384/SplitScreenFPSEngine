@@ -6,7 +6,7 @@ public class Settings {
 	public static final boolean RECORD_VID = false;
 
 	// DEBUG
-	public static final boolean DEBUG_ROTATING_CAM = true;
+	public static final boolean DEBUG_ROTATING_CAM = false;
 
 
 	// Unused debug
@@ -22,13 +22,8 @@ public class Settings {
 	public static final String VERSION = "0.01";
 	public static final boolean SHOW_FLASH_EXPLOSIONS = false;
 	public static final boolean PLAYER1_IS_MOUSE = true;
-	public static final int TEX_PER_SHEET = 32;
 
 	public enum GameMode {Skirmish, KingOfTheHill } // todo - delete these
-	
-	// Resource costs
-	public static final int TURRET_COST = 5;
-	
 	
 	// Game settings
 	public static GameMode GAME_MODE;
