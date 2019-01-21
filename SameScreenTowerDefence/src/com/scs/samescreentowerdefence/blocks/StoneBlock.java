@@ -1,4 +1,4 @@
-package com.scs.multiplayervoxelworld.blocks;
+package com.scs.samescreentowerdefence.blocks;
 
 import mygame.blocktypes.AbstractBlock;
 

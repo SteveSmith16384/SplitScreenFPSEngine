@@ -8,11 +8,11 @@ import com.jme3.scene.Geometry;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.abilities.AbstractAbility;
-import com.scs.multiplayervoxelworld.blocks.StoneBlock;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
 import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
+import com.scs.samescreentowerdefence.blocks.StoneBlock;
 
 import mygame.blocks.BlockTerrainControl;
 import mygame.blocks.IBlock;

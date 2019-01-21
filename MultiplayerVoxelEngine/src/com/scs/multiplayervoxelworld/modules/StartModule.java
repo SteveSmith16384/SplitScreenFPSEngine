@@ -112,7 +112,7 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 
 		TrueTypeKeyMesh ttkSmall = new TrueTypeKeyMesh("Fonts/ERASBD.TTF", Style.Bold, 15);
 		TrueTypeFont ttfSmall = (TrueTypeMesh)game.getAssetManager().loadAsset(ttkSmall);
-
+/*
 		TrueTypeContainer screenText = ttfSmall.getFormattedText(new StringContainer(ttfSmall, "KILL THE N00BS!"), ColorRGBA.Green);
 		//screenText.setColor(ColorRGBA.Green);
 		screenText.setText(Settings.NAME +  " (version " + Settings.VERSION + ")\n\n" + gameMode.toString() + " Selected.\n\nSelect a different game mode, or press 0 to start:\n" +
@@ -124,7 +124,7 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 		screenText.updateGeometry();
 		screenText.setLocalTranslation(20, game.getCamera().getHeight()-20, 0);
 		game.getGuiNode().attachChild(screenText);
-
+*/
 		TrueTypeContainer gameModeSpecificText = ttfSmall.getFormattedText(new StringContainer(ttfSmall, "KILL THE N00BS!"), ColorRGBA.Yellow);
 		//gameModeSpecificText.setColor(ColorRGBA.Green);
 		gameModeSpecificText.setLocalTranslation(20, game.getCamera().getHeight()-160, 0);

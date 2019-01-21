@@ -2,16 +2,11 @@ package com.scs.multiplayervoxelworld.entities;
 
 import java.util.List;
 
-import com.jme3.asset.TextureKey;
 import com.jme3.bullet.collision.PhysicsRayTestResult;
-import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.Camera.FrustumIntersect;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Box;
-import com.jme3.texture.Texture;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.MyBetterCharacterControl;
 import com.scs.multiplayervoxelworld.Settings;
@@ -27,7 +22,6 @@ import com.scs.multiplayervoxelworld.components.ITargetByAI;
 import com.scs.multiplayervoxelworld.hud.AbstractHUDImage;
 import com.scs.multiplayervoxelworld.hud.HUD;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
-import com.scs.multiplayervoxelworld.models.TestModel;
 import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity implements IProcessable, ICanShoot, IShowOnHUD, ITargetByAI, IAffectedByPhysics, IDamagable {

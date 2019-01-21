@@ -1,4 +1,4 @@
-package com.scs.multiplayervoxelworld.blocks;
+package com.scs.samescreentowerdefence.blocks;
 
 import java.io.IOException;
 
@@ -6,13 +6,13 @@ import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
 
 import mygame.texturesheet.TextureSheetGenerator;
 
-public class GenerateMVWTextureSheet {
+public class GenerateTDTextureSheet {
 	
 	private static final int TILE_SIZE_PIXELS = 64;
 
 	public static void main(String[] args) {
 		try {
-			new GenerateMVWTextureSheet();
+			new GenerateTDTextureSheet();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -20,7 +20,7 @@ public class GenerateMVWTextureSheet {
 	}
 
 
-	public GenerateMVWTextureSheet() throws IOException {
+	public GenerateTDTextureSheet() throws IOException {
 		String[][] tiles = {
 				{"grass.jpg", "lavarock.jpg", "stone.png", "scarybark.jpg", "leaves.jpg"}, 
 				{"road2.png", "sand.jpg"}

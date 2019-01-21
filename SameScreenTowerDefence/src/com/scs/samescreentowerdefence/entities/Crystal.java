@@ -6,7 +6,6 @@ import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Spatial;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
-import com.scs.multiplayervoxelworld.components.IAffectedByPhysics;
 import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.components.IShowOnHUD;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;

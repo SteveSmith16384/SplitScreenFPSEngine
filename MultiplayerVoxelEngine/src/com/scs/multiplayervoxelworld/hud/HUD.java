@@ -9,7 +9,6 @@ import com.atr.jme.font.asset.TrueTypeKeyMesh;
 import com.atr.jme.font.shape.TrueTypeContainer;
 import com.atr.jme.font.util.StringContainer;
 import com.atr.jme.font.util.Style;
-import com.jme3.bounding.BoundingBox;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.material.Material;

@@ -36,7 +36,6 @@ import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
 import com.scs.multiplayervoxelworld.entities.CubeExplosionShard;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
-import com.scs.multiplayervoxelworld.entities.nonphysical.ChangeBlocksInSweep;
 import com.scs.multiplayervoxelworld.hud.HUD;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
 import com.scs.multiplayervoxelworld.input.JoystickCamera;
@@ -248,7 +247,9 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 		// DepthOfFieldFilter
 		FilterPostProcessor fpp = new FilterPostProcessor(game.getAssetManager());
-		DepthOfFieldFilter dff = new DepthOfFieldFilter(); 
+		DepthOfFieldFilter dff = new DepthOfFieldFilter();
+		dff.setFocusDistance(2f);
+		dff.setFocusRange(20f);
 		fpp.addFilter(dff);
 		view2.addProcessor(fpp);
 
@@ -268,7 +269,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		float w = c.getWidth() * (c.getViewPortRight()-c.getViewPortLeft());
 		float h = c.getHeight() * (c.getViewPortTop()-c.getViewPortBottom());
 		HUD hud = new HUD(game, this, player, xBL, yBL, w, h, c);
-		//game.getGuiNode().attachChild(hud);
+		game.getGuiNode().attachChild(hud); // scs new
 		return hud;
 
 	}
@@ -284,6 +285,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 	protected abstract AbstractPlayersAvatar getPlayersAvatar(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side);
 
+	
 	private void setUpLight() {
 		// Remove existing lights
 		this.game.getRootNode().getWorldLightList().clear();
@@ -357,7 +359,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		}
 
 		if (name.equals(TEST)) {
-			new ChangeBlocksInSweep(game, this, 100);
+			//new ChangeBlocksInSweep(game, this, 100);
 		} else if (name.equals(QUIT)) {
 			game.setNextModule(new StartModule(game, GameMode.Skirmish));
 		}
