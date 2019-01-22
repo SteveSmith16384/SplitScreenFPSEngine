@@ -16,6 +16,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Quad;
 import com.jme3.ui.Picture;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
@@ -24,6 +25,7 @@ import com.scs.multiplayervoxelworld.components.IEntity;
 import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.components.IShowOnHUD;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
+import com.scs.multiplayervoxelworld.hud.IHud;
 import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 import ssmith.util.RealtimeInterval;
@@ -32,7 +34,7 @@ import ssmith.util.RealtimeInterval;
  * Positioning text = the co-ords of BitmapText are for the top-left of the first line of text, and they go down from there.
  * 
  */
-public class HUD extends Node implements IEntity, IProcessable {
+public class TowerDefenceHUD extends Node implements IHud, IEntity, IProcessable { // todo - rename
 
 	public float hud_width, hud_height;
 
@@ -49,7 +51,7 @@ public class HUD extends Node implements IEntity, IProcessable {
 	private List<Picture> targetting_reticules = new ArrayList<>();
 	private TrueTypeContainer textArea; // For showing all other stats 
 
-	public HUD(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, AbstractPlayersAvatar _player, float xBL, float yBL, float w, float h, Camera _cam) {
+	public TowerDefenceHUD(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, AbstractPlayersAvatar _player, float xBL, float yBL, float w, float h, Camera _cam) {
 		super("HUD");
 
 		game = _game;
@@ -199,8 +201,8 @@ public class HUD extends Node implements IEntity, IProcessable {
 		StringBuilder str = new StringBuilder();
 		str.append(player.ability[0].getHudText() + "\n");
 		str.append(player.ability[1].getHudText() + "\n");
-		str.append("Resources: " + player.resources + "\n");
-		str.append("Score: " + player.getScore() + "\n");
+		//todo str.append("Resources: " + player.resources + "\n");
+		//str.append("Score: " + player.getScore() + "\n");
 		this.textArea.setText(str.toString());
 		this.textArea.updateGeometry();
 	}
@@ -284,5 +286,10 @@ public class HUD extends Node implements IEntity, IProcessable {
 	public void actuallyRemove() {
 		this.removeFromParent();
 		
+	}
+
+	@Override
+	public Spatial getSpatial() {
+		return this;
 	}
 }

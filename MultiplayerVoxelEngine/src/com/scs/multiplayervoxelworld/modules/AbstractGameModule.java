@@ -19,7 +19,6 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.BloomFilter;
-import com.jme3.post.filters.DepthOfFieldFilter;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
@@ -36,7 +35,7 @@ import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
 import com.scs.multiplayervoxelworld.entities.CubeExplosionShard;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
-import com.scs.multiplayervoxelworld.hud.HUD;
+import com.scs.multiplayervoxelworld.hud.IHud;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
 import com.scs.multiplayervoxelworld.input.JamepadCamera;
 import com.scs.multiplayervoxelworld.input.MouseAndKeyboardCamera;
@@ -104,7 +103,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 				}
 			}*/
 			AbstractPlayersAvatar player = this.addPlayersAvatar(0, newCam, input, 0);
-			HUD hud = this.createHUD(newCam, player);
+			IHud hud = this.createHUD(newCam, player);
 			player.setHUD(hud);
 		}
 
@@ -117,7 +116,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			//JMEJoystickCamera joyCam = new JMEJoystickCamera(newCam, joysticks[joyid], game.getInputManager());
 			JamepadCamera jameCam = new JamepadCamera(newCam, game.controllers.getController(joyid));
 			AbstractPlayersAvatar player = this.addPlayersAvatar(playerid, newCam, jameCam, 0);
-			HUD hud = this.createHUD(newCam, player);
+			IHud hud = this.createHUD(newCam, player);
 			player.setHUD(hud);
 
 			joyid++;
@@ -272,7 +271,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	}
 
 
-	private HUD createHUD(Camera c, AbstractPlayersAvatar player) {
+	private IHud createHUD(Camera c, AbstractPlayersAvatar player) {
 		// HUD coords are full screen co-ords!
 		// cam.getWidth() = 640x480, cam.getViewPortLeft() = 0.5f
 		float xBL = c.getWidth() * c.getViewPortLeft();
@@ -283,11 +282,14 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 		float w = c.getWidth() * (c.getViewPortRight()-c.getViewPortLeft());
 		float h = c.getHeight() * (c.getViewPortTop()-c.getViewPortBottom());
-		HUD hud = new HUD(game, this, player, xBL, yBL, w, h, c);
-		game.getGuiNode().attachChild(hud); // scs new
+		IHud hud = generateHUD(game, this, player, xBL, yBL, w, h, c);
+		game.getGuiNode().attachChild(hud.getSpatial()); // scs new
 		return hud;
 
 	}
+	
+	
+	protected abstract IHud generateHUD(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, AbstractPlayersAvatar _player, float xBL, float yBL, float w, float h, Camera _cam);
 
 
 	private AbstractPlayersAvatar addPlayersAvatar(int id, Camera cam, IInputDevice input, int side) {

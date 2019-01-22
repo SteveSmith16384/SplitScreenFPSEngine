@@ -54,7 +54,7 @@ public class RemoveBlockAbility extends AbstractAbility {
 						IBlock block = blocks.getBlock(blockPosition);
 						if (block instanceof StoneBlock) {
 							blocks.removeBlock(blockPosition);
-							player.resources++;
+							//todo player.resources++;
 						}
 					} else {
 						Settings.p("Cannot remove floor!");

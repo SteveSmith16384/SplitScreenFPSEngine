@@ -20,7 +20,7 @@ import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.components.IShowOnHUD;
 import com.scs.multiplayervoxelworld.components.ITargetByAI;
 import com.scs.multiplayervoxelworld.hud.AbstractHUDImage;
-import com.scs.multiplayervoxelworld.hud.HUD;
+import com.scs.multiplayervoxelworld.hud.IHud;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
 import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
@@ -40,17 +40,15 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	public final Vector3f camDir = new Vector3f();
 	private final Vector3f camLeft = new Vector3f();
 
-	public HUD hud;
+	public IHud hud;
 	public MyBetterCharacterControl playerControl;
 	public final int playerID;
 	public IAbility[] ability = new IAbility[2];
 	private Spatial playerGeometry;
 
 	// Stats
-	private int score = 0;
 	private float health;
 	private int side;
-	public int resources = 10;
 
 	private boolean restarting = false;
 	private float restartTime, invulnerableTime;
@@ -81,7 +79,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	}
 
 
-	public void setHUD(HUD _hud) {
+	public void setHUD(IHud _hud) {
 		hud = _hud;
 	}
 
@@ -283,14 +281,14 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 
 	@Override
 	public void hasSuccessfullyHit(IEntity e) {
-		this.incScore(20, "shot " + e.toString());
+		/*this.incScore(20, "shot " + e.toString());
 		//new AbstractHUDImage(game, module, this.hud, "Textures/text/hit.png", this.hud.hud_width, this.hud.hud_height, 2);
 		this.hud.showCollectBox();
 		//numShotsHit++;
-		//calcAccuracy();
+		//calcAccuracy();*/
 	}
 
-
+/*
 	public void incScore(float amt, String reason) {
 		Settings.p("Inc score: +" + amt + ", " + reason);
 		this.score += amt;
@@ -300,7 +298,8 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 			new AbstractHUDImage(game, module, this.hud, "Textures/text/winner.png", this.hud.hud_width, this.hud.hud_height, 10);
 		}
 	}
-
+*/
+	
 	/*
 	@Override
 	public void collidedWith(INotifiedOfCollision other) {
@@ -388,11 +387,11 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		return side;
 	}
 
-
+/*
 	public int getScore() {
 		return score;
 	}
-
+*/
 
 	@Override
 	public Vector3f getBulletStartPosition() {

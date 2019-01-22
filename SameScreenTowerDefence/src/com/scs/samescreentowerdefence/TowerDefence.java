@@ -7,6 +7,7 @@ import com.jme3.renderer.Camera;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
+import com.scs.multiplayervoxelworld.hud.IHud;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
 import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 import com.scs.samescreentowerdefence.blocks.GrassBlock;
@@ -14,6 +15,7 @@ import com.scs.samescreentowerdefence.blocks.LeavesBlock;
 import com.scs.samescreentowerdefence.blocks.StoneBlock;
 import com.scs.samescreentowerdefence.blocks.WoodBlock;
 import com.scs.samescreentowerdefence.entities.TDPlayersAvatar;
+import com.scs.samescreentowerdefence.hud.TowerDefenceHUD;
 
 import mygame.util.Vector3Int;
 import ssmith.lang.NumberFunctions;
@@ -104,6 +106,12 @@ public class TowerDefence extends AbstractGameModule {
 	protected AbstractPlayersAvatar getPlayersAvatar(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, int _playerID,
 			Camera _cam, IInputDevice _input, int _side) {
 		return new TDPlayersAvatar(_game, this, _playerID, _cam, _input, _side);
+	}
+
+
+	@Override
+	protected IHud generateHUD(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, AbstractPlayersAvatar _player, float xBL, float yBL, float w, float h, Camera _cam) {
+		return new TowerDefenceHUD(_game, _module, _player, xBL, yBL, w, h, _cam);
 	}
 
 
