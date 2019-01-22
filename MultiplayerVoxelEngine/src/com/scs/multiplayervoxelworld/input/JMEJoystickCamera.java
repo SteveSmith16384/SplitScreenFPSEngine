@@ -19,11 +19,11 @@ import com.jme3.renderer.Camera;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
 
-public class JoystickCamera extends FlyByCamera implements IInputDevice, RawInputListener {
+public class JMEJoystickCamera extends FlyByCamera implements IInputDevice, RawInputListener {
 
 	private static final float LOOK_UD_ADJ = MultiplayerVoxelWorldMain.properties.GetGamepadUpDownAdjust();// .4f;//.75f;//.5f;
 	private static final float MOVE_SPEED = MultiplayerVoxelWorldMain.properties.GetGamepadMoveSpeed();// 5;
-	private static final float DEADZONE = MultiplayerVoxelWorldMain.properties.GetGamepadDeadZone();// 0.0015f;
+	private static final float MOVE_POS_OFFSET = MultiplayerVoxelWorldMain.properties.GetMovementOffset();// 0.0015f;
 	private static final float TURN_SPEED = MultiplayerVoxelWorldMain.properties.GetGamepadTurnSpeed();// 100f;//150f;
 
 	protected Joystick joystick;
@@ -35,7 +35,7 @@ public class JoystickCamera extends FlyByCamera implements IInputDevice, RawInpu
 	private int id;
 	private float prevLeft, prevRight, prevUp, prevDown;
 
-	public JoystickCamera(Camera _cam, Joystick _joystick, InputManager _inputManager) {
+	public JMEJoystickCamera(Camera _cam, Joystick _joystick, InputManager _inputManager) {
 		super(_cam);
 
 		super.initialUpVec = Vector3f.UNIT_Y;
@@ -123,12 +123,12 @@ public class JoystickCamera extends FlyByCamera implements IInputDevice, RawInpu
 		}
 	}
 
-
+/*
 	@Override
 	public boolean isSelectNextAbilityPressed() {
 		return this.cycleAbility;
 	}
-
+*/
 	@Override
 	public void onAnalog(String name, float value, float tpf) {
 		if (!enabled) {			
@@ -215,7 +215,7 @@ public class JoystickCamera extends FlyByCamera implements IInputDevice, RawInpu
 			//----------- MOVEMENT
 
 		} else if (name.equals("jFLYCAM_Forward" + id)) {
-			value -= DEADZONE;
+			value -= MOVE_POS_OFFSET;
 			if (value > 0) {
 				//Settings.p("value=" + value);
 				joyPos.x = value;
@@ -223,21 +223,21 @@ public class JoystickCamera extends FlyByCamera implements IInputDevice, RawInpu
 				joyPos.x = 0;
 			}
 		} else if (name.equals("jFLYCAM_Backward" + id)) {
-			value -= DEADZONE;
+			value -= MOVE_POS_OFFSET;
 			if (value > 0) {
 				joyPos.x = -value;
 			} else {
 				joyPos.x = 0;
 			}
 		} else if (name.equals("jFLYCAM_StrafeLeft" + id)) {
-			value -= DEADZONE;
+			value -= MOVE_POS_OFFSET;
 			if (value > 0) {
 				joyPos.y = -value;
 			} else {
 				joyPos.y = 0;
 			}
 		} else if (name.equals("jFLYCAM_StrafeRight" + id)) {
-			value -= DEADZONE;
+			value -= MOVE_POS_OFFSET;
 			if (value > 0) {
 				joyPos.y = value;
 			} else {
@@ -318,6 +318,9 @@ public class JoystickCamera extends FlyByCamera implements IInputDevice, RawInpu
 	public void onTouchEvent(TouchEvent evt) {}
 
 
+	// End of Raw Input Listener
+
+
 	@Override
 	public void resetAbilitySwitch(int num) {
 		if (num == 0) {
@@ -331,6 +334,10 @@ public class JoystickCamera extends FlyByCamera implements IInputDevice, RawInpu
 	}
 
 
-	// End of Raw Input Listener
+	@Override
+	public void process(float tpfSecs) {
+		// Do nothing
+	
+	}
 
 }

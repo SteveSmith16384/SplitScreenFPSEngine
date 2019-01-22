@@ -8,7 +8,6 @@ import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
-import com.jme3.input.Joystick;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
@@ -19,6 +18,7 @@ import com.jme3.light.LightList;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
+import com.jme3.post.filters.BloomFilter;
 import com.jme3.post.filters.DepthOfFieldFilter;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
@@ -38,7 +38,7 @@ import com.scs.multiplayervoxelworld.entities.CubeExplosionShard;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
 import com.scs.multiplayervoxelworld.hud.HUD;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
-import com.scs.multiplayervoxelworld.input.JoystickCamera;
+import com.scs.multiplayervoxelworld.input.JamepadCamera;
 import com.scs.multiplayervoxelworld.input.MouseAndKeyboardCamera;
 
 public abstract class AbstractGameModule implements IModule, PhysicsCollisionListener, ActionListener {
@@ -59,7 +59,6 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	public AudioNode audioExplode, audioSmallExplode;
 	private AudioNode audioMusic;
 	public DirectionalLight sun;
-	//public AbstractGame level;
 	private boolean gameOver = false;
 
 	public AbstractGameModule(MultiplayerVoxelWorldMain _game) {
@@ -88,42 +87,43 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		setUpLight();
 		setupLevel();
 
-		Joystick[] joysticks = game.getInputManager().getJoysticks();
+		//Joystick[] joysticks = game.getInputManager().getJoysticks();
 		int numPlayers = game.getNumPlayers();
 
 		// Auto-Create player 0
 		{
 			Camera newCam = this.createCamera(0, numPlayers);
 			IInputDevice input = null;
-			if (Settings.PLAYER1_IS_MOUSE) {
-				input = new MouseAndKeyboardCamera(newCam, game.getInputManager());
-			} else {
+			//if (Settings.PLAYER1_IS_MOUSE) {
+			input = new MouseAndKeyboardCamera(newCam, game.getInputManager());
+			/*} else {
 				if (joysticks.length > 0) {
-					input = new JoystickCamera(newCam, joysticks[0], game.getInputManager());
+					input = new JMEJoystickCamera(newCam, joysticks[0], game.getInputManager());
 				} else {
 					throw new RuntimeException("No gamepads found");
 				}
-			}
+			}*/
 			AbstractPlayersAvatar player = this.addPlayersAvatar(0, newCam, input, 0);
 			HUD hud = this.createHUD(newCam, player);
 			player.setHUD(hud);
 		}
 
 		// Create players for each joystick
-		int joyid = Settings.PLAYER1_IS_MOUSE ? 0 : 1;
-		int playerid = Settings.PLAYER1_IS_MOUSE ? 1 : 0;
-		if (joysticks != null && joysticks.length > 0) {
-			while (joyid < joysticks.length) {
-				Camera newCam = this.createCamera(playerid, numPlayers);
-				JoystickCamera joyCam = new JoystickCamera(newCam, joysticks[joyid], game.getInputManager());
-				AbstractPlayersAvatar player = this.addPlayersAvatar(playerid, newCam, joyCam, 0);
-				HUD hud = this.createHUD(newCam, player);
-				player.setHUD(hud);
+		int joyid = 0;//Settings.PLAYER1_IS_MOUSE ? 0 : 1;
+		int playerid = 1;//Settings.PLAYER1_IS_MOUSE ? 1 : 0;
+		//if (joysticks != null && joysticks.length > 0) {
+		while (joyid < numPlayers-1) {//joysticks.length) {
+			Camera newCam = this.createCamera(playerid, numPlayers);
+			//JMEJoystickCamera joyCam = new JMEJoystickCamera(newCam, joysticks[joyid], game.getInputManager());
+			JamepadCamera jameCam = new JamepadCamera(newCam, game.controllers.getController(joyid));
+			AbstractPlayersAvatar player = this.addPlayersAvatar(playerid, newCam, jameCam, 0);
+			HUD hud = this.createHUD(newCam, player);
+			player.setHUD(hud);
 
-				joyid++;
-				playerid++;
-			}
+			joyid++;
+			playerid++;
 		}
+		//}
 		playerid++;
 
 		/*
@@ -167,8 +167,6 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		audioMusic.setVolume(3);
 		game.getRootNode().attachChild(audioMusic);
 		//audioMusic.play(); // play continuously! - todo - re-add?
-
-		//this.getRootNode().attachChild(SkyFactory.createSky(game.getAssetManager(), "Textures/BrightSky.dds", SkyFactory.EnvMapType.CubeMap));
 
 	}
 
@@ -239,12 +237,15 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		view2.setClearFlags(true, true, true);
 		view2.attachScene(game.getRootNode());
 
-		// Add shadows to this viewport
-		final int SHADOWMAP_SIZE = 2048;
-		DirectionalLightShadowRenderer dlsr = new DirectionalLightShadowRenderer(game.getAssetManager(), SHADOWMAP_SIZE, 2);
-		dlsr.setLight(sun);
-		view2.addProcessor(dlsr);
-
+		{
+			// Add shadows to this viewport
+			final int SHADOWMAP_SIZE = 2048;
+			DirectionalLightShadowRenderer dlsr = new DirectionalLightShadowRenderer(game.getAssetManager(), SHADOWMAP_SIZE, 2);
+			dlsr.setLight(sun);
+			view2.addProcessor(dlsr);
+		}
+		/*
+		{
 		// DepthOfFieldFilter
 		FilterPostProcessor fpp = new FilterPostProcessor(game.getAssetManager());
 		DepthOfFieldFilter dff = new DepthOfFieldFilter();
@@ -252,6 +253,20 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		dff.setFocusRange(20f);
 		fpp.addFilter(dff);
 		view2.addProcessor(fpp);
+		}
+		 */
+		{
+			// Bloom
+			BloomFilter bloom = new BloomFilter();
+			bloom.setDownSamplingFactor(2);
+			bloom.setBlurScale(1.37f);
+			bloom.setExposurePower(3.30f);
+			bloom.setExposureCutOff(0.2f);
+			bloom.setBloomIntensity(2.45f);
+			FilterPostProcessor fpp2 = new FilterPostProcessor(game.getAssetManager());
+			fpp2.addFilter(bloom);
+			view2.addProcessor(fpp2);
+		}
 
 		return newCam;
 	}
@@ -285,7 +300,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 	protected abstract AbstractPlayersAvatar getPlayersAvatar(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side);
 
-	
+
 	private void setUpLight() {
 		// Remove existing lights
 		this.game.getRootNode().getWorldLightList().clear();
@@ -487,4 +502,19 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	public boolean isGameOver() {
 		return this.gameOver;
 	}
+
+
+	@Override
+	public void newController() {
+		// TODO Auto-generated method stub
+
+	}
+
+
+	@Override
+	public void controllerDisconnected() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

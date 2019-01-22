@@ -6,20 +6,22 @@ import com.jme3.app.state.VideoRecorderAppState;
 import com.jme3.input.Joystick;
 import com.jme3.system.AppSettings;
 import com.scs.multiplayervoxelworld.Settings.GameMode;
+import com.scs.multiplayervoxelworld.input.IControllerListener;
+import com.scs.multiplayervoxelworld.input.JamepadControllerManager;
 import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 import com.scs.multiplayervoxelworld.modules.IModule;
 import com.scs.multiplayervoxelworld.modules.StartModule;
 
-public abstract class MultiplayerVoxelWorldMain extends SimpleApplication {
+public abstract class MultiplayerVoxelWorldMain extends SimpleApplication implements IControllerListener {
 
 	//private static final String PROPS_FILE = Settings.NAME.replaceAll(" ", "") + "_settings.txt";
 	public static float MAX_TURN_SPEED = -1;
-	//public static float BASE_SCORE_INC = 0.005f;
 
 	private IModule currentModule, pendingModule;
-	//public static BitmapFont guiFont_small; // = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");
 	public static AppSettings settings;
 	public static MultiplayerVoxelWorldProperties properties;
+	public JamepadControllerManager controllers;;
+	
 	/*
 	public static void main(String[] args) {
 		try {
@@ -78,13 +80,12 @@ public abstract class MultiplayerVoxelWorldMain extends SimpleApplication {
 
 	public abstract AbstractGameModule getGameModule();
 
-
 	public int getNumPlayers() {
-		Joystick[] joysticks = getInputManager().getJoysticks();
+		/*Joystick[] joysticks = getInputManager().getJoysticks();
 		int numPlayers = (Settings.PLAYER1_IS_MOUSE ? 1 : 0) +joysticks.length;
-		return numPlayers;
+		return numPlayers;*/
+		return 1 + controllers.getNumControllers();
 	}
-	
 	
 	@Override
 	public void simpleInitApp() {
@@ -93,6 +94,8 @@ public abstract class MultiplayerVoxelWorldMain extends SimpleApplication {
 		// Clear existing mappings
 		getInputManager().clearMappings();
 		getInputManager().clearRawInputListeners();
+		
+		controllers = new JamepadControllerManager(this);
 		
 		cam.setFrustumPerspective(45f, (float) cam.getWidth() / cam.getHeight(), 0.01f, Settings.CAM_DIST);
 
@@ -132,6 +135,8 @@ public abstract class MultiplayerVoxelWorldMain extends SimpleApplication {
 			pendingModule = null;
 		}
 		
+		controllers.process();
+		
 		currentModule.update(tpf_secs);
 	}
 
@@ -141,4 +146,16 @@ public abstract class MultiplayerVoxelWorldMain extends SimpleApplication {
 	}
 	
 	
+	@Override
+	public void newController(int idx) {
+		currentModule.newController();
+		
+	}
+
+	@Override
+	public void controllerDisconnected(int idx) {
+		currentModule.controllerDisconnected();
+		
+	}
+
 }

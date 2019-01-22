@@ -21,7 +21,7 @@ public class Settings {
 
 	public static final String VERSION = "0.01";
 	public static final boolean SHOW_FLASH_EXPLOSIONS = false;
-	public static final boolean PLAYER1_IS_MOUSE = true;
+	//public static final boolean PLAYER1_IS_MOUSE = true;
 
 	public enum GameMode {Skirmish, KingOfTheHill } // todo - delete these
 	

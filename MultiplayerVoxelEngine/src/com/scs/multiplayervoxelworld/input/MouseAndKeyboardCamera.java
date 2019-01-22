@@ -13,7 +13,7 @@ import com.scs.multiplayervoxelworld.Settings;
 
 public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListener, IInputDevice { 
 
-	private boolean left = false, right = false, up = false, down = false, jump = false, shoot = false, ability1 = false, cycleAbility = false;
+	private boolean left = false, right = false, up = false, down = false, jump = false, ability0 = false, ability1 = false;//, cycleAbility = false;
 
 	public MouseAndKeyboardCamera(Camera cam, InputManager _inputManager) {
 		super(cam);
@@ -34,8 +34,8 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 		inputManager.addListener(this, "Shoot");
 		inputManager.addMapping("Ability1", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
 		inputManager.addListener(this, "Ability1");
-		inputManager.addMapping("CycleAbility", new KeyTrigger(KeyInput.KEY_C));
-		inputManager.addListener(this, "CycleAbility");
+		//inputManager.addMapping("CycleAbility", new KeyTrigger(KeyInput.KEY_C));
+		//inputManager.addListener(this, "CycleAbility");
 
 		// both mouse and button - rotation of cam
 		inputManager.addMapping("mFLYCAM_Left", new MouseAxisTrigger(MouseInput.AXIS_X, true), new KeyTrigger(KeyInput.KEY_LEFT));
@@ -127,11 +127,11 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 		} else if (binding.equals("Jump")) {
 			jump = isPressed;
 		} else if (binding.equals("Shoot")) {
-			shoot = isPressed;
+			ability0 = isPressed;
 		} else if (binding.equals("Ability1")) {
 			ability1 = isPressed;
-		} else if (binding.equals("CycleAbility")) {
-			this.cycleAbility = isPressed;
+		/*} else if (binding.equals("CycleAbility")) {
+			this.cycleAbility = isPressed;*/
 		}		
 	}
 
@@ -169,7 +169,7 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 	@Override
 	public boolean isAbilityPressed(int num) {
 		if (num == 0) {
-			return shoot;
+			return ability0;
 		} else if (num == 1) {
 			return ability1;
 		} else {
@@ -178,23 +178,30 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 	}
 
 
-
+/*
 	@Override
 	public boolean isSelectNextAbilityPressed() {
 		return this.cycleAbility;
 	}        
-
+*/
 
 	@Override
 	public void resetAbilitySwitch(int num) {
 		if (num == 0) {
-			shoot = false;
+			ability0 = false;
 		} else if (num == 1) {
 			ability1 = false;
 		} else {
 			throw new RuntimeException("Todo");
 		}
 
+	}
+
+
+	@Override
+	public void process(float tpfSecs) {
+		// Do nothing
+		
 	}
 
 

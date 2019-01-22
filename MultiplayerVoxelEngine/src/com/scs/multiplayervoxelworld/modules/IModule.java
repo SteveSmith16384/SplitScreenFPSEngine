@@ -8,4 +8,7 @@ public interface IModule {
 	
 	void destroy();
 	
+	void newController();
+	
+	void controllerDisconnected();
 }

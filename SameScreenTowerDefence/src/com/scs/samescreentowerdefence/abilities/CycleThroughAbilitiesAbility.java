@@ -10,7 +10,7 @@ import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
 public class CycleThroughAbilitiesAbility extends AbstractAbility {
 	
-	private ArrayList<IAbility> abilities = new ArrayList();
+	private ArrayList<IAbility> abilities = new ArrayList<>();
 	private int index;
 
 	public CycleThroughAbilitiesAbility(MultiplayerVoxelWorldMain _game, AbstractGameModule module, AbstractPlayersAvatar p) {

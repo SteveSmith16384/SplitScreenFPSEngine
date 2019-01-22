@@ -21,7 +21,7 @@ public class TowerDefenceMain extends MultiplayerVoxelWorldMain {
 			} catch (BackingStoreException e) {
 				e.printStackTrace();
 			}
-			settings.setUseJoysticks(true);
+			//settings.setUseJoysticks(true);
 			settings.setTitle(Settings.NAME + " (v" + Settings.VERSION + ")");
 			if (Settings.RELEASE_MODE) {
 				//todo settings.setSettingsDialogImage("Textures/text/multiplayerarena.png");
@@ -52,7 +52,7 @@ public class TowerDefenceMain extends MultiplayerVoxelWorldMain {
 
 
 	public TowerDefenceMain() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
 

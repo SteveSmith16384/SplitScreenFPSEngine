@@ -5,12 +5,12 @@ public interface IAbility {
 	/**
 	 * Called every interval.  Returns whether the HUD needs updating
 	 */
-	boolean process(float interpol);
+	boolean process(float tpfSecs);
 	
 	/**
 	 * Called when activated
 	 */
-	boolean activate(float interpol);
+	boolean activate(float tpfSecs);
 	
 	String getHudText();
 	

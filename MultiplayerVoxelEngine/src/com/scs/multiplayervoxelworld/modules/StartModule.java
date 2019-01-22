@@ -253,7 +253,21 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 	public void onKeyEvent(KeyInputEvent evt) {}
 	public void onTouchEvent(TouchEvent evt) {}
 
-
 	// End of Raw Input Listener
+
+
+	@Override
+	public void newController() {
+		Settings.p("New controller!");
+		
+	}
+
+
+	@Override
+	public void controllerDisconnected() {
+		Settings.p("Controller Disconnected!");
+		
+	}
+
 
 }

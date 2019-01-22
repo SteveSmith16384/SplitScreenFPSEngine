@@ -55,10 +55,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	private boolean restarting = false;
 	private float restartTime, invulnerableTime;
 	private float timeSinceLastMove = 0;
-
-	private int numShots = 0;
-	private int numShotsHit = 0;
-
+	
 	public AbstractHUDImage gamepadTest;
 
 	public AbstractPlayersAvatar(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side) {
@@ -289,7 +286,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		this.incScore(20, "shot " + e.toString());
 		//new AbstractHUDImage(game, module, this.hud, "Textures/text/hit.png", this.hud.hud_width, this.hud.hud_height, 2);
 		this.hud.showCollectBox();
-		numShotsHit++;
+		//numShotsHit++;
 		//calcAccuracy();
 	}
 

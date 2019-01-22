@@ -52,13 +52,13 @@ public class JMEModelFunctions {
 		if (ship == null) {
 			System.err.println("WARNING!! Loading original model! " + path);
 			ship = assetManager.loadModel(path);
-			File file = new File("assets/Models/" + j30_path);
+			/*File file = new File("assets/Models/" + j30_path);
 			BinaryExporter exporter = BinaryExporter.getInstance();
 			try {
 				exporter.save(ship, file);
 			} catch (IOException e) {
 				e.printStackTrace();
-			}
+			}*/
 		}
 		return ship;
 	}

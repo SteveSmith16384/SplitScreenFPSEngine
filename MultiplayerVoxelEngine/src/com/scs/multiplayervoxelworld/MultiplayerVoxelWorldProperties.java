@@ -26,8 +26,8 @@ public class MultiplayerVoxelWorldProperties extends MyProperties {
 	}
 
 
-	public float GetGamepadDeadZone() {
-		return super.getPropertyAsFloat("GamepadDeadZone", 0.0015f);
+	public float GetMovementOffset() {
+		return super.getPropertyAsFloat("GamepadMovementOffset", 0.0015f);
 	}
 
 
