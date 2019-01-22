@@ -27,6 +27,7 @@
 	<classpathentry kind="lib" path="libs/mp3/jl1.0.jar"/>
 	<classpathentry kind="lib" path="libs/mp3/mp3spi1.9.4.jar"/>
 	<classpathentry kind="lib" path="libs/mp3/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="libs/Jamepad.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Blocky"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
