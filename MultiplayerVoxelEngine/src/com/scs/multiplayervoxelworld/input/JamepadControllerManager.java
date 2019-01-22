@@ -25,6 +25,7 @@ public class JamepadControllerManager {
 		return controllers.getControllerIndex(idx);
 	}
 
+	
 	public void process() {
 		numControllers = 0;
 		controllers.update();
@@ -34,6 +35,7 @@ public class JamepadControllerManager {
 				numControllers++;
 				if (!exists[i]) {
 					exists[i] = true;
+					// todo - store current values for each axis
 					this.listener.newController(i); // todo - only send to listener once we know the total number of controllers!
 				}
 				/*try {
@@ -68,6 +70,13 @@ public class JamepadControllerManager {
 	*/
 	
 	public int getNumControllers() {
-		return numControllers;
+		int num = 0;
+		for (int i=0 ; i<NUM_CONTROLLERS ; i++) {
+			ControllerIndex controllerAtIndex = controllers.getControllerIndex(i);
+			if(controllerAtIndex.isConnected()) {
+				num++;
+			}
+		}
+		return num;
 	}
 }

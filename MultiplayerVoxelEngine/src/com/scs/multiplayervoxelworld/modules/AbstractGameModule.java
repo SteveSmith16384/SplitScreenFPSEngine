@@ -115,7 +115,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			Camera newCam = this.createCamera(playerid, numPlayers);
 			//JMEJoystickCamera joyCam = new JMEJoystickCamera(newCam, joysticks[joyid], game.getInputManager());
 			JamepadCamera jameCam = new JamepadCamera(newCam, game.controllers.getController(joyid));
-			AbstractPlayersAvatar player = this.addPlayersAvatar(playerid, newCam, jameCam, 0);
+			AbstractPlayersAvatar player = this.addPlayersAvatar(playerid, newCam, jameCam, 0); // todo - create players, then add input and cam based on num players
 			IHud hud = this.createHUD(newCam, player);
 			player.setHUD(hud);
 

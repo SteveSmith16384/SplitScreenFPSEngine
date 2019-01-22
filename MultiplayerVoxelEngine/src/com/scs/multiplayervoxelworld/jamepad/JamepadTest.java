@@ -41,11 +41,11 @@ public class JamepadTest {
 
 	private void updateController(ControllerIndex c) throws ControllerUnpluggedException {
 		for (ControllerAxis a : ControllerAxis.values()) {
-			Settings.p("Axis:" + a + "=" + c.getAxisState(a));
-			//progressBar.setValue((int) (c.getAxisState(a) * 100));
+			if (c.getAxisState(a) != 0) {
+				Settings.p("Axis:" + a + "=" + c.getAxisState(a));
+			}
 		}
 		for (ControllerButton b : ControllerButton.values()) {
-			//button.setEnabled(c.isButtonPressed(b));
 			if (c.isButtonPressed(b)) {
 				Settings.p("Button " + b + " pressed");
 			}
