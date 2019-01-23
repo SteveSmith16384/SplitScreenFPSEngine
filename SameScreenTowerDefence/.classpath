@@ -23,7 +23,6 @@
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/Blocky"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/MultiplayerVoxelWorld"/>
-	<classpathentry kind="lib" path="/MultiplayerVoxelWorld/libs/jttf/jME-TTF-v2.12.jar"/>
-	<classpathentry kind="lib" path="/MultiplayerVoxelWorld/libs/jttf/sfntly.jar"/>
+	<classpathentry kind="lib" path="/MultiplayerVoxelWorld/libs/Jamepad.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

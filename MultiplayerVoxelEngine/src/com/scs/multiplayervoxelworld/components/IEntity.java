@@ -2,10 +2,10 @@ package com.scs.multiplayervoxelworld.components;
 
 public interface IEntity {
 
-	void actuallyAdd();
+	void actuallyAdd(); // Any code to run when actually added
 	
-	void markForRemoval();
+	//void markForRemoval();
 	
-	void actuallyRemove();
+	void actuallyRemove();  // Any code to run when actually removed
 
 }

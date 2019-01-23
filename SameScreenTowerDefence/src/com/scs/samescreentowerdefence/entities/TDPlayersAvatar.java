@@ -8,9 +8,10 @@ import com.scs.multiplayervoxelworld.input.IInputDevice;
 import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 import com.scs.samescreentowerdefence.abilities.CycleThroughAbilitiesAbility;
 import com.scs.samescreentowerdefence.abilities.PlaceTurretAbility;
+import com.scs.samescreentowerdefence.components.ITargetByAI;
 import com.scs.samescreentowerdefence.models.RobotModel;
 
-public class TDPlayersAvatar extends AbstractPlayersAvatar {
+public class TDPlayersAvatar extends AbstractPlayersAvatar implements ITargetByAI {
 
 	private int score = 0;
 	public int resources = 10;

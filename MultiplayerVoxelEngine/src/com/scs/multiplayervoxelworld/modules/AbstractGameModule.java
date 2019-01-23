@@ -19,6 +19,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.BloomFilter;
+import com.jme3.post.filters.RadialBlurFilter;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
@@ -114,8 +115,8 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		while (joyid < numPlayers-1) {//joysticks.length) {
 			Camera newCam = this.createCamera(playerid, numPlayers);
 			//JMEJoystickCamera joyCam = new JMEJoystickCamera(newCam, joysticks[joyid], game.getInputManager());
-			JamepadCamera jameCam = new JamepadCamera(newCam, game.controllers.getController(joyid));
-			AbstractPlayersAvatar player = this.addPlayersAvatar(playerid, newCam, jameCam, 0); // todo - create players, then add input and cam based on num players
+			JamepadCamera jameCam = new JamepadCamera(newCam, game.controllerManager.getController(joyid), game.controllerManager.getInitialStates(joyid));
+			AbstractPlayersAvatar player = this.addPlayersAvatar(playerid, newCam, jameCam, 0);
 			IHud hud = this.createHUD(newCam, player);
 			player.setHUD(hud);
 
@@ -267,6 +268,14 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			view2.addProcessor(fpp2);
 		}
 
+/*		{
+			// Radial Blur
+			RadialBlurFilter bloom = new RadialBlurFilter();
+			FilterPostProcessor fpp2 = new FilterPostProcessor(game.getAssetManager());
+			fpp2.addFilter(bloom);
+			view2.addProcessor(fpp2);
+		}
+*/
 		return newCam;
 	}
 
