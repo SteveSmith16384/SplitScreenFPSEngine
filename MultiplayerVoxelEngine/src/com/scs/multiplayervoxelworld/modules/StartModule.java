@@ -2,13 +2,8 @@ package com.scs.multiplayervoxelworld.modules;
 
 import java.util.List;
 
-import com.atr.jme.font.TrueTypeFont;
-import com.atr.jme.font.TrueTypeMesh;
-import com.atr.jme.font.asset.TrueTypeKeyMesh;
-import com.atr.jme.font.shape.TrueTypeContainer;
-import com.atr.jme.font.util.StringContainer;
-import com.atr.jme.font.util.Style;
 import com.jme3.audio.AudioNode;
+import com.jme3.font.BitmapFont;
 import com.jme3.input.JoystickButton;
 import com.jme3.input.KeyInput;
 import com.jme3.input.RawInputListener;
@@ -72,20 +67,6 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 		view2.setClearFlags(true, true, true);
 		view2.attachScene(game.getRootNode());
 
-		/*FilterPostProcessor fpp = new FilterPostProcessor(game.getAssetManager());
-		if (Settings.NEON) {
-			BloomFilter bloom = new BloomFilter(BloomFilter.GlowMode.Scene);
-			bloom.setEnabled(true);
-			bloom.setBloomIntensity(50f);
-			bloom.setBlurScale(10f);
-			fpp.addFilter(bloom);
-
-			// test filter
-			//RadialBlurFilter blur = new RadialBlurFilter();
-			//fpp.addFilter(blur);
-		}
-		view2.addProcessor(fpp);*/
-
 		game.getInputManager().addMapping(QUIT, new KeyTrigger(KeyInput.KEY_ESCAPE));
 		game.getInputManager().addListener(this, QUIT);
 		game.getInputManager().addMapping(START, new KeyTrigger(KeyInput.KEY_0));
@@ -110,8 +91,8 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 			game.getGuiNode().attachChild(pic);
 		}
 
-		TrueTypeKeyMesh ttkSmall = new TrueTypeKeyMesh("Fonts/ERASBD.TTF", Style.Bold, 15);
-		TrueTypeFont ttfSmall = (TrueTypeMesh)game.getAssetManager().loadAsset(ttkSmall);
+		BitmapFont guiFont_small = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");
+
 /*
 		TrueTypeContainer screenText = ttfSmall.getFormattedText(new StringContainer(ttfSmall, "KILL THE N00BS!"), ColorRGBA.Green);
 		//screenText.setColor(ColorRGBA.Green);
@@ -125,13 +106,14 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 		screenText.setLocalTranslation(20, game.getCamera().getHeight()-20, 0);
 		game.getGuiNode().attachChild(screenText);
 */
+		/*
 		TrueTypeContainer gameModeSpecificText = ttfSmall.getFormattedText(new StringContainer(ttfSmall, "KILL THE N00BS!"), ColorRGBA.Yellow);
 		//gameModeSpecificText.setColor(ColorRGBA.Green);
 		gameModeSpecificText.setLocalTranslation(20, game.getCamera().getHeight()-160, 0);
 		game.getGuiNode().attachChild(gameModeSpecificText);
-
+*/
 		game.getRootNode().attachChild(robot);
-		gameModeSpecificText.setText(gameMode.toString() + ": " + gameModeSpecificText.getText() + "\n\nThe winner is the first player to 100 points.");
+		/*gameModeSpecificText.setText(gameMode.toString() + ": " + gameModeSpecificText.getText() + "\n\nThe winner is the first player to 100 points.");
 		gameModeSpecificText.updateGeometry();
 		
 		TrueTypeContainer numPlayerText = ttfSmall.getFormattedText(new StringContainer(ttfSmall, "KILL THE N00BS!"), ColorRGBA.Magenta);
@@ -139,7 +121,7 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 		numPlayerText.updateGeometry();
 		numPlayerText.setLocalTranslation(20, game.getCamera().getHeight()-280, 0);
 		game.getGuiNode().attachChild(numPlayerText);
-
+*/
 		// Audio
 		audioMusic = new AudioNode(game.getAssetManager(), "Sound/n-Dimensions (Main Theme - Retro Ver.ogg", true, false);
 		//audioMusic.setLooping(true);  // activate continuous playing.  BROKEN!

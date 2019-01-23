@@ -49,13 +49,13 @@ public class AbstractHUDImage extends Picture implements IEntity, IProcessable {
 		
 	}
 
-
+/*
 	@Override
 	public void markForRemoval() {
 		// TODO Auto-generated method stub
 		
 	}
-
+*/
 
 	@Override
 	public void actuallyRemove() {

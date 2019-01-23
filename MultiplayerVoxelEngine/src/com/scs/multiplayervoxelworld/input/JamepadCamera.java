@@ -1,26 +1,28 @@
 package com.scs.multiplayervoxelworld.input;
 
-import com.jme3.input.CameraInput;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
+import com.scs.multiplayervoxelworld.jamepad.JamepadFullAxisState;
 import com.studiohartman.jamepad.ControllerAxis;
 import com.studiohartman.jamepad.ControllerButton;
 import com.studiohartman.jamepad.ControllerIndex;
 import com.studiohartman.jamepad.ControllerUnpluggedException;
 
-public class JamepadCamera implements IInputDevice { // extends FlyByCamera  
+public class JamepadCamera implements IInputDevice {  
 
 	private Camera cam;
 	private ControllerIndex c;
-
+	private JamepadFullAxisState states;
+	
 	private Vector3f initialUpVec; 
 	protected float rotationSpeed = 1f;
 
-	public JamepadCamera(Camera _cam, ControllerIndex _c) {
+	public JamepadCamera(Camera _cam, ControllerIndex _c, JamepadFullAxisState _states) {
 		cam = _cam;
 		c = _c;
+		states = _states;
 		
         initialUpVec = cam.getUp().clone();
 

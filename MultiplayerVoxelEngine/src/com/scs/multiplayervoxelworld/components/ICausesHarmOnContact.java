@@ -13,5 +13,4 @@ public interface ICausesHarmOnContact {
 	
 	ICanShoot getShooter();
 	
-	//void markForRemoval();
 }

@@ -3,12 +3,7 @@ package com.scs.samescreentowerdefence.hud;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.atr.jme.font.TrueTypeFont;
-import com.atr.jme.font.TrueTypeMesh;
-import com.atr.jme.font.asset.TrueTypeKeyMesh;
-import com.atr.jme.font.shape.TrueTypeContainer;
-import com.atr.jme.font.util.StringContainer;
-import com.atr.jme.font.util.Style;
+import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
@@ -49,8 +44,9 @@ public class TowerDefenceHUD extends Node implements IHud, IEntity, IProcessable
 	private ColorRGBA dam_box_col = new ColorRGBA(1, 0, 0, 0.0f);
 	private boolean process_damage_box;
 	private List<Picture> targetting_reticules = new ArrayList<>();
-	private TrueTypeContainer textArea; // For showing all other stats 
+	private BitmapText textArea; // For showing all other stats 
 
+	
 	public TowerDefenceHUD(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, AbstractPlayersAvatar _player, float xBL, float yBL, float w, float h, Camera _cam) {
 		super("HUD");
 
@@ -67,39 +63,15 @@ public class TowerDefenceHUD extends Node implements IHud, IEntity, IProcessable
 		health.setLocalTranslation(10, hud_height-20, 0);
 		this.attachChild(health);
 		this.setHealth(100);*/
-		
+		/*
 		TrueTypeKeyMesh ttkSmall = new TrueTypeKeyMesh("Fonts/ERASBD.TTF", Style.Bold, (int)30);
 		TrueTypeFont ttfSmall = (TrueTypeMesh)_game.getAssetManager().loadAsset(ttkSmall);
 		textArea = ttfSmall.getFormattedText(new StringContainer(ttfSmall, "KILL THE N00BS!"), ColorRGBA.Yellow);
 		textArea.setLocalTranslation(10, (int)(cam.getHeight()*1), 0);
 		this.attachChild(textArea);
-
-/*
-		score = new BitmapText(font_small, false);
-		score.setLocalTranslation(10, hud_height-15, 0);
-		this.attachChild(score);
-		this.setScore(0);
-
-		abilityGun = new BitmapText(font_small, false);
-		abilityGun.setColor(ColorRGBA.Green);
-		abilityGun.setLocalTranslation(10, hud_height-30, 0);
-		this.attachChild(abilityGun);
-
-		abilityOther = new BitmapText(font_small, false);
-		abilityOther.setColor(ColorRGBA.Green);
-		abilityOther.setLocalTranslation(10, hud_height-45, 0);
-		this.attachChild(abilityOther);
-
-		accuracy = new BitmapText(font_small, false);
-		accuracy.setLocalTranslation(10, hud_height-75, 0);
-		this.attachChild(accuracy);
-
-		helpText = new BitmapText(font_small, false);
-		abilityOther.setColor(ColorRGBA.Red);
-		helpText.setText(GameModule.HELP_TEXT);
-		helpText.setLocalTranslation(10, hud_height-75, 0);
-		this.attachChild(helpText);
 */
+
+
 		// Damage box
 		{
 			Material mat = new Material(game.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
@@ -204,7 +176,7 @@ public class TowerDefenceHUD extends Node implements IHud, IEntity, IProcessable
 		//todo str.append("Resources: " + player.resources + "\n");
 		//str.append("Score: " + player.getScore() + "\n");
 		this.textArea.setText(str.toString());
-		this.textArea.updateGeometry();
+		//this.textArea.updateGeometry();
 	}
 
 
@@ -274,13 +246,13 @@ public class TowerDefenceHUD extends Node implements IHud, IEntity, IProcessable
 		
 	}
 
-
+/*
 	@Override
 	public void markForRemoval() {
 		// TODO Auto-generated method stub
 		
 	}
-
+*/
 
 	@Override
 	public void actuallyRemove() {

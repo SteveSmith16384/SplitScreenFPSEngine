@@ -87,5 +87,9 @@ public abstract class AbstractPhysicalEntity extends AbstractEntity {
 		rigidBodyControl.applyImpulse(dir, Vector3f.ZERO);//.applyCentralForce(dir);
 	}
 
+	
+	public void setLocation(Vector3f pos) {
+		this.rigidBodyControl.setPhysicsLocation(pos);
+	}
 
 }

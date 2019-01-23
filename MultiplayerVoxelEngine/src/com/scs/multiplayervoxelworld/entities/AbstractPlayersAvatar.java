@@ -387,15 +387,16 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		return side;
 	}
 
-/*
-	public int getScore() {
-		return score;
-	}
-*/
 
 	@Override
 	public Vector3f getBulletStartPosition() {
 		return this.getMainNode().getWorldBound().getCenter();
+	}
+
+
+	@Override
+	public boolean isAlive() {
+		return health > 0;
 	}
 
 }

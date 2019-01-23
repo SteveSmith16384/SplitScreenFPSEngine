@@ -1,55 +1,66 @@
 package com.scs.multiplayervoxelworld.input;
 
+import java.util.HashMap;
+
+import com.scs.multiplayervoxelworld.jamepad.JamepadFullAxisState;
+import com.studiohartman.jamepad.ControllerAxis;
 import com.studiohartman.jamepad.ControllerIndex;
 import com.studiohartman.jamepad.ControllerManager;
 
 public class JamepadControllerManager {
 
-	public static int NUM_CONTROLLERS = 4;
+	public static int MAX_CONTROLLERS = 4;
 
 	private IControllerListener listener;
-	private ControllerManager controllers;
-	private boolean[] exists = new boolean[NUM_CONTROLLERS];
-	private int numControllers;
+	private ControllerManager controllerManager;
+	//private boolean[] exists = new boolean[MAX_CONTROLLERS];
+	//private int numControllers;
+	
+	private HashMap<Integer, ControllerIndex> controllers = new HashMap<Integer, ControllerIndex>();
+	private HashMap<Integer, JamepadFullAxisState> controllerStates = new HashMap<Integer, JamepadFullAxisState>();
+
 	
 	public JamepadControllerManager(IControllerListener _listener) {
 		listener = _listener;
 		
-		controllers = new ControllerManager(NUM_CONTROLLERS);
-		controllers.initSDLGamepad();
+		controllerManager = new ControllerManager(MAX_CONTROLLERS);
+		controllerManager.initSDLGamepad();
 
 	}
 
 	
 	public ControllerIndex getController(int idx) {
-		return controllers.getControllerIndex(idx);
+		return controllers.get(idx);
 	}
 
-	public void process() {
-		numControllers = 0;
-		controllers.update();
-		for (int i=0 ; i<NUM_CONTROLLERS ; i++) {
-			ControllerIndex controllerAtIndex = controllers.getControllerIndex(i);
+	
+	public JamepadFullAxisState getInitialStates(int idx) {
+		return controllerStates.get(idx);
+	}
+
+	
+	public void checkControllers() {
+		controllerManager.update();
+		for (int i=0 ; i<MAX_CONTROLLERS ; i++) {
+			ControllerIndex controllerAtIndex = controllerManager.getControllerIndex(i);
 			if(controllerAtIndex.isConnected()) {
-				numControllers++;
-				if (!exists[i]) {
-					exists[i] = true;
+				if (!controllers.containsKey(i)) {
+					controllers.put(i, controllerAtIndex);
+					JamepadFullAxisState states = new JamepadFullAxisState(controllerAtIndex);
+					controllerStates.put(i, states);
 					this.listener.newController(i); // todo - only send to listener once we know the total number of controllers!
 				}
-				/*try {
-					updateController(controllerAtIndex);
-				} catch (ControllerUnpluggedException e) {
-					e.printStackTrace();
-				}*/
 			} else {
-				if (exists[i]) {
-					exists[i] = false;
+				if (controllers.containsKey(i)) {
+					controllers.remove(i);
+					controllerStates.remove(i);
 					this.listener.controllerDisconnected(i); // todo - only send to listener once we know the total number of controllers!
 				}
 			}
 		}
 		
 	}
+	
 /*
 	private void updateController(ControllerIndex c) throws ControllerUnpluggedException {
 		for (ControllerAxis a : ControllerAxis.values()) {
@@ -68,6 +79,6 @@ public class JamepadControllerManager {
 	*/
 	
 	public int getNumControllers() {
-		return numControllers;
+		return this.controllers.size();
 	}
 }

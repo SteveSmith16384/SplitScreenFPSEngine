@@ -1,9 +1,7 @@
 package com.scs.multiplayervoxelworld;
 
-import com.atr.jme.font.asset.TrueTypeLoader;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.VideoRecorderAppState;
-import com.jme3.input.Joystick;
 import com.jme3.system.AppSettings;
 import com.scs.multiplayervoxelworld.Settings.GameMode;
 import com.scs.multiplayervoxelworld.input.IControllerListener;
@@ -20,7 +18,7 @@ public abstract class MultiplayerVoxelWorldMain extends SimpleApplication implem
 	private IModule currentModule, pendingModule;
 	public static AppSettings settings;
 	public static MultiplayerVoxelWorldProperties properties;
-	public JamepadControllerManager controllers;;
+	public JamepadControllerManager controllerManager;;
 	
 	/*
 	public static void main(String[] args) {
@@ -84,18 +82,18 @@ public abstract class MultiplayerVoxelWorldMain extends SimpleApplication implem
 		/*Joystick[] joysticks = getInputManager().getJoysticks();
 		int numPlayers = (Settings.PLAYER1_IS_MOUSE ? 1 : 0) +joysticks.length;
 		return numPlayers;*/
-		return 1 + controllers.getNumControllers();
+		return 1 + controllerManager.getNumControllers();
 	}
 	
 	@Override
 	public void simpleInitApp() {
-		getAssetManager().registerLoader(TrueTypeLoader.class, "ttf");
+		//getAssetManager().registerLoader(TrueTypeLoader.class, "ttf");
 
 		// Clear existing mappings
 		getInputManager().clearMappings();
 		getInputManager().clearRawInputListeners();
 		
-		controllers = new JamepadControllerManager(this);
+		controllerManager = new JamepadControllerManager(this);
 		
 		cam.setFrustumPerspective(45f, (float) cam.getWidth() / cam.getHeight(), 0.01f, Settings.CAM_DIST);
 
@@ -135,7 +133,7 @@ public abstract class MultiplayerVoxelWorldMain extends SimpleApplication implem
 			pendingModule = null;
 		}
 		
-		controllers.process();
+		controllerManager.checkControllers();
 		
 		currentModule.update(tpf_secs);
 	}
