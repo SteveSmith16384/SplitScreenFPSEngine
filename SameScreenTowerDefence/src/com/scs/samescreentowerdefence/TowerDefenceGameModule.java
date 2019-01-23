@@ -6,6 +6,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
+import com.scs.multiplayervoxelworld.entities.FloorOrCeiling;
 import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
 import com.scs.multiplayervoxelworld.hud.IHud;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
@@ -20,7 +21,7 @@ import com.scs.samescreentowerdefence.hud.TowerDefenceHUD;
 import mygame.util.Vector3Int;
 import ssmith.lang.NumberFunctions;
 
-public class TowerDefence extends AbstractGameModule {
+public class TowerDefenceGameModule extends AbstractGameModule {
 
 	private static final int MAP_SIZE = 100;
 
@@ -30,17 +31,20 @@ public class TowerDefence extends AbstractGameModule {
 
 	private long nextPhaseInterval;
 	
-	public TowerDefence(MultiplayerVoxelWorldMain _game) {
+	public TowerDefenceGameModule(MultiplayerVoxelWorldMain _game) {
 		super(_game);
 	}
 
 	
 	@Override
 	public void setupLevel() {
+		FloorOrCeiling floor = new FloorOrCeiling(game, this, 0, 0, 0, MAP_SIZE, 1f, MAP_SIZE, "Textures/blocks/grass.jpg");
+		this.addEntity(floor);
+		
 		VoxelTerrainEntity vte = new VoxelTerrainEntity(game, this, 0, 0, 0, new Vector3Int(MAP_SIZE, 20, MAP_SIZE), 16, 1, 1);
 		this.addEntity(vte);
 
-		vte.addRectRange_Blocks(new Vector3Int(0, 0, 0), new Vector3Int(MAP_SIZE, 1, MAP_SIZE), GrassBlock.class);
+		//vte.addRectRange_Blocks(new Vector3Int(0, 0, 0), new Vector3Int(MAP_SIZE, 1, MAP_SIZE), GrassBlock.class);
 		//vte.addRectRange_Blocks(BlockCodes.SAND, new Vector3Int(10, 1, 10), new Vector3Int(1, 1, 1));
 		for (int i=0 ; i<20 ; i++) {
 			Point p = this.getRandomBlockPos();

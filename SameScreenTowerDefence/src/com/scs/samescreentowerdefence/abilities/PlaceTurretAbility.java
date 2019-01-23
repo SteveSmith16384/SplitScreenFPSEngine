@@ -10,9 +10,8 @@ import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.abilities.AbstractAbility;
 import com.scs.multiplayervoxelworld.entities.AbstractPhysicalEntity;
 import com.scs.multiplayervoxelworld.entities.AbstractPlayersAvatar;
-import com.scs.multiplayervoxelworld.entities.VoxelTerrainEntity;
+import com.scs.multiplayervoxelworld.entities.FloorOrCeiling;
 import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
-import com.scs.samescreentowerdefence.TDSettings;
 import com.scs.samescreentowerdefence.entities.Turret;
 
 public class PlaceTurretAbility extends AbstractAbility {
@@ -44,12 +43,12 @@ public class PlaceTurretAbility extends AbstractAbility {
 			if (result.getDistance() > 1f) { // So we don't build a block on top of ourselves
 				Geometry g = result.getGeometry();
 				AbstractPhysicalEntity ape = (AbstractPhysicalEntity)AbstractGameModule.getEntityFromSpatial(g);
-				if (ape instanceof VoxelTerrainEntity) {
-					VoxelTerrainEntity vte = (VoxelTerrainEntity)ape;
+				if (ape instanceof FloorOrCeiling) {
+					//VoxelTerrainEntity vte = (VoxelTerrainEntity)ape;
 					Vector3f position = result.getContactPoint();
 					if (position.y == 1f) { // Must be on floor
 						//Vector3Int blockPosition = blocks.getPointedBlockLocation(position, true);
-						Turret turret = new Turret(game, module, position, this.player.getSide());
+						new Turret(game, module, position, this.player.getSide());
 						//todo player.resources -= TDSettings.TURRET_COST;
 						return true;
 					}

@@ -13,18 +13,15 @@ import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.abilities.IAbility;
 import com.scs.multiplayervoxelworld.components.IAffectedByPhysics;
 import com.scs.multiplayervoxelworld.components.ICanShoot;
-import com.scs.multiplayervoxelworld.components.ICausesHarmOnContact;
-import com.scs.multiplayervoxelworld.components.IDamagable;
 import com.scs.multiplayervoxelworld.components.IEntity;
 import com.scs.multiplayervoxelworld.components.IProcessable;
 import com.scs.multiplayervoxelworld.components.IShowOnHUD;
-import com.scs.multiplayervoxelworld.components.ITargetByAI;
 import com.scs.multiplayervoxelworld.hud.AbstractHUDImage;
 import com.scs.multiplayervoxelworld.hud.IHud;
 import com.scs.multiplayervoxelworld.input.IInputDevice;
 import com.scs.multiplayervoxelworld.modules.AbstractGameModule;
 
-public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity implements IProcessable, ICanShoot, IShowOnHUD, ITargetByAI, IAffectedByPhysics, IDamagable {
+public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity implements IProcessable, ICanShoot, IShowOnHUD, IAffectedByPhysics {
 
 	// Player dimensions
 	public static final float PLAYER_HEIGHT = 1.5f;
@@ -44,14 +41,13 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	public MyBetterCharacterControl playerControl;
 	public final int playerID;
 	public IAbility[] ability = new IAbility[2];
-	private Spatial playerGeometry;
+	protected Spatial playerGeometry; // todo - rename
 
 	// Stats
-	private float health;
 	private int side;
 
-	private boolean restarting = false;
-	private float restartTime, invulnerableTime;
+	protected boolean restarting = false;
+	protected float restartTime, invulnerableTime;
 	private float timeSinceLastMove = 0;
 	
 	public AbstractHUDImage gamepadTest;
@@ -63,7 +59,6 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		cam = _cam;
 		input = _input;
 		//hud = _hud;
-		health = 100;//module.getPlayersHealth(playerID);
 		side = _side;
 
 		int pid = playerID;
@@ -137,10 +132,10 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 
 		if (!this.restarting) {
 			// Have we fallen off the edge
-			if (this.playerControl.getPhysicsRigidBody().getPhysicsLocation().y < -1f) { // scs catching here after died!
+			/*if (this.playerControl.getPhysicsRigidBody().getPhysicsLocation().y < -1f) { // scs catching here after died!
 				died("Too low");
 				return;
-			}
+			}*/
 
 			timeSinceLastMove += tpf;
 
@@ -247,7 +242,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		this.playerControl.jump();
 	}
 
-
+/*
 	public void hitByBullet(ICausesHarmOnContact bullet) {
 		if (invulnerableTime <= 0) {
 			float dam = bullet.getDamageCaused();
@@ -265,19 +260,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 			Settings.p("Player hit but is currently invulnerable");
 		}
 	}
-
-
-	private void died(String reason) {
-		Settings.p("Player died: " + reason);
-		this.restarting = true;
-		this.restartTime = MultiplayerVoxelWorldMain.properties.GetRestartTimeSecs();
-		//invulnerableTime = RESTART_DUR*3;
-
-		// Move us below the map
-		Vector3f pos = this.getMainNode().getWorldTranslation().clone();//.floor_phy.getPhysicsLocation().clone();
-		playerControl.warp(pos);
-	}
-
+*/
 
 	@Override
 	public void hasSuccessfullyHit(IEntity e) {
@@ -341,12 +324,6 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 
 
 	@Override
-	public void damaged(float amt, String reason) {
-		died(reason);
-	}
-
-
-	@Override
 	public void actuallyRemove() {
 		super.actuallyRemove();
 		this.module.bulletAppState.getPhysicsSpace().remove(this.playerControl);
@@ -393,10 +370,12 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		return this.getMainNode().getWorldBound().getCenter();
 	}
 
+/*
 
+/*
 	@Override
-	public boolean isAlive() {
-		return health > 0;
+	public void attackedBy(ITargetByAI other) {
+		// Do nothing
 	}
-
+*/
 }

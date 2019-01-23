@@ -58,7 +58,7 @@ public class TowerDefenceMain extends MultiplayerVoxelWorldMain {
 
 	@Override
 	public AbstractGameModule getGameModule() {
-		return new TowerDefence(this);
+		return new TowerDefenceGameModule(this);
 	}
 
 }
