@@ -50,7 +50,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	protected float restartTime, invulnerableTime;
 	private float timeSinceLastMove = 0;
 	
-	public AbstractHUDImage gamepadTest;
+	//public AbstractHUDImage gamepadTest;
 
 	public AbstractPlayersAvatar(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side) {
 		super(_game, _module, "Player");
@@ -105,9 +105,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 */
 
 	public void moveToStartPostion(boolean invuln) {
-		//Point p = module.level.getPlayerStartPos(playerID);
 		Vector3f warpPos = module.getPlayerStartPos(playerID);//new Vector3f(p.x, module.mapData.getRespawnHeight(), p.y);
-		//Settings.p("Scheduling player to start position: " + warpPos);
 		this.playerControl.warp(warpPos);
 		if (invuln) {
 			invulnerableTime = MultiplayerVoxelWorldMain.properties.GetInvulnerableTimeSecs();
@@ -122,6 +120,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 			if (this.restartTime <= 0) {
 				this.moveToStartPostion(true);
 				restarting = false;
+				//killed = false;
 				return;
 			}
 		}
@@ -148,6 +147,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 						if (this.ability[num].onlyActivateOnClick()) {
 							input.resetAbilitySwitch(num);
 						}
+						this.hud.refresh();
 					}
 					//this.hud.setAbilityGunText(this.ability[num].getHudText()); // todo - use diff hud fields
 				}
@@ -195,7 +195,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 
 		// Position camera at node
 		Vector3f vec = getMainNode().getWorldTranslation();
-		cam.setLocation(new Vector3f(vec.x, vec.y + (PLAYER_HEIGHT/2), vec.z));
+		cam.setLocation(new Vector3f(vec.x, vec.y + (PLAYER_HEIGHT/2), vec.z)); // scs todo - position above wiz
 
 		// Rotate us to point in the direction of the camera
 		Vector3f lookAtPoint = cam.getLocation().add(cam.getDirection().mult(10));
@@ -207,8 +207,6 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		// Move cam fwd so we don't see ourselves
 		cam.setLocation(cam.getLocation().add(cam.getDirection().mult(PLAYER_RAD)));
 		cam.update();
-
-		//this.input.resetFlags();
 
 		walkDirection.set(0, 0, 0);
 	}
@@ -242,25 +240,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		this.playerControl.jump();
 	}
 
-/*
-	public void hitByBullet(ICausesHarmOnContact bullet) {
-		if (invulnerableTime <= 0) {
-			float dam = bullet.getDamageCaused();
-			if (dam > 0) {
-				Settings.p("Player hit by bullet");
-				module.doExplosion(this.mainNode.getWorldTranslation(), this);
-				module.audioExplode.play();
-				//this.health -= dam;
-				//this.hud.setHealth(this.health);
-				this.hud.showDamageBox();
 
-				died("hit by " + bullet.toString());
-			}
-		} else {
-			Settings.p("Player hit but is currently invulnerable");
-		}
-	}
-*/
 
 	@Override
 	public void hasSuccessfullyHit(IEntity e) {
@@ -271,43 +251,6 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		//calcAccuracy();*/
 	}
 
-/*
-	public void incScore(float amt, String reason) {
-		Settings.p("Inc score: +" + amt + ", " + reason);
-		this.score += amt;
-		//this.hud.setScore(this.score);
-
-		if (this.score >= 100) {
-			new AbstractHUDImage(game, module, this.hud, "Textures/text/winner.png", this.hud.hud_width, this.hud.hud_height, 10);
-		}
-	}
-*/
-	
-	/*
-	@Override
-	public void collidedWith(INotifiedOfCollision other) {
-		if (other instanceof ICausesHarmOnContact) {
-			ICausesHarmOnContact bullet = (ICausesHarmOnContact)other;
-			if (bullet.getShooter() != null) {
-				if (bullet.getShooter() != this) {
-					if (Settings.PVP || !(bullet.getShooter() instanceof PlayersAvatar)) {
-						this.hitByBullet(bullet);
-						bullet.getShooter().hasSuccessfullyHit(this);
-					}
-				}
-			}
-		} else if (other instanceof Collectable) {
-			Collectable col = (Collectable)other;
-			col.markForRemoval();
-			if (!col.collected) {
-				this.incScore(10, "Collectable");
-				this.hud.showCollectBox();
-				//module.createCollectable();
-			}
-
-		}
-	}
-	 */
 
 	@Override
 	public void applyForce(Vector3f force) {
@@ -370,12 +313,5 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		return this.getMainNode().getWorldBound().getCenter();
 	}
 
-/*
 
-/*
-	@Override
-	public void attackedBy(ITargetByAI other) {
-		// Do nothing
-	}
-*/
 }

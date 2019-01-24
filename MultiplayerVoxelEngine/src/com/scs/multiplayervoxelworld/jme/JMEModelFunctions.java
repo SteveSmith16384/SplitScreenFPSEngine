@@ -1,15 +1,11 @@
 package com.scs.multiplayervoxelworld.jme;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.jme3.animation.AnimControl;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.AssetNotFoundException;
 import com.jme3.asset.TextureKey;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.collision.CollisionResults;
-import com.jme3.export.binary.BinaryExporter;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
@@ -186,18 +182,20 @@ public class JMEModelFunctions {
 	 */
 
 
-	public static void listAllAnimations(Node s) {
-		int ch = s.getChildren().size();
-		for (int i=0 ; i<ch ; i++) {
-			Spatial sp = s.getChild(i);
-			if (sp instanceof Node) {
-				listAllAnimations((Node)sp);
+	public static void listAllAnimations(Spatial s) {
+		if (s.getNumControls() > 0) {
+			AnimControl control = s.getControl(AnimControl.class);
+			if (control != null) {
+				System.out.println("Anims on '" + s + "': " + control.getAnimationNames());
 			}
-			if (sp.getNumControls() > 0) {
-				AnimControl control = sp.getControl(AnimControl.class);
-				if (control != null) {
-					System.out.println("Anims on '" + sp + "': " + control.getAnimationNames());
-				}
+		}
+
+		if (s instanceof Node) {
+			Node node = (Node)s;
+			int ch = node.getChildren().size();
+			for (int i=0 ; i<ch ; i++) {
+				Spatial sp = node.getChild(i);
+				listAllAnimations(sp);
 			}
 		}
 	}

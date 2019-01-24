@@ -246,13 +246,6 @@ public class TowerDefenceHUD extends Node implements IHud, IEntity, IProcessable
 		
 	}
 
-/*
-	@Override
-	public void markForRemoval() {
-		// TODO Auto-generated method stub
-		
-	}
-*/
 
 	@Override
 	public void actuallyRemove() {
@@ -263,5 +256,11 @@ public class TowerDefenceHUD extends Node implements IHud, IEntity, IProcessable
 	@Override
 	public Spatial getSpatial() {
 		return this;
+	}
+
+
+	@Override
+	public void refresh() {
+		updateTextArea();		
 	}
 }

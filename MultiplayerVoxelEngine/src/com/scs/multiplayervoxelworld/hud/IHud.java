@@ -6,6 +6,8 @@ public interface IHud {
 
 	Spatial getSpatial();
 	
+	void refresh();
+	
 	void showDamageBox();
 	
 	void showCollectBox();

@@ -84,11 +84,11 @@ public class VoxelTerrainEntity extends AbstractPhysicalEntity implements IProce
 	}
 
 
-	public void addRectRange_Actual(Vector3Int pos, Vector3Int size, Class<? extends IBlock> blockType) {
+	public void addRectRange_Actual(Vector3f pos, Vector3f size, Class<? extends IBlock> blockType) {
 		int scale = (int)(1/blockSize);
 		pos.multLocal(scale);
 		size.multLocal(scale);
-		this.addRectRange_Blocks(pos, size, blockType);
+		this.addRectRange_Blocks(new Vector3Int(pos), new Vector3Int(size), blockType);
 	}
 
 
@@ -103,15 +103,15 @@ public class VoxelTerrainEntity extends AbstractPhysicalEntity implements IProce
 	}
 
 
-	public void addSphereRange_Blocks(Vector3f worldPos, int size, Class<? extends IBlock> blockType) {
+	public void addSphereRange_Actual(Vector3f worldPos, float size, Class<? extends IBlock> blockType) {
 		Vector3Int blockPos = new Vector3Int(worldPos.subtract(this.mainNode.getWorldTranslation()).multLocal(1/blockSize));
-		blocks.setBlockAreaBySphere(blockPos, size, blockType);
+		blocks.setBlockAreaBySphere(blockPos, (int)(size/blockSize), blockType);
 	}
 
 
-	public void removeSphereRange_Blocks(Vector3f worldPos, int size) {
+	public void removeSphereRange_Actual(Vector3f worldPos, float size) {
 		Vector3Int blockPos = new Vector3Int(worldPos.subtract(this.mainNode.getWorldTranslation()).multLocal(1/blockSize));
-		blocks.setBlockAreaBySphere(blockPos, size, null);
+		blocks.setBlockAreaBySphere(blockPos, (int)(size/blockSize), null);
 	}
 
 

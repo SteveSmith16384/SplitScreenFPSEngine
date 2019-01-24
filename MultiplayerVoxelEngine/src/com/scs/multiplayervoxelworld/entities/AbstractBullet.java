@@ -6,6 +6,7 @@ import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.scs.multiplayervoxelworld.MultiplayerVoxelWorldMain;
 import com.scs.multiplayervoxelworld.Settings;
 import com.scs.multiplayervoxelworld.components.ICanShoot;
@@ -27,7 +28,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 
 		Vector3f origin = shooter.getBulletStartPosition().clone();
 
-		Node laserBeam = getBulletModel();// BeamLaserModel.Factory(game.getAssetManager(), origin, origin.add(shooter.getShootDir().multLocal(1)), ColorRGBA.Pink);
+		Spatial laserBeam = createBulletModel();// BeamLaserModel.Factory(game.getAssetManager(), origin, origin.add(shooter.getShootDir().multLocal(1)), ColorRGBA.Pink);
 
 		this.mainNode.attachChild(laserBeam);
 		laserBeam.setLocalTranslation(origin.add(shooter.getShootDir().multLocal(AbstractPlayersAvatar.PLAYER_RAD*3)));
@@ -51,11 +52,14 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 
 	}
 
-	protected abstract Node getBulletModel();
+	protected abstract Spatial createBulletModel();
 
 
 	@Override
 	public void process(float tpf) {
+		if (Settings.DEBUG_FIREBALL_POS) {
+			new DebuggingSphere(game, module, this.getLocation());
+		}
 		this.timeLeft -= tpf;
 		if (this.timeLeft < 0) {
 			this.markForRemoval();
@@ -76,6 +80,12 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 			CubeExplosionShard.Factory(game, module, this.getLocation(), 3);
 			module.audioSmallExplode.play();
 			this.markForRemoval(); // Don't bounce
+			
+			// Make hole in walls
+			if (other instanceof VoxelTerrainEntity) {
+				VoxelTerrainEntity vte = (VoxelTerrainEntity)other;
+				vte.removeSphereRange_Actual(this.getLocation(), 1f);
+			}
 		}
 	}
 
