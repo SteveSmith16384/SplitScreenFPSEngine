@@ -14,11 +14,9 @@ public interface IInputDevice {
 
 	boolean isJumpPressed();
 
-	//boolean isShootPressed();
-
 	boolean isAbilityPressed(int num);
 	
-	//boolean isSelectNextAbilityPressed();
+	boolean isCycleAbilityPressed(boolean fwd);
 
 	void resetAbilitySwitch(int num); // Turn off ability, so not on constantly
 }

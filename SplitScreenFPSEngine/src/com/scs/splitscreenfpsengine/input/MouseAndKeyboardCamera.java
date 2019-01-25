@@ -13,12 +13,16 @@ import com.scs.splitscreenfpsengine.Settings;
 
 public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListener, IInputDevice { 
 
-	private boolean left = false, right = false, up = false, down = false, jump = false, ability0 = false, ability1 = false;//, cycleAbility = false;
+	private boolean left = false, right = false, up = false, down = false, jump = false;
+	private boolean ability0 = false, ability1 = false;
+	private boolean cycleFwd = false, cycleBwd = false;
 
 	public MouseAndKeyboardCamera(Camera cam, InputManager _inputManager) {
 		super(cam);
-
+		
 		this.inputManager = _inputManager;
+
+		inputManager.clearMappings();
 
 		inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
 		inputManager.addListener(this, "Left");
@@ -51,9 +55,11 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 		inputManager.addListener(this, "mFLYCAM_Down");
 
 		// mouse only - zoom in/out with wheel, and rotate drag
-		/*inputManager.addMapping("FLYCAM_ZoomIn", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false));
+		inputManager.addMapping("FLYCAM_ZoomIn", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, false));
+		inputManager.addListener(this, "FLYCAM_ZoomIn");
 		inputManager.addMapping("FLYCAM_ZoomOut", new MouseAxisTrigger(MouseInput.AXIS_WHEEL, true));
-		inputManager.addMapping("FLYCAM_RotateDrag", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));*/
+		inputManager.addListener(this, "FLYCAM_ZoomOut");
+		//inputManager.addMapping("FLYCAM_RotateDrag", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));*/
 
 		// keyboard only WASD for movement and WZ for rise/lower height
 		/*inputManager.addMapping("FLYCAM_StrafeLeft", new KeyTrigger(KeyInput.KEY_A));
@@ -77,8 +83,10 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 
 	@Override
 	public void onAnalog(String name, float value, float tpf) {
+		Settings.p("name=" + name + ", value=" + value);
+
 		if (!enabled) {
-			return;
+			return; //this.inputManager
 		}
 
 		if (Settings.DEBUG_ROTATING_CAM) {
@@ -107,11 +115,14 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 			riseCamera(value);
 		}else if (name.equals("FLYCAM_Lower")){
 			riseCamera(-value);
-		}else if (name.equals("FLYCAM_ZoomIn")){
-			zoomCamera(value);
-		}else if (name.equals("FLYCAM_ZoomOut")){
-			zoomCamera(-value);
-		}*/
+		}*/ else if (name.equals("FLYCAM_ZoomIn")){
+			//zoomCamera(value);
+			cycleFwd = true;
+			cycleBwd = false;
+		} else if (name.equals("FLYCAM_ZoomOut")){
+			cycleFwd = false;
+			cycleBwd = true;
+		}
 	}
 
 
@@ -130,8 +141,6 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 			ability0 = isPressed;
 		} else if (binding.equals("Ability1")) {
 			ability1 = isPressed;
-		/*} else if (binding.equals("CycleAbility")) {
-			this.cycleAbility = isPressed;*/
 		}		
 	}
 
@@ -178,12 +187,12 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 	}
 
 
-/*
+	/*
 	@Override
 	public boolean isSelectNextAbilityPressed() {
 		return this.cycleAbility;
 	}        
-*/
+	 */
 
 	@Override
 	public void resetAbilitySwitch(int num) {
@@ -194,15 +203,26 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 		} else {
 			throw new RuntimeException("Todo");
 		}
-
 	}
 
 
 	@Override
 	public void process(float tpfSecs) {
 		// Do nothing
-		
+
 	}
 
+
+	@Override
+	public boolean isCycleAbilityPressed(boolean fwd) {
+		if (fwd && this.cycleFwd) {
+			cycleFwd = false;
+			return true;
+		} else if (!fwd && this.cycleBwd) {
+			cycleBwd = false;
+			return true;
+		}
+		return false;
+	}
 
 }

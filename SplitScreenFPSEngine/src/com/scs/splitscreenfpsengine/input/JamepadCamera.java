@@ -145,4 +145,11 @@ public class JamepadCamera implements IInputDevice {
 		cam.setAxes(q);
 	}
 
+	
+	@Override
+	public boolean isCycleAbilityPressed(boolean fwd) {
+		// todo
+		return false;
+		
+	}
 }

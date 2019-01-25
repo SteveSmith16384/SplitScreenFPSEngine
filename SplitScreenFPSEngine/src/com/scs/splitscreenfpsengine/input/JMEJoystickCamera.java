@@ -340,4 +340,11 @@ public class JMEJoystickCamera extends FlyByCamera implements IInputDevice, RawI
 	
 	}
 
+
+	@Override
+	public boolean isCycleAbilityPressed(boolean fwd) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

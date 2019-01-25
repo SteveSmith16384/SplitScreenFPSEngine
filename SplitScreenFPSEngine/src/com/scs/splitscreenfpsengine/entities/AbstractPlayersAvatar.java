@@ -16,7 +16,6 @@ import com.scs.splitscreenfpsengine.components.ICanShoot;
 import com.scs.splitscreenfpsengine.components.IEntity;
 import com.scs.splitscreenfpsengine.components.IProcessable;
 import com.scs.splitscreenfpsengine.components.IShowOnHUD;
-import com.scs.splitscreenfpsengine.hud.AbstractHUDImage;
 import com.scs.splitscreenfpsengine.hud.IHud;
 import com.scs.splitscreenfpsengine.input.IInputDevice;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
@@ -30,7 +29,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 
 	public final Vector3f walkDirection = new Vector3f();
 	public float moveSpeed = Settings.PLAYER_MOVE_SPEED;
-	private IInputDevice input;
+	protected IInputDevice input;
 
 	//Temporary vectors used on each frame.
 	public Camera cam;
@@ -58,7 +57,6 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		playerID = _playerID;
 		cam = _cam;
 		input = _input;
-		//hud = _hud;
 		side = _side;
 
 		int pid = playerID;

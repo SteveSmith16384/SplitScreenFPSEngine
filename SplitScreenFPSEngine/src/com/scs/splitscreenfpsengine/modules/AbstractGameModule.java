@@ -1,6 +1,7 @@
 package com.scs.splitscreenfpsengine.modules;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,6 +9,8 @@ import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
+import com.jme3.collision.CollisionResult;
+import com.jme3.collision.CollisionResults;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
@@ -16,12 +19,13 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.light.Light;
 import com.jme3.light.LightList;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.BloomFilter;
-import com.jme3.post.filters.RadialBlurFilter;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
@@ -528,4 +532,47 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	}
 
 	
+	public AbstractPhysicalEntity getWithRay(AbstractPlayersAvatar wiz, Class clazz) {
+		Ray ray = new Ray(wiz.getCamera().getLocation(), wiz.getCamera().getDirection());
+
+
+		CollisionResults results = new CollisionResults();
+		game.getRootNode().collideWith(ray, results);
+
+		Iterator<CollisionResult> it = results.iterator();
+		while (it.hasNext()) {
+			CollisionResult col = it.next();
+			Geometry g = col.getGeometry();
+			AbstractPhysicalEntity ape = (AbstractPhysicalEntity)AbstractGameModule.getEntityFromSpatial(g);
+			if (ape != null) {
+				if (ape.getClass() == clazz) {
+					return ape;
+				}
+			}
+		}
+		return null;
+	}
+
+
+	public Vector3f getPointWithRay(AbstractPlayersAvatar wiz, Class clazz) {
+		Ray ray = new Ray(wiz.getCamera().getLocation(), wiz.getCamera().getDirection());
+
+
+		CollisionResults results = new CollisionResults();
+		game.getRootNode().collideWith(ray, results);
+
+		Iterator<CollisionResult> it = results.iterator();
+		while (it.hasNext()) {
+			CollisionResult col = it.next();
+			Geometry g = col.getGeometry();
+			AbstractPhysicalEntity ape = (AbstractPhysicalEntity)AbstractGameModule.getEntityFromSpatial(g);
+			if (ape != null) {
+				if (ape.getClass() == clazz) {
+					return col.getContactPoint();
+				}
+			}
+		}
+		return null;
+	}
+
 }
