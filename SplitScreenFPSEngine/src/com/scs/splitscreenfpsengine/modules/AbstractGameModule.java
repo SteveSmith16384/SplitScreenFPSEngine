@@ -517,14 +517,13 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 	@Override
 	public void newController() {
-		// TODO Auto-generated method stub
-
+		// Do nothing
 	}
 
 
 	@Override
 	public void controllerDisconnected() {
-		// TODO Auto-generated method stub
+		// todo - kill avatar
 
 	}
 

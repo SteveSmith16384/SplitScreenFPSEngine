@@ -11,4 +11,6 @@ public interface IHud {
 	void showDamageBox();
 	
 	void showCollectBox();
+	
+	void appendToLog(String s);
 }

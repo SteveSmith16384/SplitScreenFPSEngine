@@ -263,4 +263,10 @@ public class TowerDefenceHUD extends Node implements IHud, IEntity, IProcessable
 	public void refresh() {
 		updateTextArea();		
 	}
+
+
+	@Override
+	public void appendToLog(String s) {
+		//todo log_ta.addLine(s);
+	}
 }

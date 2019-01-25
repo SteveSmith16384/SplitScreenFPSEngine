@@ -18,7 +18,7 @@ import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 public abstract class AbstractBullet extends AbstractPhysicalEntity implements ICausesHarmOnContact, IProcessable, PhysicsTickListener, INotifiedOfCollision {
 
 	public ICanShoot shooter;
-	private float timeLeft = 3;
+	private float timeLeft = 6;
 	private boolean forceApplied = false;
 
 	public AbstractBullet(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, String name, ICanShoot _shooter) {
@@ -28,17 +28,17 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 
 		Vector3f origin = shooter.getBulletStartPosition().clone();
 
-		Spatial laserBeam = createBulletModel();// BeamLaserModel.Factory(game.getAssetManager(), origin, origin.add(shooter.getShootDir().multLocal(1)), ColorRGBA.Pink);
+		Spatial bullet = createBulletModel();// BeamLaserModel.Factory(game.getAssetManager(), origin, origin.add(shooter.getShootDir().multLocal(1)), ColorRGBA.Pink);
 
-		this.mainNode.attachChild(laserBeam);
-		laserBeam.setLocalTranslation(origin.add(shooter.getShootDir().multLocal(AbstractPlayersAvatar.PLAYER_RAD*3)));
-		laserBeam.getLocalTranslation().y -= 0.1f; // Drop bullets slightly
+		this.mainNode.attachChild(bullet);
+		mainNode.setLocalTranslation(origin.add(shooter.getShootDir().multLocal(AbstractPlayersAvatar.PLAYER_RAD*2)));
+		mainNode.getLocalTranslation().y -= 0.1f; // Drop bullets slightly
 
 		rigidBodyControl = new RigidBodyControl(.1f);
 		mainNode.addControl(rigidBodyControl);
 		//rigidBodyControl.setGravity(Vector3f.ZERO);
 
-		laserBeam.setUserData(Settings.ENTITY, this);
+		bullet.setUserData(Settings.ENTITY, this);
 		rigidBodyControl.setUserObject(this);
 
 		module.addEntity(this);
@@ -58,7 +58,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 	@Override
 	public void process(float tpf) {
 		if (Settings.DEBUG_FIREBALL_POS) {
-			new DebuggingSphere(game, module, this.getLocation());
+			//new DebuggingSphere(game, module, this.getLocation());
 		}
 		this.timeLeft -= tpf;
 		if (this.timeLeft < 0) {
@@ -76,7 +76,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 	@Override
 	public void notifiedOfCollision(AbstractPhysicalEntity other) {
 		if (other != this.shooter) {
-			//Settings.p("Laser collided with " + other);
+			Settings.p(this + " collided with " + other);
 			CubeExplosionShard.Factory(game, module, this.getLocation(), 3);
 			module.audioSmallExplode.play();
 			this.markForRemoval(); // Don't bounce

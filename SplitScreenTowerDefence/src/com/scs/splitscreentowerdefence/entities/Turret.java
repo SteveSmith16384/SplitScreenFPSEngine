@@ -89,7 +89,7 @@ public class Turret extends AbstractPhysicalEntity implements IShowOnHUD, IProce
 					closestDist = dist;
 					closest = golem;
 				}
-				return (Golem)e;
+				//return (Golem)e;
 			}
 		}
 		return closest;
