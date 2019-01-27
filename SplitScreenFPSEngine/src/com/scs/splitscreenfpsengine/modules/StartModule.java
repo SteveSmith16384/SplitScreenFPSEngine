@@ -112,7 +112,7 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 		gameModeSpecificText.setLocalTranslation(20, game.getCamera().getHeight()-160, 0);
 		game.getGuiNode().attachChild(gameModeSpecificText);
 */
-		game.getRootNode().attachChild(robot);
+//		game.getRootNode().attachChild(robot);
 		/*gameModeSpecificText.setText(gameMode.toString() + ": " + gameModeSpecificText.getText() + "\n\nThe winner is the first player to 100 points.");
 		gameModeSpecificText.updateGeometry();
 		

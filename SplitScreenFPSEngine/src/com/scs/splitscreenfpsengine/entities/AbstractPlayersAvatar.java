@@ -49,8 +49,6 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	protected float restartTime, invulnerableTime;
 	private float timeSinceLastMove = 0;
 	
-	//public AbstractHUDImage gamepadTest;
-
 	public AbstractPlayersAvatar(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side) {
 		super(_game, _module, "Player");
 
@@ -112,9 +110,11 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 
 
 	@Override
-	public void process(float tpf) {
+	public void process(float tpfSecs) {
+		input.process(tpfSecs);
+		
 		if (this.restarting) {
-			restartTime -= tpf;
+			restartTime -= tpfSecs;
 			if (this.restartTime <= 0) {
 				this.moveToStartPostion(true);
 				restarting = false;
@@ -124,7 +124,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		}
 
 		if (invulnerableTime >= 0) {
-			invulnerableTime -= tpf;
+			invulnerableTime -= tpfSecs;
 		}
 
 		if (!this.restarting) {
@@ -134,14 +134,14 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 				return;
 			}*/
 
-			timeSinceLastMove += tpf;
+			timeSinceLastMove += tpfSecs;
 
 			for (int num=0 ; num < 2 ; num++) {
 				if (this.ability[num] != null) {
-					ability[num].process(tpf);
+					ability[num].process(tpfSecs);
 					if (input.isAbilityPressed(num)) { // Must be before we set the walkDirection & moveSpeed, as this method may affect it
 						//Settings.p("Using " + this.ability.toString());
-						this.ability[num].activate(tpf);
+						this.ability[num].activate(tpfSecs);
 						if (this.ability[num].onlyActivateOnClick()) {
 							input.resetAbilitySwitch(num);
 						}

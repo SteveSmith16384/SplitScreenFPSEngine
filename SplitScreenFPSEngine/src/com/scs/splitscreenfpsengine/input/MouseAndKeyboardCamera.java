@@ -22,8 +22,6 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 		
 		this.inputManager = _inputManager;
 
-		inputManager.clearMappings();
-
 		inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
 		inputManager.addListener(this, "Left");
 		inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
@@ -83,7 +81,7 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 
 	@Override
 	public void onAnalog(String name, float value, float tpf) {
-		Settings.p("name=" + name + ", value=" + value);
+		//Settings.p("name=" + name + ", value=" + value);
 
 		if (!enabled) {
 			return; //this.inputManager

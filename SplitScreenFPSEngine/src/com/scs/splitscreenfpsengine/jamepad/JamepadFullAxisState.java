@@ -6,10 +6,10 @@ import com.studiohartman.jamepad.ControllerAxis;
 import com.studiohartman.jamepad.ControllerIndex;
 import com.studiohartman.jamepad.ControllerUnpluggedException;
 
-public class JamepadFullAxisState {
+public class JamepadFullAxisState { // todo - extend hashmap
 
 	private ControllerIndex cont;
-	private HashMap<ControllerAxis, Float> states = new HashMap<ControllerAxis, Float>();
+	public HashMap<ControllerAxis, Float> states = new HashMap<ControllerAxis, Float>();
 	
 	public JamepadFullAxisState(ControllerIndex c) {
 		cont = c;

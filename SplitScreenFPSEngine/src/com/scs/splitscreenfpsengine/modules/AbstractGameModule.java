@@ -74,6 +74,8 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 	@Override
 	public void init() {
+		game.getInputManager().clearMappings();
+
 		game.getInputManager().addMapping(QUIT, new KeyTrigger(KeyInput.KEY_ESCAPE));
 		game.getInputManager().addListener(this, QUIT);            
 

@@ -146,14 +146,17 @@ public abstract class MultiplayerVoxelWorldMain extends SimpleApplication implem
 	
 	@Override
 	public void newController(int idx) {
+		if (currentModule != null) {
 		currentModule.newController();
-		
+		}
 	}
 
+	
 	@Override
 	public void controllerDisconnected(int idx) {
+		if (currentModule != null) {
 		currentModule.controllerDisconnected();
-		
+		}		
 	}
 
 }

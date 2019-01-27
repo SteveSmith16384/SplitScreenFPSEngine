@@ -77,6 +77,7 @@ public class JamepadControllerManager {
 	*/
 	
 	public int getNumControllers() {
+		this.checkControllers();
 		return this.controllers.size();
 	}
 }

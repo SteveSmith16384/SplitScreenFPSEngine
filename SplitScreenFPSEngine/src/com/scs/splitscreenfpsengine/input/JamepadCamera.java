@@ -31,7 +31,7 @@ public class JamepadCamera implements IInputDevice {
 	@Override
 	public float getFwdValue() {
 		try {
-			float f = c.getAxisState(ControllerAxis.LEFTY);
+			float f = c.getAxisState(ControllerAxis.LEFTY) - states.states.get(ControllerAxis.LEFTY);
 			if (f > 0) {
 				return f;
 			}
@@ -108,10 +108,10 @@ public class JamepadCamera implements IInputDevice {
         }*/
 
 		try {
-			float f = c.getAxisState(ControllerAxis.RIGHTX);
-			this.rotateCamera(f, initialUpVec);
+			float f = c.getAxisState(ControllerAxis.RIGHTX) - states.states.get(ControllerAxis.RIGHTX);
+			this.rotateCamera(-f, initialUpVec);
 			
-			float f2 = c.getAxisState(ControllerAxis.RIGHTY);
+			float f2 = c.getAxisState(ControllerAxis.RIGHTY) - states.states.get(ControllerAxis.RIGHTY);
 			this.rotateCamera(f2, cam.getLeft());
 			
 		} catch (ControllerUnpluggedException e) {
