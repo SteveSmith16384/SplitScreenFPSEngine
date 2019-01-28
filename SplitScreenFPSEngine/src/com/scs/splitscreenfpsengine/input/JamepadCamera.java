@@ -4,6 +4,7 @@ import com.jme3.math.Matrix3f;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
+import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.jamepad.JamepadFullAxisState;
 import com.studiohartman.jamepad.ControllerAxis;
 import com.studiohartman.jamepad.ControllerButton;
@@ -52,7 +53,8 @@ public class JamepadCamera implements IInputDevice {
 	@Override
 	public float getBackValue() {
 		try {
-			float f = c.getAxisState(ControllerAxis.LEFTY) - initialStates.states.get(ControllerAxis.LEFTY);
+			float f = -1 * c.getAxisState(ControllerAxis.LEFTY) - initialStates.states.get(ControllerAxis.LEFTY);
+			Settings.p("Bwd:" + f);
 			if (f > getDeadzone()) {
 				return f;
 			}
@@ -65,7 +67,7 @@ public class JamepadCamera implements IInputDevice {
 	@Override
 	public float getStrafeLeftValue() {
 		try {
-			float f = c.getAxisState(ControllerAxis.LEFTX) - initialStates.states.get(ControllerAxis.LEFTX);
+			float f = -1 * c.getAxisState(ControllerAxis.LEFTX) - initialStates.states.get(ControllerAxis.LEFTX);
 			if (f > getDeadzone()) {
 				return f;
 			}
@@ -79,7 +81,7 @@ public class JamepadCamera implements IInputDevice {
 	public float getStrafeRightValue() {
 		try {
 			float f = c.getAxisState(ControllerAxis.LEFTX) - initialStates.states.get(ControllerAxis.LEFTX);
-			if (f < -getDeadzone()) {
+			if (f > getDeadzone()) {
 				return f;
 			}
 		} catch (ControllerUnpluggedException e) {
@@ -128,13 +130,13 @@ public class JamepadCamera implements IInputDevice {
 	@Override
 	public void process(float tpfSecs) {
 		try {
-			{
+			{ // todo - check deadzone!
 				float f = c.getAxisState(ControllerAxis.RIGHTX) - initialStates.states.get(ControllerAxis.RIGHTX);
 				this.rotateCamera(-f * tpfSecs, initialUpVec);
 			}
 			{
 				float f2 = c.getAxisState(ControllerAxis.RIGHTY) - initialStates.states.get(ControllerAxis.RIGHTY);
-				this.rotateCamera(f2 * tpfSecs, cam.getLeft());
+				this.rotateCamera(-f2 * tpfSecs, cam.getLeft());
 			}
 		} catch (ControllerUnpluggedException e) {
 			e.printStackTrace();
@@ -150,7 +152,7 @@ public class JamepadCamera implements IInputDevice {
 	 */
 	protected void rotateCamera(float value, Vector3f axis){
 		Matrix3f mat = new Matrix3f();
-		mat.fromAngleNormalAxis(rotationSpeed * value, axis);
+		mat.fromAngleNormalAxis(10f * value, axis);
 
 		Vector3f up = cam.getUp();
 		Vector3f left = cam.getLeft();

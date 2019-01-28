@@ -150,7 +150,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		}
 		 */
 
-		audioExplode = new AudioNode(game.getAssetManager(), "Sound/explode.wav", false);
+		/*audioExplode = new AudioNode(game.getAssetManager(), "Sound/explode.wav", false);
 		audioExplode.setPositional(false);
 		audioExplode.setLooping(false);
 		//audio_gun.setVolume(2);
@@ -161,15 +161,15 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		audioSmallExplode.setLooping(false);
 		//audio_gun.setVolume(2);
 		game.getRootNode().attachChild(audioSmallExplode);
-
+*/
 		// Audio
-		audioMusic = new AudioNode(game.getAssetManager(), "Sound/n-Dimensions (Main Theme - Retro Ver.ogg", true, false);
+/*		audioMusic = new AudioNode(game.getAssetManager(), "Sound/Dark Descent (Extended Cut).mp3", true, false);
 		audioMusic.setLooping(true);  // activate continuous playing
 		audioMusic.setPositional(false);
 		audioMusic.setVolume(3);
 		game.getRootNode().attachChild(audioMusic);
 		//audioMusic.play(); // play continuously! - todo - re-add?
-
+*/
 	}
 
 
