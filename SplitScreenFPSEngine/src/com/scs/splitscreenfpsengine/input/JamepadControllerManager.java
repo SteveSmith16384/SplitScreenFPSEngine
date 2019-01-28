@@ -3,7 +3,6 @@ package com.scs.splitscreenfpsengine.input;
 import java.util.HashMap;
 
 import com.scs.splitscreenfpsengine.jamepad.JamepadFullAxisState;
-import com.studiohartman.jamepad.ControllerAxis;
 import com.studiohartman.jamepad.ControllerIndex;
 import com.studiohartman.jamepad.ControllerManager;
 

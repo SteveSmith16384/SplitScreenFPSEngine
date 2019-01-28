@@ -8,7 +8,7 @@ import com.scs.splitscreenfpsengine.input.IControllerListener;
 import com.scs.splitscreenfpsengine.input.JamepadControllerManager;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 import com.scs.splitscreenfpsengine.modules.IModule;
-import com.scs.splitscreenfpsengine.modules.StartModule;
+import com.scs.splitscreenfpsengine.modules.AbstractStartModule;
 
 public abstract class MultiplayerVoxelWorldMain extends SimpleApplication implements IControllerListener {
 
@@ -78,6 +78,8 @@ public abstract class MultiplayerVoxelWorldMain extends SimpleApplication implem
 
 	public abstract AbstractGameModule getGameModule();
 
+	public abstract AbstractStartModule getStartModule();
+
 	public int getNumPlayers() {
 		/*Joystick[] joysticks = getInputManager().getJoysticks();
 		int numPlayers = (Settings.PLAYER1_IS_MOUSE ? 1 : 0) +joysticks.length;
@@ -98,7 +100,7 @@ public abstract class MultiplayerVoxelWorldMain extends SimpleApplication implem
 		cam.setFrustumPerspective(45f, (float) cam.getWidth() / cam.getHeight(), 0.01f, Settings.CAM_DIST);
 
 		if (Settings.RELEASE_MODE) {
-			currentModule = new StartModule(this, GameMode.Skirmish);
+			currentModule = this.getStartModule();// new StartModule(this, GameMode.Skirmish);
 		} else {
 			currentModule = this.getGameModule();
 		}

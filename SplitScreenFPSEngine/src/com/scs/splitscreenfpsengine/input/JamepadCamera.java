@@ -12,27 +12,35 @@ import com.studiohartman.jamepad.ControllerUnpluggedException;
 
 public class JamepadCamera implements IInputDevice {  
 
+	private static final float DEADZONE = 0.1f;
+
 	private Camera cam;
 	private ControllerIndex c;
-	private JamepadFullAxisState states;
-	
-	private Vector3f initialUpVec; 
-	protected float rotationSpeed = 1f;
+	private JamepadFullAxisState initialStates;
+
+	private Vector3f initialUpVec;
+	protected float rotationSpeed = .1f;
 
 	public JamepadCamera(Camera _cam, ControllerIndex _c, JamepadFullAxisState _states) {
 		cam = _cam;
 		c = _c;
-		states = _states;
-		
-        initialUpVec = cam.getUp().clone();
+		initialStates = _states;
+
+		initialUpVec = cam.getUp().clone();
 
 	}
+
+
+	private float getDeadzone() {
+		return DEADZONE;
+	}
+
 
 	@Override
 	public float getFwdValue() {
 		try {
-			float f = c.getAxisState(ControllerAxis.LEFTY) - states.states.get(ControllerAxis.LEFTY);
-			if (f > 0) {
+			float f = c.getAxisState(ControllerAxis.LEFTY) - initialStates.states.get(ControllerAxis.LEFTY);
+			if (f > getDeadzone()) {
 				return f;
 			}
 		} catch (ControllerUnpluggedException e) {
@@ -43,27 +51,50 @@ public class JamepadCamera implements IInputDevice {
 
 	@Override
 	public float getBackValue() {
-		// TODO Auto-generated method stub
+		try {
+			float f = c.getAxisState(ControllerAxis.LEFTY) - initialStates.states.get(ControllerAxis.LEFTY);
+			if (f > getDeadzone()) {
+				return f;
+			}
+		} catch (ControllerUnpluggedException e) {
+			e.printStackTrace();
+		}
 		return 0;
 	}
 
 	@Override
 	public float getStrafeLeftValue() {
-		// TODO Auto-generated method stub
+		try {
+			float f = c.getAxisState(ControllerAxis.LEFTX) - initialStates.states.get(ControllerAxis.LEFTX);
+			if (f > getDeadzone()) {
+				return f;
+			}
+		} catch (ControllerUnpluggedException e) {
+			e.printStackTrace();
+		}
 		return 0;
 	}
 
 	@Override
 	public float getStrafeRightValue() {
-		// TODO Auto-generated method stub
+		try {
+			float f = c.getAxisState(ControllerAxis.LEFTX) - initialStates.states.get(ControllerAxis.LEFTX);
+			if (f < -getDeadzone()) {
+				return f;
+			}
+		} catch (ControllerUnpluggedException e) {
+			e.printStackTrace();
+		}
 		return 0;
 	}
+
 
 	@Override
 	public boolean isJumpPressed() {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 
 	@Override
 	public boolean isAbilityPressed(int num) {
@@ -96,28 +127,19 @@ public class JamepadCamera implements IInputDevice {
 
 	@Override
 	public void process(float tpfSecs) {
-		/*
-        if (name.equals(CameraInput.FLYCAM_LEFT)){
-            rotateCamera(value, initialUpVec);
-        }else if (name.equals(CameraInput.FLYCAM_RIGHT)){
-            rotateCamera(-value, initialUpVec);
-        }else if (name.equals(CameraInput.FLYCAM_UP)){
-            rotateCamera(-value * (invertY ? -1 : 1), cam.getLeft());
-        }else if (name.equals(CameraInput.FLYCAM_DOWN)){
-            rotateCamera(value * (invertY ? -1 : 1), cam.getLeft());
-        }*/
-
 		try {
-			float f = c.getAxisState(ControllerAxis.RIGHTX) - states.states.get(ControllerAxis.RIGHTX);
-			this.rotateCamera(-f, initialUpVec);
-			
-			float f2 = c.getAxisState(ControllerAxis.RIGHTY) - states.states.get(ControllerAxis.RIGHTY);
-			this.rotateCamera(f2, cam.getLeft());
-			
+			{
+				float f = c.getAxisState(ControllerAxis.RIGHTX) - initialStates.states.get(ControllerAxis.RIGHTX);
+				this.rotateCamera(-f * tpfSecs, initialUpVec);
+			}
+			{
+				float f2 = c.getAxisState(ControllerAxis.RIGHTY) - initialStates.states.get(ControllerAxis.RIGHTY);
+				this.rotateCamera(f2 * tpfSecs, cam.getLeft());
+			}
 		} catch (ControllerUnpluggedException e) {
 			e.printStackTrace();
 		}
-}
+	}
 
 
 	/**
@@ -145,11 +167,11 @@ public class JamepadCamera implements IInputDevice {
 		cam.setAxes(q);
 	}
 
-	
+
 	@Override
 	public boolean isCycleAbilityPressed(boolean fwd) {
 		// todo
 		return false;
-		
+
 	}
 }

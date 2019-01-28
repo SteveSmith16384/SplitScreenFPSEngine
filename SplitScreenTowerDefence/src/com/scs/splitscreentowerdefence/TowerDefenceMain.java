@@ -7,6 +7,7 @@ import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
 import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldProperties;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
+import com.scs.splitscreenfpsengine.modules.AbstractStartModule;
 
 public class TowerDefenceMain extends MultiplayerVoxelWorldMain {
 
@@ -59,6 +60,12 @@ public class TowerDefenceMain extends MultiplayerVoxelWorldMain {
 	@Override
 	public AbstractGameModule getGameModule() {
 		return new TowerDefenceGameModule(this);
+	}
+
+
+	@Override
+	public AbstractStartModule getStartModule() {
+		return new TowerDefenceStartModule(this);
 	}
 
 }

@@ -29,4 +29,9 @@ public class TDPlayersAvatar extends AbstractPlayersAvatar implements ITargetByA
 		return new RobotModel(game.getAssetManager(), pid);
 	}
 
+	@Override
+	public float getCameraHeight() {
+		return 1f; // todo - check
+	}
+
 }

@@ -7,6 +7,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.Camera.FrustumIntersect;
 import com.jme3.scene.Spatial;
+import com.scs.splitscreenfpsengine.CameraSystem;
 import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
 import com.scs.splitscreenfpsengine.MyBetterCharacterControl;
 import com.scs.splitscreenfpsengine.Settings;
@@ -41,7 +42,8 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	public final int playerID;
 	public IAbility[] ability = new IAbility[2];
 	protected Spatial playerGeometry; // todo - rename
-
+	private CameraSystem camSys;
+	
 	// Stats
 	private int side;
 
@@ -64,11 +66,16 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		playerControl = new MyBetterCharacterControl(PLAYER_RAD, PLAYER_HEIGHT, WEIGHT);
 		playerControl.setJumpForce(new Vector3f(0, Settings.JUMP_FORCE, 0)); 
 		this.getMainNode().addControl(playerControl);
+		
+		camSys = new CameraSystem(game, cam, this);
+		camSys.setupCam(2f, 0.2f, true, 1f); // todo - get from model
 
 		playerControl.getPhysicsRigidBody().setUserObject(this);
 
 	}
 
+	
+	public abstract float getCameraHeight();
 
 	public void setHUD(IHud _hud) {
 		hud = _hud;
@@ -192,8 +199,9 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		}
 
 		// Position camera at node
-		Vector3f vec = getMainNode().getWorldTranslation();
-		cam.setLocation(new Vector3f(vec.x, vec.y + (PLAYER_HEIGHT/2), vec.z)); // scs todo - position above wiz
+		//Vector3f vec = getMainNode().getWorldTranslation();
+		//cam.setLocation(new Vector3f(vec.x, vec.y + (PLAYER_HEIGHT/2), vec.z)); // scs todo - position above wiz
+		this.camSys.process(tpfSecs);
 
 		// Rotate us to point in the direction of the camera
 		Vector3f lookAtPoint = cam.getLocation().add(cam.getDirection().mult(10));

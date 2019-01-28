@@ -27,21 +27,18 @@ import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.Settings.GameMode;
 
 
-public class StartModule implements IModule, ActionListener, RawInputListener {
+public abstract class AbstractStartModule implements IModule, ActionListener, RawInputListener {
 
 	private static final String START = "Start";
 	private static final String QUIT = "Quit";
 
 	protected MultiplayerVoxelWorldMain game;
-	private Spatial robot;
 	private AudioNode audioMusic;
-	private GameMode gameMode;
 
-	public StartModule(MultiplayerVoxelWorldMain _game, GameMode _gameMode) {
+	public AbstractStartModule(MultiplayerVoxelWorldMain _game) {
 		super();
 
 		game = _game;
-		gameMode = _gameMode;
 	}
 
 
@@ -91,7 +88,7 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 			game.getGuiNode().attachChild(pic);
 		}
 
-		BitmapFont guiFont_small = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");
+		//BitmapFont guiFont_small = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");
 
 /*
 		TrueTypeContainer screenText = ttfSmall.getFormattedText(new StringContainer(ttfSmall, "KILL THE N00BS!"), ColorRGBA.Green);
@@ -112,7 +109,6 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 		gameModeSpecificText.setLocalTranslation(20, game.getCamera().getHeight()-160, 0);
 		game.getGuiNode().attachChild(gameModeSpecificText);
 */
-//		game.getRootNode().attachChild(robot);
 		/*gameModeSpecificText.setText(gameMode.toString() + ": " + gameModeSpecificText.getText() + "\n\nThe winner is the first player to 100 points.");
 		gameModeSpecificText.updateGeometry();
 		
@@ -135,8 +131,6 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 
 	@Override
 	public void update(float tpf) {
-		robot.getWorldTranslation();
-		robot.rotate(0, tpf, 0);
 	}
 
 
@@ -158,7 +152,7 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 		}
 
 		if (name.equals(START)) {
-			Settings.GAME_MODE = gameMode;
+			/*Settings.GAME_MODE = gameMode;
 			switch (gameMode) {
 			case Skirmish:
 				/*Settings.NUM_SECTORS = 3;
@@ -167,7 +161,7 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 				Settings.NUM_COLLECTABLES = 1;
 				GameModule.HELP_TEXT = "Skirmish: Hunt the other players";*/
 				startGame();
-				break;
+				/*break;
 				
 			case KingOfTheHill:
 				// King of the Hill
@@ -175,23 +169,23 @@ public class StartModule implements IModule, ActionListener, RawInputListener {
 				Settings.PVP = true;
 				Settings.NUM_AI = 0;
 				Settings.NUM_COLLECTABLES = 0;*/
-				AbstractGameModule.HELP_TEXT = "King of the Hill: Dominate the base";
+				/*AbstractGameModule.HELP_TEXT = "King of the Hill: Dominate the base";
 				startGame();
 				break;
 				
 			default:
 				throw new RuntimeException("Unknown Game Mode: " + gameMode);
-			}
+			}*/
 		} else if (name.equals("1")) {
-			game.setNextModule(new StartModule(game, GameMode.Skirmish));
-		} else if (name.equals("2")) {
+			game.setNextModule(game.getStartModule());//new StartModule(game, GameMode.Skirmish));
+		/*} else if (name.equals("2")) {
 			game.setNextModule(new StartModule(game, GameMode.KingOfTheHill));
 		} else if (name.equals("3")) {
 			//game.setNextModule(new StartModule(game, GameMode.Dodgeball));
 		} else if (name.equals("4")) {
 			//game.setNextModule(new StartModule(game, GameMode.Bladerunner));
 		} else if (name.equals("5")) {
-			//game.setNextModule(new StartModule(game, GameMode.CloneWars));
+			//game.setNextModule(new StartModule(game, GameMode.CloneWars));*/
 		} else if (name.equals(QUIT)) {
 			MultiplayerVoxelWorldMain.properties.saveProperties();
 			game.stop();

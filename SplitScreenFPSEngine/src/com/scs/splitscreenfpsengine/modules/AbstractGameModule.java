@@ -29,10 +29,10 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
+import com.scs.splitscreenfpsengine.CameraSystem;
 import com.scs.splitscreenfpsengine.CollisionLogic;
 import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
 import com.scs.splitscreenfpsengine.Settings;
-import com.scs.splitscreenfpsengine.Settings.GameMode;
 import com.scs.splitscreenfpsengine.components.IAffectedByPhysics;
 import com.scs.splitscreenfpsengine.components.IEntity;
 import com.scs.splitscreenfpsengine.components.IProcessable;
@@ -93,7 +93,6 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		setUpLight();
 		setupLevel();
 
-		//Joystick[] joysticks = game.getInputManager().getJoysticks();
 		int numPlayers = game.getNumPlayers();
 
 		// Auto-Create player 0
@@ -117,10 +116,8 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		// Create players for each joystick
 		int joyid = 0;//Settings.PLAYER1_IS_MOUSE ? 0 : 1;
 		int playerid = 1;//Settings.PLAYER1_IS_MOUSE ? 1 : 0;
-		//if (joysticks != null && joysticks.length > 0) {
 		while (joyid < numPlayers-1) {//joysticks.length) {
 			Camera newCam = this.createCamera(playerid, numPlayers);
-			//JMEJoystickCamera joyCam = new JMEJoystickCamera(newCam, joysticks[joyid], game.getInputManager());
 			JamepadCamera jameCam = new JamepadCamera(newCam, game.controllerManager.getController(joyid), game.controllerManager.getInitialStates(joyid));
 			AbstractPlayersAvatar player = this.addPlayersAvatar(playerid, newCam, jameCam, 0);
 			IHud hud = this.createHUD(newCam, player);
@@ -129,7 +126,6 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			joyid++;
 			playerid++;
 		}
-		//}
 		playerid++;
 
 		/*
@@ -184,6 +180,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 	private Camera createCamera(int id, int numPlayers) {
 		Camera newCam = null;
+		//int id = player.id;
 		if (id == 0) {
 			newCam = game.getCamera();
 		} else {
@@ -282,6 +279,9 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			view2.addProcessor(fpp2);
 		}
 */
+		
+		//CameraSystem camSys = new CameraSystem(game, newCam, player);
+		
 		return newCam;
 	}
 
@@ -393,7 +393,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		if (name.equals(TEST)) {
 			//new ChangeBlocksInSweep(game, this, 100);
 		} else if (name.equals(QUIT)) {
-			game.setNextModule(new StartModule(game, GameMode.Skirmish));
+			game.setNextModule(game.getStartModule());//new StartModule(game, GameMode.Skirmish));
 		}
 
 	}
@@ -534,9 +534,8 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	}
 
 	
-	public AbstractPhysicalEntity getWithRay(AbstractPlayersAvatar wiz, Class clazz) {
+	public AbstractPhysicalEntity getWithRay(AbstractPlayersAvatar wiz, Class<? extends AbstractPhysicalEntity> clazz) {
 		Ray ray = new Ray(wiz.getCamera().getLocation(), wiz.getCamera().getDirection());
-
 
 		CollisionResults results = new CollisionResults();
 		game.getRootNode().collideWith(ray, results);
@@ -556,7 +555,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	}
 
 
-	public Vector3f getPointWithRay(AbstractPlayersAvatar wiz, Class clazz) {
+	public Vector3f getPointWithRay(AbstractPlayersAvatar wiz, Class<? extends AbstractPhysicalEntity> clazz) {
 		Ray ray = new Ray(wiz.getCamera().getLocation(), wiz.getCamera().getDirection());
 
 

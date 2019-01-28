@@ -11,7 +11,6 @@ import com.scs.splitscreenfpsengine.entities.VoxelTerrainEntity;
 import com.scs.splitscreenfpsengine.hud.IHud;
 import com.scs.splitscreenfpsengine.input.IInputDevice;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
-import com.scs.splitscreentowerdefence.blocks.GrassBlock;
 import com.scs.splitscreentowerdefence.blocks.LeavesBlock;
 import com.scs.splitscreentowerdefence.blocks.StoneBlock;
 import com.scs.splitscreentowerdefence.blocks.WoodBlock;

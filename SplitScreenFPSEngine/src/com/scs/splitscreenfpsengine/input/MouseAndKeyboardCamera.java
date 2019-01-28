@@ -1,26 +1,38 @@
 package com.scs.splitscreenfpsengine.input;
 
-import com.jme3.input.FlyByCamera;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.math.Matrix3f;
+import com.jme3.math.Quaternion;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.scs.splitscreenfpsengine.Settings;
 
-public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListener, IInputDevice { 
+public class MouseAndKeyboardCamera implements AnalogListener, ActionListener, IInputDevice { 
+
+	protected float rotationSpeed = 1f;
 
 	private boolean left = false, right = false, up = false, down = false, jump = false;
 	private boolean ability0 = false, ability1 = false;
 	private boolean cycleFwd = false, cycleBwd = false;
 
-	public MouseAndKeyboardCamera(Camera cam, InputManager _inputManager) {
-		super(cam);
+	private InputManager inputManager;
+	private Camera cam;
+	private Vector3f initialUpVec; 
+
+
+	public MouseAndKeyboardCamera(Camera _cam, InputManager _inputManager) {
+		//super(cam);
 		
+		cam = _cam;
 		this.inputManager = _inputManager;
+        initialUpVec = cam.getUp().clone();
 
 		inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
 		inputManager.addListener(this, "Left");
@@ -36,8 +48,6 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 		inputManager.addListener(this, "Shoot");
 		inputManager.addMapping("Ability1", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
 		inputManager.addListener(this, "Ability1");
-		//inputManager.addMapping("CycleAbility", new KeyTrigger(KeyInput.KEY_C));
-		//inputManager.addListener(this, "CycleAbility");
 
 		// both mouse and button - rotation of cam
 		inputManager.addMapping("mFLYCAM_Left", new MouseAxisTrigger(MouseInput.AXIS_X, true), new KeyTrigger(KeyInput.KEY_LEFT));
@@ -68,7 +78,7 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 		inputManager.addMapping("FLYCAM_Lower", new KeyTrigger(KeyInput.KEY_Z));*/
 
 		//inputManager.addListener(this, mappings);  scs!
-		inputManager.setCursorVisible(dragToRotate || !isEnabled());
+		//inputManager.setCursorVisible(dragToRotate || !isEnabled());
 
 		/*Joystick[] joysticks = inputManager.getJoysticks();
         if (joysticks != null && joysticks.length > 0){
@@ -83,10 +93,6 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 	public void onAnalog(String name, float value, float tpf) {
 		//Settings.p("name=" + name + ", value=" + value);
 
-		if (!enabled) {
-			return; //this.inputManager
-		}
-
 		if (Settings.DEBUG_ROTATING_CAM) {
 			Settings.p("name=" + name + ", value=" + value);
 			//Settings.p("CAM=" +this.cam.getName());
@@ -98,9 +104,9 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 		}else if (name.equals("mFLYCAM_Right")){
 			rotateCamera(-value, initialUpVec);
 		}else if (name.equals("mFLYCAM_Up")){
-			rotateCamera(-value * (invertY ? -1 : 1), cam.getLeft());
+			rotateCamera(-value, cam.getLeft());
 		}else if (name.equals("mFLYCAM_Down")){
-			rotateCamera(value * (invertY ? -1 : 1), cam.getLeft());
+			rotateCamera(value, cam.getLeft());
 		}/*else if (name.equals("FLYCAM_Forward")){
 			moveCamera(value, false);
 		}else if (name.equals("FLYCAM_Backward")){
@@ -124,6 +130,32 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 	}
 
 
+	/**
+	 * Rotate the camera by the specified amount around the specified axis.
+	 *
+	 * @param value rotation amount
+	 * @param axis direction of rotation (a unit vector)
+	 */
+	protected void rotateCamera(float value, Vector3f axis){
+		Matrix3f mat = new Matrix3f();
+		mat.fromAngleNormalAxis(rotationSpeed * value, axis);
+
+		Vector3f up = cam.getUp();
+		Vector3f left = cam.getLeft();
+		Vector3f dir = cam.getDirection();
+
+		mat.mult(up, up);
+		mat.mult(left, left);
+		mat.mult(dir, dir);
+
+		Quaternion q = new Quaternion();
+		q.fromAxes(left, up, dir);
+		q.normalizeLocal();
+
+		cam.setAxes(q);
+	}
+
+	
 	public void onAction(String binding, boolean isPressed, float tpf) {
 		if (binding.equals("Left")) {
 			left = isPressed;
@@ -184,13 +216,6 @@ public class MouseAndKeyboardCamera extends FlyByCamera implements ActionListene
 		}
 	}
 
-
-	/*
-	@Override
-	public boolean isSelectNextAbilityPressed() {
-		return this.cycleAbility;
-	}        
-	 */
 
 	@Override
 	public void resetAbilitySwitch(int num) {
