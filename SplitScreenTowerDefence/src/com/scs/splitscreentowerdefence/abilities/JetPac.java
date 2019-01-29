@@ -1,7 +1,7 @@
 package com.scs.splitscreentowerdefence.abilities;
 
 import com.jme3.math.Vector3f;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.abilities.AbstractAbility;
 import com.scs.splitscreenfpsengine.entities.AbstractPlayersAvatar;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
@@ -15,7 +15,7 @@ public class JetPac extends AbstractAbility {
 	private float fuel = 100;
 	private final Vector3f camUp = new Vector3f();
 
-	public JetPac(MultiplayerVoxelWorldMain _game, AbstractGameModule module, AbstractPlayersAvatar _player) {
+	public JetPac(SplitScreenFpsEngine _game, AbstractGameModule module, AbstractPlayersAvatar _player) {
 		super(_game, module, _player);
 	}
 

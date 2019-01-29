@@ -5,7 +5,7 @@ import com.jme3.collision.CollisionResults;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.abilities.AbstractAbility;
 import com.scs.splitscreenfpsengine.entities.AbstractPhysicalEntity;
@@ -22,7 +22,7 @@ public class RemoveBlockAbility extends AbstractAbility {
 
 	private static final float MAX_RANGE = 4;
 
-	public RemoveBlockAbility(MultiplayerVoxelWorldMain _game, AbstractGameModule module, AbstractPlayersAvatar p) {
+	public RemoveBlockAbility(SplitScreenFpsEngine _game, AbstractGameModule module, AbstractPlayersAvatar p) {
 		super(_game, module, p);
 	}
 

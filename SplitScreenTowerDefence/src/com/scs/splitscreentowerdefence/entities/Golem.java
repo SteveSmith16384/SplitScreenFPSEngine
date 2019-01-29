@@ -1,7 +1,7 @@
 package com.scs.splitscreentowerdefence.entities;
 
 import com.jme3.math.Vector3f;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.MyBetterCharacterControl;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.components.IDamagable;
@@ -37,7 +37,7 @@ public class Golem extends AbstractPhysicalEntity implements IProcessable, IDama
 	private RealtimeInterval checkPosInterval = new RealtimeInterval(2000);
 	private Vector3f prevPos = new Vector3f();
 
-	public Golem(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, Vector3f startPos, Vector3f _targetPos) {
+	public Golem(SplitScreenFpsEngine _game, AbstractGameModule _module, Vector3f startPos, Vector3f _targetPos) {
 		super(_game, _module, "Golem");
 
 		targetPos = _targetPos;

@@ -4,7 +4,7 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Spatial;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.components.IProcessable;
 import com.scs.splitscreenfpsengine.components.IShowOnHUD;
@@ -15,7 +15,7 @@ public class Crystal extends AbstractPhysicalEntity implements IShowOnHUD, IProc
 
 	//private static final float SIZE = .1f;
 
-	public Crystal(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, Vector3f pos) {
+	public Crystal(SplitScreenFpsEngine _game, AbstractGameModule _module, Vector3f pos) {
 		super(_game, _module, "Crystal");
 
 		Spatial model = game.getAssetManager().loadModel("Models/mese-crystal/mese.blend");

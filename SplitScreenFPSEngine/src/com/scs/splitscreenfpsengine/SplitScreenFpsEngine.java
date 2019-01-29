@@ -1,16 +1,16 @@
 package com.scs.splitscreenfpsengine;
 
+import com.jme3.app.FlyCamAppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.VideoRecorderAppState;
 import com.jme3.system.AppSettings;
-import com.scs.splitscreenfpsengine.Settings.GameMode;
 import com.scs.splitscreenfpsengine.input.IControllerListener;
 import com.scs.splitscreenfpsengine.input.JamepadControllerManager;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
-import com.scs.splitscreenfpsengine.modules.IModule;
 import com.scs.splitscreenfpsengine.modules.AbstractStartModule;
+import com.scs.splitscreenfpsengine.modules.IModule;
 
-public abstract class MultiplayerVoxelWorldMain extends SimpleApplication implements IControllerListener {
+public abstract class SplitScreenFpsEngine extends SimpleApplication implements IControllerListener {
 
 	//private static final String PROPS_FILE = Settings.NAME.replaceAll(" ", "") + "_settings.txt";
 	public static float MAX_TURN_SPEED = -1;
@@ -94,6 +94,8 @@ public abstract class MultiplayerVoxelWorldMain extends SimpleApplication implem
 		// Clear existing mappings
 		getInputManager().clearMappings();
 		getInputManager().clearRawInputListeners();
+		
+		stateManager.detach( stateManager.getState(FlyCamAppState.class) );
 		
 		controllerManager = new JamepadControllerManager(this);
 		

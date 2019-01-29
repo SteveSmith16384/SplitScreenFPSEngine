@@ -2,18 +2,18 @@ package com.scs.splitscreenfpsengine.hud;
 
 import com.jme3.scene.Node;
 import com.jme3.ui.Picture;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.components.IEntity;
 import com.scs.splitscreenfpsengine.components.IProcessable;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 
 public class AbstractHUDImage extends Picture implements IEntity, IProcessable {
 
-	MultiplayerVoxelWorldMain game;
+	SplitScreenFpsEngine game;
 	private AbstractGameModule module;
 	private float timeLeft;
 
-	public AbstractHUDImage(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, Node guiNode, String tex, float w, float h, float dur) {
+	public AbstractHUDImage(SplitScreenFpsEngine _game, AbstractGameModule _module, Node guiNode, String tex, float w, float h, float dur) {
 		super("AbstractHUDImage");
 
 		game = _game;

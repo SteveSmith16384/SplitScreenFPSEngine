@@ -7,7 +7,7 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.components.ICanShoot;
 import com.scs.splitscreenfpsengine.components.ICausesHarmOnContact;
@@ -21,7 +21,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 	private float timeLeft = 6;
 	private boolean forceApplied = false;
 
-	public AbstractBullet(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, String name, ICanShoot _shooter) {
+	public AbstractBullet(SplitScreenFpsEngine _game, AbstractGameModule _module, String name, ICanShoot _shooter) {
 		super(_game, _module, name);
 
 		this.shooter = _shooter;
@@ -43,13 +43,14 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 
 		module.addEntity(this);
 
+		/*
 		AudioNode audio_gun = new AudioNode(game.getAssetManager(), "Sound/laser3.wav", false);
 		audio_gun.setPositional(false);
 		audio_gun.setLooping(false);
 		audio_gun.setVolume(2);
 		this.getMainNode().attachChild(audio_gun);
 		audio_gun.play();
-
+*/
 	}
 
 	protected abstract Spatial createBulletModel();
@@ -78,7 +79,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 		if (other != this.shooter) {
 			Settings.p(this + " collided with " + other);
 			CubeExplosionShard.Factory(game, module, this.getLocation(), 3);
-			module.audioSmallExplode.play();
+			//module.audioSmallExplode.play();
 			this.markForRemoval(); // Don't bounce
 			
 			// Make hole in walls

@@ -14,7 +14,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Quad;
 import com.jme3.ui.Picture;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.components.IEntity;
 import com.scs.splitscreenfpsengine.components.IProcessable;
@@ -33,7 +33,7 @@ public class TowerDefenceHUD extends Node implements IHud, IEntity, IProcessable
 
 	public float hud_width, hud_height;
 
-	private MultiplayerVoxelWorldMain game;
+	private SplitScreenFpsEngine game;
 	private AbstractGameModule module;
 	private AbstractPlayersAvatar player; 
 
@@ -47,7 +47,7 @@ public class TowerDefenceHUD extends Node implements IHud, IEntity, IProcessable
 	private BitmapText textArea; // For showing all other stats 
 
 	
-	public TowerDefenceHUD(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, AbstractPlayersAvatar _player, float xBL, float yBL, float w, float h, Camera _cam) {
+	public TowerDefenceHUD(SplitScreenFpsEngine _game, AbstractGameModule _module, AbstractPlayersAvatar _player, float xBL, float yBL, float w, float h, Camera _cam) {
 		super("HUD");
 
 		game = _game;

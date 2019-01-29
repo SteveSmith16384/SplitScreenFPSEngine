@@ -16,7 +16,7 @@ public class CameraSystem {
 
 	public enum View {First, Third, TopDown, Cinema };
 
-	private MultiplayerVoxelWorldMain game;
+	private SplitScreenFpsEngine game;
 	private AbstractPlayersAvatar avatar;
 	private Camera cam;
 	
@@ -30,7 +30,7 @@ public class CameraSystem {
 	// Temp vars
 	private Vector3f dirTmp = new Vector3f();
 
-	public CameraSystem(MultiplayerVoxelWorldMain _game, Camera _cam, AbstractPlayersAvatar _avatar) {
+	public CameraSystem(SplitScreenFpsEngine _game, Camera _cam, AbstractPlayersAvatar _avatar) {
 		game = _game;
 		cam = _cam;
 		avatar = _avatar;

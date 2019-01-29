@@ -8,12 +8,12 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.texture.Texture;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 
 public class DebuggingSphere extends AbstractPhysicalEntity {
 
-	public DebuggingSphere(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, Vector3f pos) {
+	public DebuggingSphere(SplitScreenFpsEngine _game, AbstractGameModule _module, Vector3f pos) {
 		super(_game, _module, "DebuggingSphere");
 
 		Mesh sphere = new Sphere(8, 8, .2f, true, false);

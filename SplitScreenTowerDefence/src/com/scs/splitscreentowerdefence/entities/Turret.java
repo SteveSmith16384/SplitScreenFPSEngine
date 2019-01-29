@@ -5,7 +5,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.components.ICanShoot;
 import com.scs.splitscreenfpsengine.components.IEntity;
@@ -27,7 +27,7 @@ public class Turret extends AbstractPhysicalEntity implements IShowOnHUD, IProce
 	private Node rotatingTurret;
 	private Node launchPos = new Node();
 
-	public Turret(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, Vector3f pos, int _side) {
+	public Turret(SplitScreenFpsEngine _game, AbstractGameModule _module, Vector3f pos, int _side) {
 		super(_game, _module, "Turret");
 
 		side = _side;

@@ -1,6 +1,6 @@
 package com.scs.splitscreentowerdefence.abilities;
 
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.abilities.AbstractAbility;
 import com.scs.splitscreenfpsengine.entities.AbstractPlayersAvatar;
@@ -13,7 +13,7 @@ public class RunFast extends AbstractAbility {
 	private float power;
 	private boolean isRunningFast;
 	
-	public RunFast(MultiplayerVoxelWorldMain _game, AbstractGameModule module, AbstractPlayersAvatar _player) {
+	public RunFast(SplitScreenFpsEngine _game, AbstractGameModule module, AbstractPlayersAvatar _player) {
 		super(_game, module, _player);
 	}
 

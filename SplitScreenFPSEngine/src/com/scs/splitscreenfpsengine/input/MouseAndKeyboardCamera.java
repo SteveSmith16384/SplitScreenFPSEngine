@@ -16,7 +16,7 @@ import com.scs.splitscreenfpsengine.Settings;
 
 public class MouseAndKeyboardCamera implements AnalogListener, ActionListener, IInputDevice { 
 
-	protected float rotationSpeed = 1f;
+	protected float rotationSpeed = 10f;
 
 	private boolean left = false, right = false, up = false, down = false, jump = false;
 	private boolean ability0 = false, ability1 = false;
@@ -33,7 +33,8 @@ public class MouseAndKeyboardCamera implements AnalogListener, ActionListener, I
 		cam = _cam;
 		this.inputManager = _inputManager;
         initialUpVec = cam.getUp().clone();
-
+        inputManager.setCursorVisible(false);
+        
 		inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
 		inputManager.addListener(this, "Left");
 		inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));

@@ -5,7 +5,7 @@ import com.jme3.collision.CollisionResults;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.abilities.AbstractAbility;
 import com.scs.splitscreenfpsengine.entities.AbstractPhysicalEntity;
@@ -19,7 +19,7 @@ import mygame.util.Vector3Int;
 
 public class AddBlockAbility extends AbstractAbility {
 
-	public AddBlockAbility(MultiplayerVoxelWorldMain _game, AbstractGameModule module, AbstractPlayersAvatar p) {
+	public AddBlockAbility(SplitScreenFpsEngine _game, AbstractGameModule module, AbstractPlayersAvatar p) {
 		super(_game, module, p);
 	}
 

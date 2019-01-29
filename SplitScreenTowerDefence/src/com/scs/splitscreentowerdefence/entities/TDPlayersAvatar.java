@@ -2,7 +2,7 @@ package com.scs.splitscreentowerdefence.entities;
 
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Spatial;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.entities.AbstractPlayersAvatar;
 import com.scs.splitscreenfpsengine.input.IInputDevice;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
@@ -16,7 +16,7 @@ public class TDPlayersAvatar extends AbstractPlayersAvatar implements ITargetByA
 	private int score = 0;
 	public int resources = 10;
 
-	public TDPlayersAvatar(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side) {
+	public TDPlayersAvatar(SplitScreenFpsEngine _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side) {
 		super(_game, _module, _playerID, _cam, _input, _side);
 
 		ability[0] = new PlaceTurretAbility(game, _module, this); //LaserRifle(_game, _module, this);
@@ -25,7 +25,7 @@ public class TDPlayersAvatar extends AbstractPlayersAvatar implements ITargetByA
 }
 
 	@Override
-	protected Spatial getPlayersModel(MultiplayerVoxelWorldMain game, int pid) {
+	protected Spatial getPlayersModel(SplitScreenFpsEngine game, int pid) {
 		return new RobotModel(game.getAssetManager(), pid);
 	}
 

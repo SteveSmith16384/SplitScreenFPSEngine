@@ -1,11 +1,11 @@
 package com.scs.splitscreentowerdefence;
 
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.modules.AbstractStartModule;
 
 public class TowerDefenceStartModule extends AbstractStartModule {
 
-	public TowerDefenceStartModule(MultiplayerVoxelWorldMain _game) {
+	public TowerDefenceStartModule(SplitScreenFpsEngine _game) {
 		super(_game);
 	}
 

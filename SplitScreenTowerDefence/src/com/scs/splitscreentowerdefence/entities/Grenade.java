@@ -7,7 +7,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.scene.shape.Sphere.TextureMode;
 import com.jme3.texture.Texture;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.components.ICanShoot;
 import com.scs.splitscreenfpsengine.components.IProcessable;
 import com.scs.splitscreenfpsengine.entities.AbstractPhysicalEntity;
@@ -19,7 +19,7 @@ public class Grenade extends AbstractPhysicalEntity implements IProcessable  {//
 	public ICanShoot shooter;
 	private float timeLeft = 2f;
 	
-	public Grenade(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, ICanShoot _shooter) {
+	public Grenade(SplitScreenFpsEngine _game, AbstractGameModule _module, ICanShoot _shooter) {
 		super(_game, _module, "Grenade");
 
 		this.shooter = _shooter;

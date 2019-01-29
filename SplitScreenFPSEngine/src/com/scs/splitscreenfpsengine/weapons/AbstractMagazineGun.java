@@ -1,13 +1,13 @@
 package com.scs.splitscreenfpsengine.weapons;
 
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.abilities.IAbility;
 import com.scs.splitscreenfpsengine.components.ICanShoot;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 
 public abstract class AbstractMagazineGun implements IAbility {
 
-	protected MultiplayerVoxelWorldMain game;
+	protected SplitScreenFpsEngine game;
 	protected AbstractGameModule module;
 	protected ICanShoot shooter;
 	protected String name;
@@ -17,7 +17,7 @@ public abstract class AbstractMagazineGun implements IAbility {
 	protected int bulletsLeftInMag;
 	protected float shotInterval, reloadInterval; 
 
-	public AbstractMagazineGun(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, String _name, ICanShoot _shooter, float shotInt, float reloadInt, int magSize) {
+	public AbstractMagazineGun(SplitScreenFpsEngine _game, AbstractGameModule _module, String _name, ICanShoot _shooter, float shotInt, float reloadInt, int magSize) {
 		super();
 
 		game = _game;
@@ -32,7 +32,7 @@ public abstract class AbstractMagazineGun implements IAbility {
 	}
 
 
-	public abstract void launchBullet(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, ICanShoot _shooter);
+	public abstract void launchBullet(SplitScreenFpsEngine _game, AbstractGameModule _module, ICanShoot _shooter);
 
 
 	@Override

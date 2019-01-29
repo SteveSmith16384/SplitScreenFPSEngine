@@ -22,7 +22,7 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.ui.Picture;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.Settings.GameMode;
 
@@ -32,10 +32,10 @@ public abstract class AbstractStartModule implements IModule, ActionListener, Ra
 	private static final String START = "Start";
 	private static final String QUIT = "Quit";
 
-	protected MultiplayerVoxelWorldMain game;
+	protected SplitScreenFpsEngine game;
 	private AudioNode audioMusic;
 
-	public AbstractStartModule(MultiplayerVoxelWorldMain _game) {
+	public AbstractStartModule(SplitScreenFpsEngine _game) {
 		super();
 
 		game = _game;
@@ -55,7 +55,7 @@ public abstract class AbstractStartModule implements IModule, ActionListener, Ra
 
 		// Create viewport
 		Camera newCam = game.getCamera();
-		newCam.resize(MultiplayerVoxelWorldMain.settings.getWidth(), MultiplayerVoxelWorldMain.settings.getHeight(), true);
+		newCam.resize(SplitScreenFpsEngine.settings.getWidth(), SplitScreenFpsEngine.settings.getHeight(), true);
 		newCam.setFrustumPerspective(45f, (float) newCam.getWidth() / newCam.getHeight(), 0.01f, Settings.CAM_DIST);
 		newCam.setViewPort(0f, 1f, 0f, 1f);
 
@@ -118,14 +118,6 @@ public abstract class AbstractStartModule implements IModule, ActionListener, Ra
 		numPlayerText.setLocalTranslation(20, game.getCamera().getHeight()-280, 0);
 		game.getGuiNode().attachChild(numPlayerText);
 */
-		// Audio
-		audioMusic = new AudioNode(game.getAssetManager(), "Sound/n-Dimensions (Main Theme - Retro Ver.ogg", true, false);
-		//audioMusic.setLooping(true);  // activate continuous playing.  BROKEN!
-		audioMusic.setPositional(false);
-		audioMusic.setVolume(3);
-		game.getRootNode().attachChild(audioMusic);
-		audioMusic.play(); // play continuously!
-
 	}
 
 
@@ -187,7 +179,7 @@ public abstract class AbstractStartModule implements IModule, ActionListener, Ra
 		} else if (name.equals("5")) {
 			//game.setNextModule(new StartModule(game, GameMode.CloneWars));*/
 		} else if (name.equals(QUIT)) {
-			MultiplayerVoxelWorldMain.properties.saveProperties();
+			SplitScreenFpsEngine.properties.saveProperties();
 			game.stop();
 		}
 	}

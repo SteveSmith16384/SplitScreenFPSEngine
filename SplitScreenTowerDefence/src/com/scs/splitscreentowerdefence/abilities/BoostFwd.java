@@ -1,6 +1,6 @@
 package com.scs.splitscreentowerdefence.abilities;
 
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.abilities.AbstractAbility;
 import com.scs.splitscreenfpsengine.entities.AbstractPlayersAvatar;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
@@ -12,7 +12,7 @@ public class BoostFwd extends AbstractAbility {
 
 	private float fuel = 100;
 
-	public BoostFwd(MultiplayerVoxelWorldMain _game, AbstractGameModule module, AbstractPlayersAvatar _player) {
+	public BoostFwd(SplitScreenFpsEngine _game, AbstractGameModule module, AbstractPlayersAvatar _player) {
 		super(_game, module, _player);
 
 	}

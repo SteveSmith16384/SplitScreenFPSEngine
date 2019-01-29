@@ -8,7 +8,7 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.Camera.FrustumIntersect;
 import com.jme3.scene.Spatial;
 import com.scs.splitscreenfpsengine.CameraSystem;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.MyBetterCharacterControl;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.abilities.IAbility;
@@ -51,7 +51,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	protected float restartTime, invulnerableTime;
 	private float timeSinceLastMove = 0;
 	
-	public AbstractPlayersAvatar(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side) {
+	public AbstractPlayersAvatar(SplitScreenFpsEngine _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side) {
 		super(_game, _module, "Player");
 
 		playerID = _playerID;
@@ -82,7 +82,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	}
 
 
-	protected abstract Spatial getPlayersModel(MultiplayerVoxelWorldMain game, int pid);
+	protected abstract Spatial getPlayersModel(SplitScreenFpsEngine game, int pid);
 
 		/*
 	private Spatial getPlayersModel(MultiplayerVoxelWorldMain game, int pid) {
@@ -111,7 +111,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		Vector3f warpPos = module.getPlayerStartPos(playerID);//new Vector3f(p.x, module.mapData.getRespawnHeight(), p.y);
 		this.playerControl.warp(warpPos);
 		if (invuln) {
-			invulnerableTime = MultiplayerVoxelWorldMain.properties.GetInvulnerableTimeSecs();
+			invulnerableTime = SplitScreenFpsEngine.properties.GetInvulnerableTimeSecs();
 		}
 	}
 

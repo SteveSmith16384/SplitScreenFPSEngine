@@ -7,7 +7,7 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.components.ICanShoot;
 import com.scs.splitscreenfpsengine.components.ICausesHarmOnContact;
@@ -25,7 +25,7 @@ public class LaserBullet extends AbstractPhysicalEntity implements ICausesHarmOn
 	private float timeLeft = 3;
 	private boolean forceApplied = false;
 
-	public LaserBullet(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, ICanShoot _shooter) {
+	public LaserBullet(SplitScreenFpsEngine _game, AbstractGameModule _module, ICanShoot _shooter) {
 		super(_game, _module, "LaserBullet");
 
 		this.shooter = _shooter;

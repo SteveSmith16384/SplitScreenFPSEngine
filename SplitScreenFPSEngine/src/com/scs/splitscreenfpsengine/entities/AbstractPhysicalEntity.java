@@ -4,7 +4,7 @@ import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 
@@ -13,7 +13,7 @@ public abstract class AbstractPhysicalEntity extends AbstractEntity {
 	protected Node mainNode, leftNode, rightNode;;
 	public RigidBodyControl rigidBodyControl;
 
-	public AbstractPhysicalEntity(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, String _name) {
+	public AbstractPhysicalEntity(SplitScreenFpsEngine _game, AbstractGameModule _module, String _name) {
 		super(_game, _module, _name);
 
 		mainNode = new Node(name + "_MainNode");

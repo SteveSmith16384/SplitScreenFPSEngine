@@ -2,7 +2,7 @@ package com.scs.splitscreentowerdefence.abilities;
 
 import java.util.ArrayList;
 
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.abilities.AbstractAbility;
 import com.scs.splitscreenfpsengine.abilities.IAbility;
 import com.scs.splitscreenfpsengine.entities.AbstractPlayersAvatar;
@@ -13,7 +13,7 @@ public class CycleThroughAbilitiesAbility extends AbstractAbility {
 	private ArrayList<IAbility> abilities = new ArrayList<>();
 	private int index;
 
-	public CycleThroughAbilitiesAbility(MultiplayerVoxelWorldMain _game, AbstractGameModule module, AbstractPlayersAvatar p) {
+	public CycleThroughAbilitiesAbility(SplitScreenFpsEngine _game, AbstractGameModule module, AbstractPlayersAvatar p) {
 		super(_game, module, p);
 		
 		abilities.add(new AddBlockAbility(game, module, p));

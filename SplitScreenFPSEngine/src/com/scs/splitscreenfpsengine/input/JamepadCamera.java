@@ -54,7 +54,7 @@ public class JamepadCamera implements IInputDevice {
 	public float getBackValue() {
 		try {
 			float f = -1 * c.getAxisState(ControllerAxis.LEFTY) - initialStates.states.get(ControllerAxis.LEFTY);
-			Settings.p("Bwd:" + f);
+			//Settings.p("Bwd:" + f);
 			if (f > getDeadzone()) {
 				return f;
 			}

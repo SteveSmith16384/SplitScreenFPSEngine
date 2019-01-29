@@ -31,7 +31,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.scs.splitscreenfpsengine.CameraSystem;
 import com.scs.splitscreenfpsengine.CollisionLogic;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.components.IAffectedByPhysics;
 import com.scs.splitscreenfpsengine.components.IEntity;
@@ -52,7 +52,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 	public static String HELP_TEXT = "";
 
-	protected MultiplayerVoxelWorldMain game;
+	protected SplitScreenFpsEngine game;
 
 	public List<IEntity> entities = new ArrayList<IEntity>();
 	private List<IProcessable> entitiesForProcessing = new ArrayList<IProcessable>();
@@ -65,7 +65,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	public DirectionalLight sun;
 	private boolean gameOver = false;
 
-	public AbstractGameModule(MultiplayerVoxelWorldMain _game) {
+	public AbstractGameModule(SplitScreenFpsEngine _game) {
 		super();
 
 		game = _game;
@@ -304,7 +304,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	}
 	
 	
-	protected abstract IHud generateHUD(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, AbstractPlayersAvatar _player, float xBL, float yBL, float w, float h, Camera _cam);
+	protected abstract IHud generateHUD(SplitScreenFpsEngine _game, AbstractGameModule _module, AbstractPlayersAvatar _player, float xBL, float yBL, float w, float h, Camera _cam);
 
 
 	private AbstractPlayersAvatar addPlayersAvatar(int id, Camera cam, IInputDevice input, int side) {
@@ -315,7 +315,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	}
 
 
-	protected abstract AbstractPlayersAvatar getPlayersAvatar(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side);
+	protected abstract AbstractPlayersAvatar getPlayersAvatar(SplitScreenFpsEngine _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side);
 
 
 	private void setUpLight() {
@@ -428,7 +428,9 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 	@Override
 	public void destroy() {
+		if (audioMusic != null) {
 		audioMusic.stop();
+		}
 
 		game.getInputManager().removeListener(this);
 		game.getInputManager().clearMappings();

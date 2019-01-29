@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.Savable;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.components.IEntity;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 
@@ -14,12 +14,12 @@ public abstract class AbstractEntity implements IEntity, Savable {
 	private static int nextId = 0;
 	
 	public final int id; // 0-3
-	protected MultiplayerVoxelWorldMain game;
+	protected SplitScreenFpsEngine game;
 	protected AbstractGameModule module;
 	public String name;
 	private boolean markedForRemoval = false;
 
-	public AbstractEntity(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, String _name) {
+	public AbstractEntity(SplitScreenFpsEngine _game, AbstractGameModule _module, String _name) {
 		id = nextId++;
 		game = _game;
 		module = _module;

@@ -10,7 +10,7 @@ import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.BufferUtils;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 
@@ -18,7 +18,7 @@ public class FloorOrCeiling extends AbstractPhysicalEntity {
 
 	public Geometry geometry;
 	
-	public FloorOrCeiling(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, float x, float yTop, float z, float w, float h, float d, String tex) {
+	public FloorOrCeiling(SplitScreenFpsEngine _game, AbstractGameModule _module, float x, float yTop, float z, float w, float h, float d, String tex) {
 		super(_game, _module, "FloorOrCeiling");
 
 		Box box1 = new Box(w/2, h/2, d/2);

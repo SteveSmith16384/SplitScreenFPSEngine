@@ -4,7 +4,7 @@ import com.jme3.bullet.collision.shapes.MeshCollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.components.IProcessable;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 
@@ -22,7 +22,7 @@ public class VoxelTerrainEntity extends AbstractPhysicalEntity implements IProce
 	public BlockTerrainControl blocks;
 	private float blockSize;
 
-	public VoxelTerrainEntity(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, float x, float y, float z, Vector3Int worldSizeBlocks, int chunkSize, float _blockSize, float friction) {
+	public VoxelTerrainEntity(SplitScreenFpsEngine _game, AbstractGameModule _module, float x, float y, float z, Vector3Int worldSizeBlocks, int chunkSize, float _blockSize, float friction) {
 		super(_game, _module, "VoxelTerrainEntity");
 
 		blockSize = _blockSize;

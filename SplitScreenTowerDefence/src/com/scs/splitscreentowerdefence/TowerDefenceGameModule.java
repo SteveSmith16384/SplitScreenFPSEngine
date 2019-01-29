@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.entities.AbstractPlayersAvatar;
 import com.scs.splitscreenfpsengine.entities.FloorOrCeiling;
 import com.scs.splitscreenfpsengine.entities.VoxelTerrainEntity;
@@ -30,7 +30,7 @@ public class TowerDefenceGameModule extends AbstractGameModule {
 
 	private long nextPhaseInterval;
 	
-	public TowerDefenceGameModule(MultiplayerVoxelWorldMain _game) {
+	public TowerDefenceGameModule(SplitScreenFpsEngine _game) {
 		super(_game);
 	}
 
@@ -106,14 +106,14 @@ public class TowerDefenceGameModule extends AbstractGameModule {
 
 
 	@Override
-	protected AbstractPlayersAvatar getPlayersAvatar(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, int _playerID,
+	protected AbstractPlayersAvatar getPlayersAvatar(SplitScreenFpsEngine _game, AbstractGameModule _module, int _playerID,
 			Camera _cam, IInputDevice _input, int _side) {
 		return new TDPlayersAvatar(_game, this, _playerID, _cam, _input, _side);
 	}
 
 
 	@Override
-	protected IHud generateHUD(MultiplayerVoxelWorldMain _game, AbstractGameModule _module, AbstractPlayersAvatar _player, float xBL, float yBL, float w, float h, Camera _cam) {
+	protected IHud generateHUD(SplitScreenFpsEngine _game, AbstractGameModule _module, AbstractPlayersAvatar _player, float xBL, float yBL, float w, float h, Camera _cam) {
 		return new TowerDefenceHUD(_game, _module, _player, xBL, yBL, w, h, _cam);
 	}
 

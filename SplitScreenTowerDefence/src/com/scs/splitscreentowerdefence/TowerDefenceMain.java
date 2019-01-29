@@ -3,13 +3,13 @@ package com.scs.splitscreentowerdefence;
 import java.util.prefs.BackingStoreException;
 
 import com.jme3.system.AppSettings;
-import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldMain;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.MultiplayerVoxelWorldProperties;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 import com.scs.splitscreenfpsengine.modules.AbstractStartModule;
 
-public class TowerDefenceMain extends MultiplayerVoxelWorldMain {
+public class TowerDefenceMain extends SplitScreenFpsEngine {
 
 	private static final String PROPS_FILE = "chaos_settings.txt";
 	
@@ -30,7 +30,7 @@ public class TowerDefenceMain extends MultiplayerVoxelWorldMain {
 				settings.setSettingsDialogImage(null);
 			}
 
-			MAX_TURN_SPEED = MultiplayerVoxelWorldMain.properties.GetMaxTurnSpeed();
+			MAX_TURN_SPEED = SplitScreenFpsEngine.properties.GetMaxTurnSpeed();
 			//BASE_SCORE_INC = MultiplayerVoxelWorldMain.properties.GetBaseScoreInc();
 			
 			TowerDefenceMain app = new TowerDefenceMain();
