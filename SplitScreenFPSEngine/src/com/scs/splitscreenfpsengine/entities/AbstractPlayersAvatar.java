@@ -9,11 +9,12 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.Camera.FrustumIntersect;
 import com.jme3.scene.Spatial;
 import com.scs.splitscreenfpsengine.CameraSystem;
-import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.MyBetterCharacterControl;
 import com.scs.splitscreenfpsengine.Settings;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.abilities.IAbility;
 import com.scs.splitscreenfpsengine.components.IAffectedByPhysics;
+import com.scs.splitscreenfpsengine.components.IAvatarModel;
 import com.scs.splitscreenfpsengine.components.ICanShoot;
 import com.scs.splitscreenfpsengine.components.IEntity;
 import com.scs.splitscreenfpsengine.components.IProcessable;
@@ -24,9 +25,8 @@ import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 
 public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity implements IProcessable, ICanShoot, IShowOnHUD, IAffectedByPhysics {
 
-	// Player dimensions
-	//public static final float PLAYER_HEIGHT = 1.5f;
-	//public static final float PLAYER_RAD = 0.4f;
+	public enum Anim {None, Idle, Walk, Attack, Died}; 
+
 	private static final float WEIGHT = 1f;
 
 	public final Vector3f walkDirection = new Vector3f();
@@ -42,7 +42,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	public MyBetterCharacterControl playerControl;
 	public final int playerID; // 0-3
 	public IAbility[] ability = new IAbility[2];
-	protected Spatial playerGeometry; // todo - rename
+	protected IAvatarModel playerGeometry; // todo - rename
 	private CameraSystem camSys;
 	private float radius;
 	
@@ -63,9 +63,9 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 
 		int pid = playerID;
 		playerGeometry = getPlayersModel(game, pid);
-		this.getMainNode().attachChild(playerGeometry);
+		this.getMainNode().attachChild(playerGeometry.getModel());
 
-		BoundingBox bv = (BoundingBox)playerGeometry.getWorldBound();
+		BoundingBox bv = (BoundingBox)playerGeometry.getModel().getWorldBound();
 		radius = bv.getXExtent();
 		playerControl = new MyBetterCharacterControl(bv.getXExtent(), bv.getYExtent()*2, WEIGHT);
 		playerControl.setJumpForce(new Vector3f(0, Settings.JUMP_FORCE, 0)); 
@@ -86,7 +86,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	}
 
 
-	protected abstract Spatial getPlayersModel(SplitScreenFpsEngine game, int pid);
+	protected abstract IAvatarModel getPlayersModel(SplitScreenFpsEngine game, int pid);
 
 		/*
 	private Spatial getPlayersModel(MultiplayerVoxelWorldMain game, int pid) {
@@ -211,7 +211,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		Vector3f lookAtPoint = cam.getLocation().add(cam.getDirection().mult(10));
 		//gun.lookAt(lookAtPoint.clone(), Vector3f.UNIT_Y);
 		lookAtPoint.y = cam.getLocation().y; // Look horizontal
-		this.playerGeometry.lookAt(lookAtPoint, Vector3f.UNIT_Y);
+		this.playerGeometry.getModel().lookAt(lookAtPoint, Vector3f.UNIT_Y);
 		//this.getMainNode().lookAt(lookAtPoint.clone(), Vector3f.UNIT_Y);  This won't rotate the model since it's locked to the physics controller
 
 		// Move cam fwd so we don't see ourselves

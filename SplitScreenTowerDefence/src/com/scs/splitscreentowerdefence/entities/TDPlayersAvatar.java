@@ -1,8 +1,8 @@
 package com.scs.splitscreentowerdefence.entities;
 
 import com.jme3.renderer.Camera;
-import com.jme3.scene.Spatial;
 import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
+import com.scs.splitscreenfpsengine.components.IAvatarModel;
 import com.scs.splitscreenfpsengine.entities.AbstractPlayersAvatar;
 import com.scs.splitscreenfpsengine.input.IInputDevice;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
@@ -24,7 +24,7 @@ public class TDPlayersAvatar extends AbstractPlayersAvatar implements ITargetByA
 }
 
 	@Override
-	protected Spatial getPlayersModel(SplitScreenFpsEngine game, int pid) {
+	protected IAvatarModel getPlayersModel(SplitScreenFpsEngine game, int pid) {
 		return new RobotModel(game.getAssetManager(), pid);
 	}
 

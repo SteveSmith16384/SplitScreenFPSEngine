@@ -5,9 +5,11 @@ import com.jme3.material.Material;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.texture.Texture;
+import com.scs.splitscreenfpsengine.components.IAvatarModel;
+import com.scs.splitscreenfpsengine.entities.AbstractPlayersAvatar.Anim;
 import com.scs.splitscreenfpsengine.jme.JMEModelFunctions;
 
-public class RobotModel extends Node { // todo - rename
+public class RobotModel extends Node implements IAvatarModel {
 	
 	public RobotModel(AssetManager assetManager, int playerid) {
 		super("RobotModel");
@@ -39,6 +41,18 @@ public class RobotModel extends Node { // todo - rename
 		JMEModelFunctions.setMaterialOnSpatial(model, mat);
 
 	    this.attachChild(model);
+	}
+
+	@Override
+	public Spatial getModel() {
+		return this;
+	}
+
+	
+	@Override
+	public void setAvatarAnim(Anim anim) {
+		// Do nothing, no anims
+		
 	}
 
 }

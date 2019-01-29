@@ -29,7 +29,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 		Spatial bullet = createBulletModel();// BeamLaserModel.Factory(game.getAssetManager(), origin, origin.add(shooter.getShootDir().multLocal(1)), ColorRGBA.Pink);
 
 		this.mainNode.attachChild(bullet);
-		mainNode.setLocalTranslation(origin.add(shooter.getShootDir().multLocal(shooter.getRadius())));
+		mainNode.setLocalTranslation(origin.add(shooter.getShootDir().multLocal(shooter.getRadius()*2)));
 		mainNode.getLocalTranslation().y -= 0.1f; // Drop bullets slightly
 
 		rigidBodyControl = new RigidBodyControl(.1f);
