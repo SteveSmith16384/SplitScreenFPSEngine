@@ -2,6 +2,7 @@ package com.scs.splitscreenfpsengine.entities;
 
 import java.util.List;
 
+import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.collision.PhysicsRayTestResult;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
@@ -24,8 +25,8 @@ import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity implements IProcessable, ICanShoot, IShowOnHUD, IAffectedByPhysics {
 
 	// Player dimensions
-	public static final float PLAYER_HEIGHT = 1.5f;
-	public static final float PLAYER_RAD = 0.4f;
+	//public static final float PLAYER_HEIGHT = 1.5f;
+	//public static final float PLAYER_RAD = 0.4f;
 	private static final float WEIGHT = 1f;
 
 	public final Vector3f walkDirection = new Vector3f();
@@ -39,10 +40,11 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 
 	public IHud hud;
 	public MyBetterCharacterControl playerControl;
-	public final int playerID;
+	public final int playerID; // 0-3
 	public IAbility[] ability = new IAbility[2];
 	protected Spatial playerGeometry; // todo - rename
 	private CameraSystem camSys;
+	private float radius;
 	
 	// Stats
 	private int side;
@@ -63,19 +65,21 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		playerGeometry = getPlayersModel(game, pid);
 		this.getMainNode().attachChild(playerGeometry);
 
-		playerControl = new MyBetterCharacterControl(PLAYER_RAD, PLAYER_HEIGHT, WEIGHT);
+		BoundingBox bv = (BoundingBox)playerGeometry.getWorldBound();
+		radius = bv.getXExtent();
+		playerControl = new MyBetterCharacterControl(bv.getXExtent(), bv.getYExtent()*2, WEIGHT);
 		playerControl.setJumpForce(new Vector3f(0, Settings.JUMP_FORCE, 0)); 
 		this.getMainNode().addControl(playerControl);
 		
 		camSys = new CameraSystem(game, cam, this);
-		camSys.setupCam(2f, 0.2f, true, 1f); // todo - get from model
+		camSys.setupCam(2f, 0.2f, true, 1f, 1f); // todo - get from model
 
 		playerControl.getPhysicsRigidBody().setUserObject(this);
 
 	}
 
 	
-	public abstract float getCameraHeight();
+	//public abstract float getCameraHeight();
 
 	public void setHUD(IHud _hud) {
 		hud = _hud;
@@ -211,7 +215,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		//this.getMainNode().lookAt(lookAtPoint.clone(), Vector3f.UNIT_Y);  This won't rotate the model since it's locked to the physics controller
 
 		// Move cam fwd so we don't see ourselves
-		cam.setLocation(cam.getLocation().add(cam.getDirection().mult(PLAYER_RAD)));
+		cam.setLocation(cam.getLocation().add(cam.getDirection().mult(radius)));
 		cam.update();
 
 		walkDirection.set(0, 0, 0);
@@ -317,6 +321,12 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	@Override
 	public Vector3f getBulletStartPosition() {
 		return this.getMainNode().getWorldBound().getCenter();
+	}
+
+
+	@Override
+	public float getRadius() {
+		return radius;
 	}
 
 

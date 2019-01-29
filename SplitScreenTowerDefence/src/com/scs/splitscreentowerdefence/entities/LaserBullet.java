@@ -35,7 +35,7 @@ public class LaserBullet extends AbstractPhysicalEntity implements ICausesHarmOn
 		Node laserBeam = BeamLaserModel.Factory(game.getAssetManager(), origin, origin.add(shooter.getShootDir().multLocal(1)), ColorRGBA.Pink);
 
 		this.mainNode.attachChild(laserBeam);
-		laserBeam.setLocalTranslation(origin.add(shooter.getShootDir().multLocal(AbstractPlayersAvatar.PLAYER_RAD*3)));
+		laserBeam.setLocalTranslation(origin.add(shooter.getShootDir().multLocal(shooter.getRadius())));
 		laserBeam.getLocalTranslation().y -= 0.1f; // Drop bullets slightly
 		
 		rigidBodyControl = new RigidBodyControl(.1f);

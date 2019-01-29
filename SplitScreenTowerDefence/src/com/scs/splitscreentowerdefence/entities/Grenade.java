@@ -39,7 +39,7 @@ public class Grenade extends AbstractPhysicalEntity implements IProcessable  {//
 		this.mainNode.attachChild(ball_geo);
 		game.getRootNode().attachChild(this.mainNode);
 		/** Position the cannon ball  */
-		ball_geo.setLocalTranslation(shooter.getBulletStartPosition().add(shooter.getShootDir().multLocal(AbstractPlayersAvatar.PLAYER_RAD*2)));
+		ball_geo.setLocalTranslation(shooter.getBulletStartPosition().add(shooter.getShootDir().multLocal(shooter.getRadius())));
 		/** Make the ball physical with a mass > 0.0f */
 		rigidBodyControl = new RigidBodyControl(.2f);
 		/** Add physical ball to physics space. */

@@ -23,6 +23,7 @@ public class CameraSystem {
 	private float followDist = 1f;
 	public float shoulderAngleRads = 0f;
 	private float fixedHeight = -1;
+	private float heightOffset1stPerson;
 	private float heightOffset3rdPerson;
 	private boolean camInCharge;
 	private View currentView = View.Third;
@@ -37,10 +38,11 @@ public class CameraSystem {
 	}
 
 
-	public void setupCam(float dist, float angleRads, boolean _camInCharge, float _heightOffset3rdPerson) { 
+	public void setupCam(float dist, float angleRads, boolean _camInCharge, float _heightOffset1stPerson, float _heightOffset3rdPerson) { 
 		this.followDist = dist;
 		shoulderAngleRads = angleRads;
 		camInCharge = _camInCharge;
+		heightOffset1stPerson = _heightOffset1stPerson;
 		heightOffset3rdPerson = _heightOffset3rdPerson; // todo - warn if setup() not called
 	}
 
@@ -51,7 +53,7 @@ public class CameraSystem {
 			// Position camera at node
 			Vector3f vec = avatar.getMainNode().getWorldTranslation();
 			cam.getLocation().x = vec.x;
-			cam.getLocation().y = vec.y + avatar.getCameraHeight(); // todo - get in constructor
+			cam.getLocation().y = vec.y + heightOffset1stPerson;
 			cam.getLocation().z = vec.z;
 
 			if (!camInCharge) { // Need for Stock Car

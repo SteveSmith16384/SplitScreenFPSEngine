@@ -17,4 +17,6 @@ public interface ICanShoot {
 	
 	void hasSuccessfullyHit(IEntity e);
 	
+	float getRadius(); // So the bullets don't start on top of us
+	
 }

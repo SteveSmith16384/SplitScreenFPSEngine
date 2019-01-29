@@ -13,7 +13,6 @@ import com.scs.splitscreentowerdefence.models.RobotModel;
 
 public class TDPlayersAvatar extends AbstractPlayersAvatar implements ITargetByAI {
 
-	private int score = 0;
 	public int resources = 10;
 
 	public TDPlayersAvatar(SplitScreenFpsEngine _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side) {
@@ -29,9 +28,5 @@ public class TDPlayersAvatar extends AbstractPlayersAvatar implements ITargetByA
 		return new RobotModel(game.getAssetManager(), pid);
 	}
 
-	@Override
-	public float getCameraHeight() {
-		return 1f; // todo - check
-	}
 
 }

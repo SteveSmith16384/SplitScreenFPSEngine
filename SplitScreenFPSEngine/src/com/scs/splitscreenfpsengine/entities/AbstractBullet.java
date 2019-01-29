@@ -1,14 +1,12 @@
 package com.scs.splitscreenfpsengine.entities;
 
-import com.jme3.audio.AudioNode;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.Settings;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.components.ICanShoot;
 import com.scs.splitscreenfpsengine.components.ICausesHarmOnContact;
 import com.scs.splitscreenfpsengine.components.INotifiedOfCollision;
@@ -31,7 +29,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 		Spatial bullet = createBulletModel();// BeamLaserModel.Factory(game.getAssetManager(), origin, origin.add(shooter.getShootDir().multLocal(1)), ColorRGBA.Pink);
 
 		this.mainNode.attachChild(bullet);
-		mainNode.setLocalTranslation(origin.add(shooter.getShootDir().multLocal(AbstractPlayersAvatar.PLAYER_RAD*2)));
+		mainNode.setLocalTranslation(origin.add(shooter.getShootDir().multLocal(shooter.getRadius())));
 		mainNode.getLocalTranslation().y -= 0.1f; // Drop bullets slightly
 
 		rigidBodyControl = new RigidBodyControl(.1f);
@@ -78,8 +76,9 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 	public void notifiedOfCollision(AbstractPhysicalEntity other) {
 		if (other != this.shooter) {
 			Settings.p(this + " collided with " + other);
-			CubeExplosionShard.Factory(game, module, this.getLocation(), 3);
+			//CubeExplosionShard.Factory(game, module, this.getLocation(), 3);
 			//module.audioSmallExplode.play();
+			new ParticleExplosion(game, module, this.getLocation());
 			this.markForRemoval(); // Don't bounce
 			
 			// Make hole in walls

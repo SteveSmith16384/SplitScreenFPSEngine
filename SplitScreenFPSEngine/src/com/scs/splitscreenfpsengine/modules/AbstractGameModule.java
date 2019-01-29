@@ -178,10 +178,9 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	public abstract Vector3f getPlayerStartPos(int id);
 
 
-	private Camera createCamera(int id, int numPlayers) {
+	private Camera createCamera(int playerID, int numPlayers) {
 		Camera newCam = null;
-		//int id = player.id;
-		if (id == 0) {
+		if (playerID == 0) {
 			newCam = game.getCamera();
 		} else {
 			newCam = game.getCamera().clone();
@@ -189,7 +188,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 		if (Settings.ALWAYS_SHOW_4_CAMS || numPlayers > 2) {
 			newCam.setFrustumPerspective(45f, (float) newCam.getWidth() / newCam.getHeight(), 0.01f, Settings.CAM_DIST);
-			switch (id) { // left/right/bottom/top, from bottom-left!
+			switch (playerID) { // left/right/bottom/top, from bottom-left!
 			case 0: // TL
 				newCam.setViewPort(0f, 0.5f, 0.5f, 1f);
 				newCam.setName("Cam_TL");
@@ -207,11 +206,11 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 				newCam.setName("Cam_BR");
 				break;
 			default:
-				throw new RuntimeException("Unknown player id: " + id);
+				throw new RuntimeException("Unknown player id: " + playerID);
 			}
 		} else if (numPlayers == 2) {
 			newCam.setFrustumPerspective(45f, (float) (newCam.getWidth()*2) / newCam.getHeight(), 0.01f, Settings.CAM_DIST);
-			switch (id) { // left/right/bottom/top, from bottom-left!
+			switch (playerID) { // left/right/bottom/top, from bottom-left!
 			case 0: // TL
 				//Settings.p("Creating camera top");
 				newCam.setViewPort(0f, 1f, 0.5f, 1f);
@@ -223,7 +222,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 				newCam.setName("Cam_bottom");
 				break;
 			default:
-				throw new RuntimeException("Unknown player id: " + id);
+				throw new RuntimeException("Unknown player id: " + playerID);
 			}
 		} else if (numPlayers == 1) {
 			newCam.setFrustumPerspective(45f, (float) newCam.getWidth() / newCam.getHeight(), 0.01f, Settings.CAM_DIST);
@@ -536,7 +535,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	}
 
 	
-	public AbstractPhysicalEntity getWithRay(AbstractPlayersAvatar wiz, Class<? extends AbstractPhysicalEntity> clazz) {
+	public AbstractPhysicalEntity getWithRay(AbstractPlayersAvatar wiz, Class<? extends AbstractPhysicalEntity> clazz, float range) {
 		Ray ray = new Ray(wiz.getCamera().getLocation(), wiz.getCamera().getDirection());
 
 		CollisionResults results = new CollisionResults();
@@ -545,6 +544,10 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		Iterator<CollisionResult> it = results.iterator();
 		while (it.hasNext()) {
 			CollisionResult col = it.next();
+			if (range > 0 && wiz.distance(col.getContactPoint()) > range) {
+				wiz.hud.appendToLog("Too far away");
+				return null;
+			}
 			Geometry g = col.getGeometry();
 			AbstractPhysicalEntity ape = (AbstractPhysicalEntity)AbstractGameModule.getEntityFromSpatial(g);
 			if (ape != null) {
@@ -557,7 +560,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	}
 
 
-	public Vector3f getPointWithRay(AbstractPlayersAvatar wiz, Class<? extends AbstractPhysicalEntity> clazz) {
+	public Vector3f getPointWithRay(AbstractPlayersAvatar wiz, Class<? extends AbstractPhysicalEntity> clazz, float range) {
 		Ray ray = new Ray(wiz.getCamera().getLocation(), wiz.getCamera().getDirection());
 
 
@@ -567,6 +570,10 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		Iterator<CollisionResult> it = results.iterator();
 		while (it.hasNext()) {
 			CollisionResult col = it.next();
+			if (range > 0 && wiz.distance(col.getContactPoint()) > range) {
+				wiz.hud.appendToLog("Too far away");
+				return null;
+			}
 			Geometry g = col.getGeometry();
 			AbstractPhysicalEntity ape = (AbstractPhysicalEntity)AbstractGameModule.getEntityFromSpatial(g);
 			if (ape != null) {

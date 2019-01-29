@@ -13,7 +13,7 @@ public abstract class AbstractEntity implements IEntity, Savable {
 	
 	private static int nextId = 0;
 	
-	public final int id; // 0-3
+	public final int id;
 	protected SplitScreenFpsEngine game;
 	protected AbstractGameModule module;
 	public String name;
