@@ -86,7 +86,9 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		bulletAppState = new BulletAppState();
 		game.getStateManager().attach(bulletAppState);
 		bulletAppState.getPhysicsSpace().addCollisionListener(this);
-		//bulletAppState.getPhysicsSpace().enableDebug(game.getAssetManager());
+		if (!Settings.RELEASE_MODE) {
+			//bulletAppState.setDebugEnabled(true);
+		}
 
 		game.getRenderManager().removeMainView(game.getViewPort()); // Since we create new ones for each player
 
@@ -161,7 +163,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		audioSmallExplode.setLooping(false);
 		//audio_gun.setVolume(2);
 		game.getRootNode().attachChild(audioSmallExplode);
-*/
+		 */
 
 	}
 
@@ -263,15 +265,15 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			view2.addProcessor(fpp2);
 		}
 
-/*		{
+		/*		{
 			// Radial Blur
 			RadialBlurFilter bloom = new RadialBlurFilter();
 			FilterPostProcessor fpp2 = new FilterPostProcessor(game.getAssetManager());
 			fpp2.addFilter(bloom);
 			view2.addProcessor(fpp2);
 		}
-*/
-		
+		 */
+
 		return newCam;
 	}
 
@@ -292,8 +294,8 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		return hud;
 
 	}
-	
-	
+
+
 	protected abstract IHud generateHUD(SplitScreenFpsEngine _game, AbstractGameModule _module, AbstractPlayersAvatar _player, float xBL, float yBL, float w, float h, Camera _cam);
 
 
@@ -419,7 +421,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	@Override
 	public void destroy() {
 		if (audioMusic != null) {
-		audioMusic.stop();
+			audioMusic.stop();
 		}
 
 		game.getInputManager().removeListener(this);
@@ -525,7 +527,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 	}
 
-	
+
 	public AbstractPhysicalEntity getWithRay(AbstractPlayersAvatar wiz, Class<? extends AbstractPhysicalEntity> clazz, float range) {
 		Ray ray = new Ray(wiz.getCamera().getLocation(), wiz.getCamera().getDirection());
 

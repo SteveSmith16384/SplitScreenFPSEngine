@@ -209,20 +209,13 @@ public class JMEAngleFunctions {
 		double ang = Math.toRadians(angdeg);
 		Quaternion rotateLeft = new Quaternion().fromAngleAxis((float)ang, Vector3f.UNIT_Y);
 		spatial.rotate(rotateLeft);
-		//rotateLeft.mult(direction, direction);
-		//system
-		//System.out.println("direction: " + direction);
 	}
 
 
 	// This function hasn't been tested
 	public static void turnUp(Spatial spatial){
-		//Vector3f direction = new Vector3f(0, 0, 1);
 		Quaternion rotateLeft = new Quaternion().fromAngleAxis(FastMath.HALF_PI, Vector3f.UNIT_X);
 		spatial.rotate(rotateLeft);
-		//rotateLeft.mult(direction, direction);
-		//system
-		//System.out.println("direction: " + direction);
 	}
 
 
