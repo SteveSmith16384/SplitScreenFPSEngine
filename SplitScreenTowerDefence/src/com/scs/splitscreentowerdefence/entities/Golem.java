@@ -1,5 +1,6 @@
 package com.scs.splitscreentowerdefence.entities;
 
+import com.jme3.bounding.BoundingBox;
 import com.jme3.math.Vector3f;
 import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.MyBetterCharacterControl;
@@ -18,7 +19,6 @@ public class Golem extends AbstractPhysicalEntity implements IProcessable, IDama
 
 	private static final float TURN_SPEED = 1f;
 
-	private static final float PLAYER_HEIGHT = 3f;
 	private static final float WEIGHT = 1f;
 
 	private enum AIMode {WalkToCrystal, AvoidBlockage}; 
@@ -46,7 +46,8 @@ public class Golem extends AbstractPhysicalEntity implements IProcessable, IDama
 		this.getMainNode().attachChild(model.getModel());
 		this.getMainNode().setLocalTranslation(startPos);
 
-		playerControl = new MyBetterCharacterControl(PLAYER_HEIGHT/3, PLAYER_HEIGHT, WEIGHT); // todo - calc from model size
+		BoundingBox bv = (BoundingBox)model.getModel().getWorldBound();
+		playerControl = new MyBetterCharacterControl(bv.getXExtent(), bv.getYExtent()*2, WEIGHT);
 		playerControl.setJumpForce(new Vector3f(0, Settings.JUMP_FORCE, 0)); 
 		this.getMainNode().addControl(playerControl);
 

@@ -3,7 +3,7 @@ package com.scs.splitscreenfpsengine;
 public class Settings {
 
 	public static final boolean RELEASE_MODE = false;
-	public static final boolean RECORD_VID = false;
+	public static final boolean RECORD_VID = true;
 
 	// DEBUG
 

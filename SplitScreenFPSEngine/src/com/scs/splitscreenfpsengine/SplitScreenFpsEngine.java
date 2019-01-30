@@ -12,93 +12,33 @@ import com.scs.splitscreenfpsengine.modules.IModule;
 
 public abstract class SplitScreenFpsEngine extends SimpleApplication implements IControllerListener {
 
-	//private static final String PROPS_FILE = Settings.NAME.replaceAll(" ", "") + "_settings.txt";
 	public static float MAX_TURN_SPEED = -1;
 
 	private IModule currentModule, pendingModule;
 	public static AppSettings settings;
 	public static MultiplayerVoxelWorldProperties properties;
 	public JamepadControllerManager controllerManager;;
-	
-	/*
-	public static void main(String[] args) {
-		try {
-			properties = new MultiplayerVoxelWorldProperties(PROPS_FILE);
-			settings = new AppSettings(true);
-			try {
-				settings.load(Settings.NAME);
-			} catch (BackingStoreException e) {
-				e.printStackTrace();
-			}
-			settings.setUseJoysticks(true);
-			settings.setTitle(Settings.NAME + " (v" + Settings.VERSION + ")");
-			if (Settings.RELEASE_MODE) {
-				//todo settings.setSettingsDialogImage("Textures/text/multiplayerarena.png");
-			} else {
-				settings.setSettingsDialogImage(null);
-			}
 
-			MAX_TURN_SPEED = MultiplayerVoxelWorldMain.properties.GetMaxTurnSpeed();
-			BASE_SCORE_INC = MultiplayerVoxelWorldMain.properties.GetBaseScoreInc();
-			
-			MultiplayerVoxelWorldMain app = new MultiplayerVoxelWorldMain();
-			app.setSettings(settings);
-			//app.setPauseOnLostFocus(true);
 
-			/*File video, audio;
-			if (Settings.RECORD_VID) {
-				//app.setTimer(new IsoTimer(60));
-				video = File.createTempFile("JME-water-video", ".avi");
-				audio = File.createTempFile("JME-water-audio", ".wav");
-				Capture.captureVideo(app, video);
-				Capture.captureAudio(app, audio);
-			}*/
-
-			/*if (Settings.RECORD_VID) {
-				System.out.println("Video saved at " + video.getCanonicalPath());
-				System.out.println("Audio saved at " + audio.getCanonicalPath());
-			}*/
-/*
-			try {
-				settings.save(Settings.NAME);
-			} catch (BackingStoreException e) {
-				e.printStackTrace();
-			}
-
-			app.start();
-
-		} catch (Exception e) {
-			Settings.p("Error: " + e);
-			e.printStackTrace();
-		}
-
-	}
-
-*/
 
 	public abstract AbstractGameModule getGameModule();
 
 	public abstract AbstractStartModule getStartModule();
 
 	public int getNumPlayers() {
-		/*Joystick[] joysticks = getInputManager().getJoysticks();
-		int numPlayers = (Settings.PLAYER1_IS_MOUSE ? 1 : 0) +joysticks.length;
-		return numPlayers;*/
 		return 1 + controllerManager.getNumControllers();
 	}
-	
+
 	@Override
 	public void simpleInitApp() {
-		//getAssetManager().registerLoader(TrueTypeLoader.class, "ttf");
-
 		// Clear existing mappings
 		getInputManager().clearMappings();
 		getInputManager().clearRawInputListeners();
-		
+
 		stateManager.detach( stateManager.getState(FlyCamAppState.class) );
-		
+
 		controllerManager = new JamepadControllerManager(this);
-		
+
 		cam.setFrustumPerspective(45f, (float) cam.getWidth() / cam.getHeight(), 0.01f, Settings.CAM_DIST);
 
 		if (Settings.RELEASE_MODE) {
@@ -107,13 +47,13 @@ public abstract class SplitScreenFpsEngine extends SimpleApplication implements 
 			currentModule = this.getGameModule();
 		}
 		currentModule.init();
-		
+
 		if (Settings.RECORD_VID) {
 			Settings.p("Recording video");
 			VideoRecorderAppState video_recorder = new VideoRecorderAppState();
 			stateManager.attach(video_recorder);
 		}
-		
+
 	}
 
 
@@ -136,9 +76,9 @@ public abstract class SplitScreenFpsEngine extends SimpleApplication implements 
 			this.currentModule.init();
 			pendingModule = null;
 		}
-		
+
 		controllerManager.checkControllers();
-		
+
 		currentModule.update(tpf_secs);
 	}
 
@@ -146,20 +86,20 @@ public abstract class SplitScreenFpsEngine extends SimpleApplication implements 
 	public void setNextModule(IModule newModule) {
 		pendingModule = newModule;
 	}
-	
-	
+
+
 	@Override
 	public void newController(int idx) {
 		if (currentModule != null) {
-		currentModule.newController();
+			currentModule.newController();
 		}
 	}
 
-	
+
 	@Override
 	public void controllerDisconnected(int idx) {
 		if (currentModule != null) {
-		currentModule.controllerDisconnected();
+			currentModule.controllerDisconnected();
 		}		
 	}
 

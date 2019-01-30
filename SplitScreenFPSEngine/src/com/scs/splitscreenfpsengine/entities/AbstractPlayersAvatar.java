@@ -42,7 +42,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	public MyBetterCharacterControl playerControl;
 	public final int playerID; // 0-3
 	public IAbility[] ability = new IAbility[2];
-	protected IAvatarModel playerGeometry; // todo - rename
+	protected IAvatarModel avatarModel;
 	private CameraSystem camSys;
 	private float radius;
 	
@@ -62,10 +62,10 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		side = _side;
 
 		int pid = playerID;
-		playerGeometry = getPlayersModel(game, pid);
-		this.getMainNode().attachChild(playerGeometry.getModel());
+		avatarModel = getPlayersModel(game, pid);
+		this.getMainNode().attachChild(avatarModel.getModel());
 
-		BoundingBox bv = (BoundingBox)playerGeometry.getModel().getWorldBound();
+		BoundingBox bv = (BoundingBox)avatarModel.getModel().getWorldBound();
 		radius = bv.getXExtent();
 		playerControl = new MyBetterCharacterControl(bv.getXExtent(), bv.getYExtent()*2, WEIGHT);
 		playerControl.setJumpForce(new Vector3f(0, Settings.JUMP_FORCE, 0)); 
@@ -156,7 +156,6 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 						}
 						this.hud.refresh();
 					}
-					//this.hud.setAbilityGunText(this.ability[num].getHudText()); // todo - use diff hud fields
 				}
 			}
 
@@ -200,16 +199,13 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 			 */
 		}
 
-		// Position camera at node
-		//Vector3f vec = getMainNode().getWorldTranslation();
-		//cam.setLocation(new Vector3f(vec.x, vec.y + (PLAYER_HEIGHT/2), vec.z)); // scs todo - position above wiz
 		this.camSys.process(tpfSecs);
 
 		// Rotate us to point in the direction of the camera
 		Vector3f lookAtPoint = cam.getLocation().add(cam.getDirection().mult(10));
 		//gun.lookAt(lookAtPoint.clone(), Vector3f.UNIT_Y);
 		lookAtPoint.y = cam.getLocation().y; // Look horizontal
-		this.playerGeometry.getModel().lookAt(lookAtPoint, Vector3f.UNIT_Y);
+		this.avatarModel.getModel().lookAt(lookAtPoint, Vector3f.UNIT_Y);
 		//this.getMainNode().lookAt(lookAtPoint.clone(), Vector3f.UNIT_Y);  This won't rotate the model since it's locked to the physics controller
 
 		// Move cam fwd so we don't see ourselves

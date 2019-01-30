@@ -16,7 +16,7 @@ import com.scs.splitscreenfpsengine.Settings;
 
 public class MouseAndKeyboardCamera implements AnalogListener, ActionListener, IInputDevice { 
 
-	protected float rotationSpeed = 10f;
+	protected float rotationSpeed = 5f;
 
 	private boolean left = false, right = false, up = false, down = false, jump = false;
 	private boolean ability0 = false, ability1 = false;
@@ -213,7 +213,7 @@ public class MouseAndKeyboardCamera implements AnalogListener, ActionListener, I
 		} else if (num == 1) {
 			return ability1;
 		} else {
-			throw new RuntimeException("Todo");
+			throw new RuntimeException("Invalid ability: " + num);
 		}
 	}
 
@@ -225,7 +225,7 @@ public class MouseAndKeyboardCamera implements AnalogListener, ActionListener, I
 		} else if (num == 1) {
 			ability1 = false;
 		} else {
-			throw new RuntimeException("Todo");
+			throw new RuntimeException("Invalid ability: " + num);
 		}
 	}
 

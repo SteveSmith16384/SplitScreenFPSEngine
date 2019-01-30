@@ -2,7 +2,7 @@ package com.scs.splitscreenfpsengine.hud;
 
 public class AbstractHud {
 
-	public AbstractHud() { // todo - delete
+	public AbstractHud() {
 		// TODO Auto-generated constructor stub
 	}
 

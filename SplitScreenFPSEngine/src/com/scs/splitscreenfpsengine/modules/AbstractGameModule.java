@@ -162,14 +162,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		//audio_gun.setVolume(2);
 		game.getRootNode().attachChild(audioSmallExplode);
 */
-		// Audio
-/*		audioMusic = new AudioNode(game.getAssetManager(), "Sound/Dark Descent (Extended Cut).mp3", true, false);
-		audioMusic.setLooping(true);  // activate continuous playing
-		audioMusic.setPositional(false);
-		audioMusic.setVolume(3);
-		game.getRootNode().attachChild(audioMusic);
-		//audioMusic.play(); // play continuously! - todo - re-add?
-*/
+
 	}
 
 
@@ -511,7 +504,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 	public void gameOver() {
 		Settings.p("Game over!");
-		//todo this.gameOver = true;
+		this.gameOver = true;
 	}
 
 

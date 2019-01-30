@@ -29,7 +29,7 @@ import ssmith.util.RealtimeInterval;
  * Positioning text = the co-ords of BitmapText are for the top-left of the first line of text, and they go down from there.
  * 
  */
-public class TowerDefenceHUD extends Node implements IHud, IEntity, IProcessable { // todo - rename
+public class TowerDefenceHUD extends Node implements IHud, IEntity, IProcessable {
 
 	public float hud_width, hud_height;
 
