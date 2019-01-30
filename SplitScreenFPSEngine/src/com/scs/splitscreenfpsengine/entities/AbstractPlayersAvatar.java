@@ -72,14 +72,12 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		this.getMainNode().addControl(playerControl);
 		
 		camSys = new CameraSystem(game, cam, this);
-		camSys.setupCam(2f, 0.2f, true, 1f, 1f); // todo - get from model
+		camSys.setupCam(2.5f, 0.2f, true, 1f, 1.5f); // todo - get from model
 
 		playerControl.getPhysicsRigidBody().setUserObject(this);
 
 	}
 
-	
-	//public abstract float getCameraHeight();
 
 	public void setHUD(IHud _hud) {
 		hud = _hud;

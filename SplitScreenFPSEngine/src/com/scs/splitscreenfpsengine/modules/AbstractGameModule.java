@@ -279,8 +279,6 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		}
 */
 		
-		//CameraSystem camSys = new CameraSystem(game, newCam, player);
-		
 		return newCam;
 	}
 

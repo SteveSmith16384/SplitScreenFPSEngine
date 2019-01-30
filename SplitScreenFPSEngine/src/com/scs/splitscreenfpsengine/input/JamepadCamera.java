@@ -18,9 +18,7 @@ public class JamepadCamera implements IInputDevice {
 	private Camera cam;
 	private ControllerIndex c;
 	private JamepadFullAxisState initialStates;
-
 	private Vector3f initialUpVec;
-	protected float rotationSpeed = .1f;
 
 	public JamepadCamera(Camera _cam, ControllerIndex _c, JamepadFullAxisState _states) {
 		cam = _cam;
@@ -50,6 +48,7 @@ public class JamepadCamera implements IInputDevice {
 		return 0;
 	}
 
+	
 	@Override
 	public float getBackValue() {
 		try {
@@ -63,6 +62,7 @@ public class JamepadCamera implements IInputDevice {
 		}
 		return 0;
 	}
+	
 
 	@Override
 	public float getStrafeLeftValue() {
@@ -76,6 +76,7 @@ public class JamepadCamera implements IInputDevice {
 		}
 		return 0;
 	}
+	
 
 	@Override
 	public float getStrafeRightValue() {
@@ -93,7 +94,11 @@ public class JamepadCamera implements IInputDevice {
 
 	@Override
 	public boolean isJumpPressed() {
-		// TODO Auto-generated method stub
+		try {
+			return c.isButtonPressed(ControllerButton.A);
+		} catch (ControllerUnpluggedException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -103,15 +108,9 @@ public class JamepadCamera implements IInputDevice {
 		try {
 			switch (num) {
 			case 0:
-				if (c.isButtonPressed(ControllerButton.X)) {
-					return true;
-				}
-				break;
+				return c.isButtonPressed(ControllerButton.X);
 			case 1:
-				if (c.isButtonPressed(ControllerButton.Y)) {
-					return true;
-				}
-				break;
+				return c.isButtonPressed(ControllerButton.Y);
 			}
 		} catch (ControllerUnpluggedException e) {
 			e.printStackTrace();
@@ -130,13 +129,17 @@ public class JamepadCamera implements IInputDevice {
 	@Override
 	public void process(float tpfSecs) {
 		try {
-			{ // todo - check deadzone!
+			{
 				float f = c.getAxisState(ControllerAxis.RIGHTX) - initialStates.states.get(ControllerAxis.RIGHTX);
-				this.rotateCamera(-f * tpfSecs, initialUpVec);
+				if (Math.abs(f) > getDeadzone()) {
+					this.rotateCamera(-f, tpfSecs, initialUpVec);
+				}
 			}
 			{
 				float f2 = c.getAxisState(ControllerAxis.RIGHTY) - initialStates.states.get(ControllerAxis.RIGHTY);
-				this.rotateCamera(-f2 * tpfSecs, cam.getLeft());
+				if (Math.abs(f2) > getDeadzone()) {
+					this.rotateCamera(-f2, tpfSecs, cam.getLeft());
+				}
 			}
 		} catch (ControllerUnpluggedException e) {
 			e.printStackTrace();
@@ -150,9 +153,10 @@ public class JamepadCamera implements IInputDevice {
 	 * @param value rotation amount
 	 * @param axis direction of rotation (a unit vector)
 	 */
-	protected void rotateCamera(float value, Vector3f axis){
+	protected void rotateCamera(float value, float tpfSecs, Vector3f axis){
+		float adjustedValue = (float)Math.sqrt(10 * (double)value * (double)tpfSecs);
 		Matrix3f mat = new Matrix3f();
-		mat.fromAngleNormalAxis(10f * value, axis);
+		mat.fromAngleNormalAxis(adjustedValue, axis);
 
 		Vector3f up = cam.getUp();
 		Vector3f left = cam.getLeft();
@@ -172,8 +176,15 @@ public class JamepadCamera implements IInputDevice {
 
 	@Override
 	public boolean isCycleAbilityPressed(boolean fwd) {
-		// todo
+		try {
+			if (fwd) {
+				return c.isButtonPressed(ControllerButton.LEFTBUMPER);
+			} else {
+				return c.isButtonPressed(ControllerButton.RIGHTBUMPER);
+			}
+		} catch (ControllerUnpluggedException e) {
+			e.printStackTrace();
+		}
 		return false;
-
 	}
 }
