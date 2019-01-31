@@ -18,7 +18,8 @@ public class JamepadCamera implements IInputDevice {
 	private ControllerIndex c;
 	private JamepadFullAxisState initialStates;
 	private Vector3f initialUpVec;
-
+	private boolean[] abilityDisabled = new boolean[2];
+	
 	public JamepadCamera(Camera _cam, ControllerIndex _c, JamepadFullAxisState _states) {
 		cam = _cam;
 		c = _c;
@@ -109,22 +110,24 @@ public class JamepadCamera implements IInputDevice {
 				try {
 					float f = c.getAxisState(ControllerAxis.TRIGGERRIGHT) - initialStates.states.get(ControllerAxis.TRIGGERRIGHT);
 					if (f > getDeadzone()) {
-						return true;
+						return !abilityDisabled[num];
 					}
 				} catch (ControllerUnpluggedException e) {
 					e.printStackTrace();
 				}
+				abilityDisabled[num] = false;
 				return false;
 				
 			case 1:
 				try {
 					float f = c.getAxisState(ControllerAxis.TRIGGERLEFT) - initialStates.states.get(ControllerAxis.TRIGGERLEFT);
 					if (f > getDeadzone()) {
-						return true;
+						return !abilityDisabled[num];
 					}
 				} catch (ControllerUnpluggedException e) {
 					e.printStackTrace();
 				}
+				abilityDisabled[num] = false;
 				return false;
 			}
 		return false;
@@ -133,8 +136,7 @@ public class JamepadCamera implements IInputDevice {
 
 	@Override
 	public void resetAbilitySwitch(int num) {
-		// TODO Auto-generated method stub
-
+		abilityDisabled[num] = true;
 	}
 
 

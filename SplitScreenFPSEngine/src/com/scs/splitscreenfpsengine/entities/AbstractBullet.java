@@ -18,12 +18,14 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 	public ICanShoot shooter;
 	private float timeLeft = 6;
 	private boolean forceApplied = false;
-
-	public AbstractBullet(SplitScreenFpsEngine _game, AbstractGameModule _module, String name, ICanShoot _shooter) {
+	private float damage;
+	
+	public AbstractBullet(SplitScreenFpsEngine _game, AbstractGameModule _module, String name, ICanShoot _shooter, float _damage) {
 		super(_game, _module, name);
 
 		this.shooter = _shooter;
-
+		damage = _damage;
+		
 		Vector3f origin = shooter.getBulletStartPosition().clone();
 
 		Spatial bullet = createBulletModel();// BeamLaserModel.Factory(game.getAssetManager(), origin, origin.add(shooter.getShootDir().multLocal(1)), ColorRGBA.Pink);
@@ -34,7 +36,6 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 
 		rigidBodyControl = new RigidBodyControl(.1f);
 		mainNode.addControl(rigidBodyControl);
-		//rigidBodyControl.setGravity(Vector3f.ZERO);
 
 		bullet.setUserData(Settings.ENTITY, this);
 		rigidBodyControl.setUserObject(this);
@@ -57,7 +58,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 
 	@Override
 	public void process(float tpf) {
-		if (Settings.DEBUG_FIREBALL_POS) {
+		if (Settings.DEBUG_FIREBALL_POS) { //this.mainNode
 			new DebuggingSphere(game, module, this.getLocation());
 		}
 		this.timeLeft -= tpf;
@@ -93,7 +94,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 
 	@Override
 	public float getDamageCaused() {
-		return 1;
+		return damage;
 	}
 
 
@@ -109,7 +110,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 
 	@Override
 	public void physicsTick(PhysicsSpace space, float tpf) {
-
+		// Do nothing
 	}
 
 

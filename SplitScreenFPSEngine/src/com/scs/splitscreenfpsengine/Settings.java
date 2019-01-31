@@ -35,7 +35,7 @@ public class Settings {
 	
 	// Our movement speed
 	public static final float PLAYER_MOVE_SPEED = 3f;
-	public static final float JUMP_FORCE = 8f;
+	public static final float JUMP_FORCE = 4f;
 
 	public static final float CAM_DIST = 100f;
 	//public static final int FLOOR_SECTION_SIZE = 12;

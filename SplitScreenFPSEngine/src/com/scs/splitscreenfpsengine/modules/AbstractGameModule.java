@@ -11,6 +11,8 @@ import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
+import com.jme3.effect.ParticleEmitter;
+import com.jme3.effect.ParticleMesh;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
@@ -18,6 +20,7 @@ import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.Light;
 import com.jme3.light.LightList;
+import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
@@ -333,10 +336,10 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			CollisionLogic.collision(this, a, b);
 		} else {
 			if (a == null) {
-				Settings.p(oa + " has no entity data!");
+				Settings.pe(oa + " has no entity data!");
 			}
 			if (b == null) {
-				Settings.p(ob + " has no entity data!");
+				Settings.pe(ob + " has no entity data!");
 			}
 		}
 	}
@@ -354,7 +357,25 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		}
 
 		if (name.equals(TEST)) {
-			//new ChangeBlocksInSweep(game, this, 100);
+			ParticleEmitter fire = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
+			Material mat_red = new Material(game.getAssetManager(), "Common/MatDefs/Misc/Particle.j3md");
+			mat_red.setTexture("Texture", game.getAssetManager().loadTexture("Textures/flame.png"));
+			fire.setMaterial(mat_red);
+			fire.setImagesX(2);
+			fire.setImagesY(2); // 2x2 texture animation
+			fire.setEndColor(  new ColorRGBA(1f, 0f, 0f, 1f));   // red
+			fire.setStartColor(new ColorRGBA(1f, 1f, 0f, 0.5f)); // yellow
+			//fire.getParticleInfluencer().setInitialVelocity(new Vector3f(2, 0, 0));
+			fire.getParticleInfluencer().setInitialVelocity(new Vector3f(0, -2, 0));
+			fire.setStartSize(1);//.5f);
+			fire.setEndSize(0.1f);
+			fire.setGravity(0, 0, 0);
+			fire.setLowLife(1f);
+			fire.setHighLife(3f);
+			fire.getParticleInfluencer().setVelocityVariation(0.3f);
+			
+			fire.setLocalTranslation(20, 2, 20);
+			this.getRootNode().attachChild(fire);
 		} else if (name.equals(QUIT)) {
 			game.setNextModule(game.getStartModule());//new StartModule(game, GameMode.Skirmish));
 		}
@@ -515,7 +536,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			Geometry g = col.getGeometry();
 			AbstractPhysicalEntity ape = (AbstractPhysicalEntity)AbstractGameModule.getEntityFromSpatial(g);
 			if (ape != null) {
-				if (ape.getClass() == clazz) {
+				if (ape.getClass() == clazz || ape.getClass().getSuperclass() == clazz) { // todo - isAssignableFrom??
 					return ape;
 				}
 			}
@@ -526,7 +547,6 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 	public Vector3f getPointWithRay(AbstractPlayersAvatar wiz, Class<? extends AbstractPhysicalEntity> clazz, float range) {
 		Ray ray = new Ray(wiz.getCamera().getLocation(), wiz.getCamera().getDirection());
-
 
 		CollisionResults results = new CollisionResults();
 		game.getRootNode().collideWith(ray, results);
@@ -541,7 +561,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			Geometry g = col.getGeometry();
 			AbstractPhysicalEntity ape = (AbstractPhysicalEntity)AbstractGameModule.getEntityFromSpatial(g);
 			if (ape != null) {
-				if (ape.getClass() == clazz) {
+				if (ape.getClass() == clazz || ape.getClass().getSuperclass() == clazz) { // todo - isAssignableFrom??
 					return col.getContactPoint();
 				}
 			}

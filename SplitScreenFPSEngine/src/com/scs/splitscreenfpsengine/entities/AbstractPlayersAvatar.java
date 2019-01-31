@@ -44,14 +44,14 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	private IAvatarModel avatarModel;
 	private CameraSystem camSys;
 	private float radius;
-	
+
 	// Stats
 	private int side;
 
 	protected boolean restarting = false;
 	protected float restartTime, invulnerableTime;
 	private float timeSinceLastMove = 0;
-	
+
 	public AbstractPlayersAvatar(SplitScreenFpsEngine _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side) {
 		super(_game, _module, "Player");
 
@@ -69,7 +69,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		playerControl = new MyBetterCharacterControl(bv.getXExtent(), bv.getYExtent()*2, WEIGHT);
 		playerControl.setJumpForce(new Vector3f(0, Settings.JUMP_FORCE, 0)); 
 		this.getMainNode().addControl(playerControl);
-		
+
 		camSys = new CameraSystem(game, cam, this);
 		camSys.setupCam(3.5f, 0.2f, true, 1f, 1.5f); // todo - get from model
 
@@ -85,7 +85,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 
 	protected abstract IAvatarModel getPlayersModel(SplitScreenFpsEngine game, int pid);
 
-		/*
+	/*
 	private Spatial getPlayersModel(MultiplayerVoxelWorldMain game, int pid) {
 		if (Settings.USE_MODEL_FOR_PLAYERS) {
 			return new RobotModel(game.getAssetManager(), pid);
@@ -106,7 +106,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 			return playerGeometry;
 		}
 	}
-*/
+	 */
 
 	public void moveToStartPostion(boolean invuln) {
 		Vector3f warpPos = module.getPlayerStartPos(playerID);//new Vector3f(p.x, module.mapData.getRespawnHeight(), p.y);
@@ -120,7 +120,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	@Override
 	public void process(float tpfSecs) {
 		input.process(tpfSecs);
-		
+
 		if (this.restarting) {
 			restartTime -= tpfSecs;
 			if (this.restartTime <= 0) {
@@ -136,12 +136,6 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		}
 
 		if (!this.restarting) {
-			// Have we fallen off the edge
-			/*if (this.playerControl.getPhysicsRigidBody().getPhysicsLocation().y < -1f) { // scs catching here after died!
-				died("Too low");
-				return;
-			}*/
-
 			timeSinceLastMove += tpfSecs;
 
 			for (int num=0 ; num < 2 ; num++) {
@@ -176,26 +170,18 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 				timeSinceLastMove = 0;
 			}
 
-			/*if (walkDirection.length() != 0) {
-				Settings.p("walkDirection=" + walkDirection);
-			}*/
 			playerControl.setWalkDirection(walkDirection);
 
-			if (input.isJumpPressed()){
+			if (input.isJumpPressed()) {
 				this.jump();
 				timeSinceLastMove = 0;
 			}
-			/*
-				if (input.isShootPressed()) {
-					shoot();
-				}
 
-				// These must be after we might use them, so the hud is correct
-				this.hud.setAbilityGunText(this.abilityGun.getHudText());
-				if (abilityOther != null) {
-					this.hud.setAbilityOtherText(this.abilityOther.getHudText());
-				}
-			 */
+			if (timeSinceLastMove == 0) {
+				this.avatarModel.setAvatarAnim(Anim.Walk);
+			} else {
+				this.avatarModel.setAvatarAnim(Anim.Idle);
+			}
 		}
 
 		this.camSys.process(tpfSecs);
@@ -206,11 +192,6 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		lookAtPoint.y = this.avatarModel.getModel().getWorldTranslation().y; // Look horizontal
 		this.avatarModel.getModel().lookAt(lookAtPoint, Vector3f.UNIT_Y);
 		//this.getMainNode().lookAt(lookAtPoint.clone(), Vector3f.UNIT_Y);  This won't rotate the model since it's locked to the physics controller
-
-		// Move cam fwd so we don't see ourselves
-		// NOT REQUIRED WITH CAMERA SYSTEM
-		//cam.setLocation(cam.getLocation().add(cam.getDirection().mult(radius)));
-		//cam.update();
 
 		walkDirection.set(0, 0, 0);
 	}
@@ -236,7 +217,13 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 
 	@Override
 	public Vector3f getShootDir() {
-		return this.cam.getDirection();
+		Vector3f pos = module.getPointWithRay(this, AbstractPhysicalEntity.class, -1);
+		if (pos != null) {
+			Vector3f dir = pos.subtract(this.getLocation());
+			return dir.normalizeLocal();
+		} else {
+			return this.cam.getDirection();
+		}
 	}
 
 
