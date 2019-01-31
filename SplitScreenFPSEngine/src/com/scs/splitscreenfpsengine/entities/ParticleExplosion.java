@@ -15,7 +15,7 @@ public class ParticleExplosion extends AbstractPhysicalEntity {
 
 		ParticleEmitter debris = new ParticleEmitter("Debris", ParticleMesh.Type.Triangle, 10);
 		Material debris_mat = new Material(game.getAssetManager(), "Common/MatDefs/Misc/Particle.j3md");
-		debris_mat.setTexture("Texture", game.getAssetManager().loadTexture("Effects/Explosion/Debris.png"));
+		debris_mat.setTexture("Texture", game.getAssetManager().loadTexture("Textures/Debris.png"));
 		debris.setMaterial(debris_mat);
 		debris.setImagesX(3);
 		debris.setImagesY(3); // 3x3 texture animation

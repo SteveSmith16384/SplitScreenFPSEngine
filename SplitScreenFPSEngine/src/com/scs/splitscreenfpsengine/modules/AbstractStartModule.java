@@ -3,7 +3,6 @@ package com.scs.splitscreenfpsengine.modules;
 import java.util.List;
 
 import com.jme3.audio.AudioNode;
-import com.jme3.font.BitmapFont;
 import com.jme3.input.JoystickButton;
 import com.jme3.input.KeyInput;
 import com.jme3.input.RawInputListener;
@@ -20,11 +19,9 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Spatial;
 import com.jme3.ui.Picture;
-import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.Settings;
-import com.scs.splitscreenfpsengine.Settings.GameMode;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 
 
 public abstract class AbstractStartModule implements IModule, ActionListener, RawInputListener {

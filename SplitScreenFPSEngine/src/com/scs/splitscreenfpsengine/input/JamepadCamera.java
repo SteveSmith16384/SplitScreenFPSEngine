@@ -4,7 +4,6 @@ import com.jme3.math.Matrix3f;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.jamepad.JamepadFullAxisState;
 import com.studiohartman.jamepad.ControllerAxis;
 import com.studiohartman.jamepad.ControllerButton;
@@ -105,16 +104,29 @@ public class JamepadCamera implements IInputDevice {
 
 	@Override
 	public boolean isAbilityPressed(int num) {
-		try {
 			switch (num) {
 			case 0:
-				return c.isButtonPressed(ControllerButton.RIGHTSTICK);
+				try {
+					float f = c.getAxisState(ControllerAxis.TRIGGERRIGHT) - initialStates.states.get(ControllerAxis.TRIGGERRIGHT);
+					if (f > getDeadzone()) {
+						return true;
+					}
+				} catch (ControllerUnpluggedException e) {
+					e.printStackTrace();
+				}
+				return false;
+				
 			case 1:
-				return c.isButtonPressed(ControllerButton.LEFTSTICK);
+				try {
+					float f = c.getAxisState(ControllerAxis.TRIGGERLEFT) - initialStates.states.get(ControllerAxis.TRIGGERLEFT);
+					if (f > getDeadzone()) {
+						return true;
+					}
+				} catch (ControllerUnpluggedException e) {
+					e.printStackTrace();
+				}
+				return false;
 			}
-		} catch (ControllerUnpluggedException e) {
-			e.printStackTrace();
-		}
 		return false;
 	}
 

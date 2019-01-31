@@ -38,6 +38,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 
 		bullet.setUserData(Settings.ENTITY, this);
 		rigidBodyControl.setUserObject(this);
+		rigidBodyControl.setGravity(Vector3f.ZERO);
 
 		module.addEntity(this);
 
@@ -57,7 +58,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 	@Override
 	public void process(float tpf) {
 		if (Settings.DEBUG_FIREBALL_POS) {
-			//new DebuggingSphere(game, module, this.getLocation());
+			new DebuggingSphere(game, module, this.getLocation());
 		}
 		this.timeLeft -= tpf;
 		if (this.timeLeft < 0) {

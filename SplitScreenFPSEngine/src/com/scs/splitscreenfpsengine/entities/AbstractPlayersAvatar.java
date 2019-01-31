@@ -7,7 +7,6 @@ import com.jme3.bullet.collision.PhysicsRayTestResult;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.Camera.FrustumIntersect;
-import com.jme3.scene.Spatial;
 import com.scs.splitscreenfpsengine.CameraSystem;
 import com.scs.splitscreenfpsengine.MyBetterCharacterControl;
 import com.scs.splitscreenfpsengine.Settings;
@@ -42,7 +41,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	public MyBetterCharacterControl playerControl;
 	public final int playerID; // 0-3
 	public IAbility[] ability = new IAbility[2];
-	protected IAvatarModel avatarModel;
+	private IAvatarModel avatarModel;
 	private CameraSystem camSys;
 	private float radius;
 	
@@ -72,7 +71,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 		this.getMainNode().addControl(playerControl);
 		
 		camSys = new CameraSystem(game, cam, this);
-		camSys.setupCam(2.5f, 0.2f, true, 1f, 1.5f); // todo - get from model
+		camSys.setupCam(3.5f, 0.2f, true, 1f, 1.5f); // todo - get from model
 
 		playerControl.getPhysicsRigidBody().setUserObject(this);
 
@@ -203,14 +202,15 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 
 		// Rotate us to point in the direction of the camera
 		Vector3f lookAtPoint = cam.getLocation().add(cam.getDirection().mult(10));
-		//gun.lookAt(lookAtPoint.clone(), Vector3f.UNIT_Y);
-		lookAtPoint.y = cam.getLocation().y; // Look horizontal
+		//lookAtPoint.y = cam.getLocation().y; // Look horizontal
+		lookAtPoint.y = this.avatarModel.getModel().getWorldTranslation().y; // Look horizontal
 		this.avatarModel.getModel().lookAt(lookAtPoint, Vector3f.UNIT_Y);
 		//this.getMainNode().lookAt(lookAtPoint.clone(), Vector3f.UNIT_Y);  This won't rotate the model since it's locked to the physics controller
 
 		// Move cam fwd so we don't see ourselves
-		cam.setLocation(cam.getLocation().add(cam.getDirection().mult(radius)));
-		cam.update();
+		// NOT REQUIRED WITH CAMERA SYSTEM
+		//cam.setLocation(cam.getLocation().add(cam.getDirection().mult(radius)));
+		//cam.update();
 
 		walkDirection.set(0, 0, 0);
 	}

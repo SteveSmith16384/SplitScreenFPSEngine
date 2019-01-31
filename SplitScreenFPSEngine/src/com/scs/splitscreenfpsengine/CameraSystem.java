@@ -21,7 +21,7 @@ public class CameraSystem {
 	private Camera cam;
 	
 	private float followDist = 1f;
-	public float shoulderAngleRads = 0f;
+	private float shoulderAngleRads = 0f;
 	private float fixedHeight = -1;
 	private float heightOffset1stPerson;
 	private float heightOffset3rdPerson;
@@ -48,7 +48,6 @@ public class CameraSystem {
 
 
 	public void process(float tpfSecs) {
-		//IAvatar ava = (IAvatar)avatar;
 		if (this.currentView == View.First) {
 			// Position camera at node
 			Vector3f vec = avatar.getMainNode().getWorldTranslation();
@@ -70,7 +69,7 @@ public class CameraSystem {
 			cam.getLocation().z = (int)(pos.z / 25) * 25;
 		} else {
 			Vector3f avatarPos = avatar.getMainNode().getWorldTranslation().clone(); // todo - don't create each time - todo - use physics node!
-			avatarPos.y += heightOffset3rdPerson;//avatar.avatarModel.getCameraHeight() + .1f;
+			avatarPos.y += heightOffset3rdPerson;
 			if (this.currentView == View.Third) {
 				if (camInCharge) {
 					dirTmp = cam.getDirection().mult(-1, dirTmp);

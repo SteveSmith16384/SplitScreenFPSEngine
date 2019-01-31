@@ -21,18 +21,15 @@ import com.jme3.light.LightList;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
-import com.jme3.post.FilterPostProcessor;
-import com.jme3.post.filters.BloomFilter;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
-import com.scs.splitscreenfpsengine.CameraSystem;
 import com.scs.splitscreenfpsengine.CollisionLogic;
-import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.Settings;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.components.IAffectedByPhysics;
 import com.scs.splitscreenfpsengine.components.IEntity;
 import com.scs.splitscreenfpsengine.components.IProcessable;
@@ -182,7 +179,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		}
 
 		if (Settings.ALWAYS_SHOW_4_CAMS || numPlayers > 2) {
-			newCam.setFrustumPerspective(45f, (float) newCam.getWidth() / newCam.getHeight(), 0.01f, Settings.CAM_DIST);
+			newCam.setFrustumPerspective(Settings.FRUSTUM_ANGLE, (float) newCam.getWidth() / newCam.getHeight(), 0.01f, Settings.CAM_DIST);
 			switch (playerID) { // left/right/bottom/top, from bottom-left!
 			case 0: // TL
 				newCam.setViewPort(0f, 0.5f, 0.5f, 1f);
@@ -204,7 +201,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 				throw new RuntimeException("Unknown player id: " + playerID);
 			}
 		} else if (numPlayers == 2) {
-			newCam.setFrustumPerspective(45f, (float) (newCam.getWidth()*2) / newCam.getHeight(), 0.01f, Settings.CAM_DIST);
+			newCam.setFrustumPerspective(Settings.FRUSTUM_ANGLE, (float) (newCam.getWidth()*2) / newCam.getHeight(), 0.01f, Settings.CAM_DIST);
 			switch (playerID) { // left/right/bottom/top, from bottom-left!
 			case 0: // TL
 				//Settings.p("Creating camera top");
@@ -220,7 +217,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 				throw new RuntimeException("Unknown player id: " + playerID);
 			}
 		} else if (numPlayers == 1) {
-			newCam.setFrustumPerspective(45f, (float) newCam.getWidth() / newCam.getHeight(), 0.01f, Settings.CAM_DIST);
+			newCam.setFrustumPerspective(Settings.FRUSTUM_ANGLE, (float) newCam.getWidth() / newCam.getHeight(), 0.01f, Settings.CAM_DIST);
 			//Settings.p("Creating full-screen camera");
 			newCam.setViewPort(0f, 1f, 0f, 1f);
 			newCam.setName("Cam_FullScreen");
@@ -241,42 +238,16 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			dlsr.setLight(sun);
 			view2.addProcessor(dlsr);
 		}
-		/*
-		{
-		// DepthOfFieldFilter
-		FilterPostProcessor fpp = new FilterPostProcessor(game.getAssetManager());
-		DepthOfFieldFilter dff = new DepthOfFieldFilter();
-		dff.setFocusDistance(2f);
-		dff.setFocusRange(20f);
-		fpp.addFilter(dff);
-		view2.addProcessor(fpp);
-		}
-		 */
-		{
-			// Bloom
-			BloomFilter bloom = new BloomFilter();
-			bloom.setDownSamplingFactor(2);
-			bloom.setBlurScale(1.37f);
-			bloom.setExposurePower(3.30f);
-			bloom.setExposureCutOff(0.2f);
-			bloom.setBloomIntensity(2.45f);
-			FilterPostProcessor fpp2 = new FilterPostProcessor(game.getAssetManager());
-			fpp2.addFilter(bloom);
-			view2.addProcessor(fpp2);
-		}
-
-		/*		{
-			// Radial Blur
-			RadialBlurFilter bloom = new RadialBlurFilter();
-			FilterPostProcessor fpp2 = new FilterPostProcessor(game.getAssetManager());
-			fpp2.addFilter(bloom);
-			view2.addProcessor(fpp2);
-		}
-		 */
+		
+		onViewportCreated(view2);
 
 		return newCam;
 	}
 
+	
+	protected void onViewportCreated(ViewPort viewport) {
+		// Override if required
+	}
 
 	private IHud createHUD(Camera c, AbstractPlayersAvatar player) {
 		// HUD coords are full screen co-ords!
