@@ -108,9 +108,9 @@ public class JamepadCamera implements IInputDevice {
 		try {
 			switch (num) {
 			case 0:
-				return c.isButtonPressed(ControllerButton.X);
+				return c.isButtonPressed(ControllerButton.RIGHTSTICK);
 			case 1:
-				return c.isButtonPressed(ControllerButton.Y);
+				return c.isButtonPressed(ControllerButton.LEFTSTICK);
 			}
 		} catch (ControllerUnpluggedException e) {
 			e.printStackTrace();
@@ -154,7 +154,8 @@ public class JamepadCamera implements IInputDevice {
 	 * @param axis direction of rotation (a unit vector)
 	 */
 	protected void rotateCamera(float value, float tpfSecs, Vector3f axis){
-		float adjustedValue = (float)Math.sqrt(10 * (double)value * (double)tpfSecs);
+		//float adjustedValue = (float)Math.sqrt(1 * (double)value * (double)tpfSecs);
+		float adjustedValue = 2 * value * tpfSecs;
 		Matrix3f mat = new Matrix3f();
 		mat.fromAngleNormalAxis(adjustedValue, axis);
 

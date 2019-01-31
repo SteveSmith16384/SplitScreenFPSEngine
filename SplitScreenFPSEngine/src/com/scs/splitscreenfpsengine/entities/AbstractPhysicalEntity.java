@@ -89,7 +89,12 @@ public abstract class AbstractPhysicalEntity extends AbstractEntity {
 
 	
 	public void setLocation(Vector3f pos) {
-		this.rigidBodyControl.setPhysicsLocation(pos);
+		
+		if (rigidBodyControl != null) {
+			this.rigidBodyControl.setPhysicsLocation(pos);
+		} else {
+			Settings.pe(this + " has no rigid body!");
+		}
 	}
 
 }
