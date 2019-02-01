@@ -35,6 +35,7 @@ import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.components.IAffectedByPhysics;
 import com.scs.splitscreenfpsengine.components.IEntity;
+import com.scs.splitscreenfpsengine.components.IExpiringEffect;
 import com.scs.splitscreenfpsengine.components.IProcessable;
 import com.scs.splitscreenfpsengine.entities.AbstractPhysicalEntity;
 import com.scs.splitscreenfpsengine.entities.AbstractPlayersAvatar;
@@ -44,6 +45,8 @@ import com.scs.splitscreenfpsengine.hud.IHud;
 import com.scs.splitscreenfpsengine.input.IInputDevice;
 import com.scs.splitscreenfpsengine.input.JamepadCamera;
 import com.scs.splitscreenfpsengine.input.MouseAndKeyboardCamera;
+import com.scs.splitscreenfpsengine.systems.ExpiringEffectSystem;
+import com.scs.splitscreenfpsengine.systems.ISystem;
 
 public abstract class AbstractGameModule implements IModule, PhysicsCollisionListener, ActionListener {
 
@@ -64,6 +67,9 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	private AudioNode audioMusic;
 	public DirectionalLight sun;
 	private boolean gameOver = false;
+	
+	//protected ArrayList<ISystem> systems = new ArrayList<>();
+	protected ExpiringEffectSystem expiringEffectSystem;
 
 	public AbstractGameModule(SplitScreenFpsEngine _game) {
 		super();
@@ -165,6 +171,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		game.getRootNode().attachChild(audioSmallExplode);
 		 */
 
+		this.expiringEffectSystem = new ExpiringEffectSystem(this);
 	}
 
 
@@ -307,6 +314,8 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	@Override
 	public void update(float tpfSecs) {
 		addAndRemoveEntities();
+		
+		expiringEffectSystem.process(tpfSecs);
 
 		for(IProcessable ip : this.entitiesForProcessing) { // this.entities
 			ip.process(tpfSecs);
@@ -445,6 +454,9 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		e.actuallyAdd();
 		if (e instanceof IProcessable) {
 			this.entitiesForProcessing.add((IProcessable)e);
+		}
+		if (e instanceof IExpiringEffect) {
+			this.expiringEffectSystem.add((IExpiringEffect)e);
 		}
 	}
 

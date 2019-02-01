@@ -6,6 +6,6 @@ public interface IEntity {
 	
 	//void markForRemoval();
 	
-	void actuallyRemove();  // Any code to run when actually removed
+	void actuallyRemove();  // Any code to run when actually removed.  Do not call directly, call game.removeEntity();
 
 }
