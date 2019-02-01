@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.jme3.audio.AudioNode;
+import com.jme3.bounding.BoundingVolume;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
@@ -40,13 +41,14 @@ import com.scs.splitscreenfpsengine.components.IProcessable;
 import com.scs.splitscreenfpsengine.entities.AbstractPhysicalEntity;
 import com.scs.splitscreenfpsengine.entities.AbstractPlayersAvatar;
 import com.scs.splitscreenfpsengine.entities.CubeExplosionShard;
+import com.scs.splitscreenfpsengine.entities.FloorOrCeiling;
+import com.scs.splitscreenfpsengine.entities.TerrainEntity;
 import com.scs.splitscreenfpsengine.entities.VoxelTerrainEntity;
 import com.scs.splitscreenfpsengine.hud.IHud;
 import com.scs.splitscreenfpsengine.input.IInputDevice;
 import com.scs.splitscreenfpsengine.input.JamepadCamera;
 import com.scs.splitscreenfpsengine.input.MouseAndKeyboardCamera;
 import com.scs.splitscreenfpsengine.systems.ExpiringEffectSystem;
-import com.scs.splitscreenfpsengine.systems.ISystem;
 
 public abstract class AbstractGameModule implements IModule, PhysicsCollisionListener, ActionListener {
 
@@ -67,8 +69,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	private AudioNode audioMusic;
 	public DirectionalLight sun;
 	private boolean gameOver = false;
-	
-	//protected ArrayList<ISystem> systems = new ArrayList<>();
+
 	protected ExpiringEffectSystem expiringEffectSystem;
 
 	public AbstractGameModule(SplitScreenFpsEngine _game) {
@@ -92,9 +93,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		bulletAppState = new BulletAppState();
 		game.getStateManager().attach(bulletAppState);
 		bulletAppState.getPhysicsSpace().addCollisionListener(this);
-		if (!Settings.RELEASE_MODE) {
-			//bulletAppState.setDebugEnabled(true);
-		}
+		//bulletAppState.setDebugEnabled(true);
 
 		game.getRenderManager().removeMainView(game.getViewPort()); // Since we create new ones for each player
 
@@ -248,13 +247,13 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			dlsr.setLight(sun);
 			view2.addProcessor(dlsr);
 		}
-		
+
 		onViewportCreated(view2);
 
 		return newCam;
 	}
 
-	
+
 	protected void onViewportCreated(ViewPort viewport) {
 		// Override if required
 	}
@@ -314,7 +313,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	@Override
 	public void update(float tpfSecs) {
 		addAndRemoveEntities();
-		
+
 		expiringEffectSystem.process(tpfSecs);
 
 		for(IProcessable ip : this.entitiesForProcessing) { // this.entities
@@ -383,7 +382,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			fire.setLowLife(1f);
 			fire.setHighLife(3f);
 			fire.getParticleInfluencer().setVelocityVariation(0.3f);
-			
+
 			fire.setLocalTranslation(20, 2, 20);
 			this.getRootNode().attachChild(fire);
 		} else if (name.equals(QUIT)) {
@@ -462,6 +461,10 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	}
 
 
+	/**
+	 * Should only be called by AbstractEntity
+	 * @param e
+	 */
 	public void markEntityForRemoval(IEntity e) {
 		this.entitiesToRemove.add(e);
 	}
@@ -473,6 +476,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		if (e instanceof IProcessable) {
 			this.entitiesForProcessing.remove((IProcessable)e);
 		}
+		this.entitiesToAdd.remove(e); // Just in case it's not been formally added yet
 	}
 
 
@@ -558,6 +562,15 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	}
 
 
+	public Vector3f getFloorPointWithRay(AbstractPlayersAvatar wiz, float range) {
+		if (Settings.USE_TERRAIN) {
+			return getPointWithRay(wiz, TerrainEntity.class, range);
+		} else {
+			return getPointWithRay(wiz, FloorOrCeiling.class, range);
+		}
+	}
+
+
 	public Vector3f getPointWithRay(AbstractPlayersAvatar wiz, Class<? extends AbstractPhysicalEntity> clazz, float range) {
 		Ray ray = new Ray(wiz.getCamera().getLocation(), wiz.getCamera().getDirection());
 
@@ -574,6 +587,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			Geometry g = col.getGeometry();
 			AbstractPhysicalEntity ape = (AbstractPhysicalEntity)AbstractGameModule.getEntityFromSpatial(g);
 			if (ape != null) {
+				//if (ape.getClass() == clazz || ape.getClass().getSuperclass() == clazz) { // todo - isAssignableFrom??
 				if (ape.getClass() == clazz || ape.getClass().getSuperclass() == clazz) { // todo - isAssignableFrom??
 					return col.getContactPoint();
 				}
@@ -582,4 +596,24 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		return null;
 	}
 
+
+	public boolean isAreaClear(BoundingVolume bv) {
+		try {
+			for (IEntity e : this.entities) {
+				if (e instanceof TerrainEntity || e instanceof FloorOrCeiling) {
+					continue;
+				}
+				if (e instanceof AbstractPhysicalEntity) {
+					AbstractPhysicalEntity ape = (AbstractPhysicalEntity)e;
+					if (ape.getMainNode().getWorldBound().intersects(bv)) {
+						return false;
+					}
+				}
+			}
+			return true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
 }

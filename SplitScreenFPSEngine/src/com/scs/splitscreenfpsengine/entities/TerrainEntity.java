@@ -6,12 +6,12 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.material.Material;
 import com.jme3.scene.Node;
-import com.jme3.terrain.geomipmap.TerrainLodControl;
 import com.jme3.terrain.geomipmap.TerrainQuad;
 import com.jme3.terrain.heightmap.AbstractHeightMap;
 import com.jme3.terrain.heightmap.ImageBasedHeightMap;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
+import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 
@@ -20,7 +20,7 @@ public class TerrainEntity extends AbstractPhysicalEntity {
 	//private TerrainQuad terrain;
 	Material mat_terrain;
 
-	public TerrainEntity(SplitScreenFpsEngine _game, AbstractGameModule _module) {
+	public TerrainEntity(SplitScreenFpsEngine _game, AbstractGameModule _module, int mapSize) {
 		super(_game, _module, "Terrain");
 
 		AssetManager assetManager = game.getAssetManager();
@@ -32,7 +32,7 @@ public class TerrainEntity extends AbstractPhysicalEntity {
 		mat_terrain.setTexture("Alpha", assetManager.loadTexture("Textures/Terrain/splat/alphamap.png"));
 
 		/** 1.2) Add GRASS texture into the red layer (Tex1). */
-		Texture grass = assetManager.loadTexture("Textures/Terrain/splat/grass.jpg");
+		Texture grass = assetManager.loadTexture("Textures/blocks/lavarock.jpg");//Terrain/splat/grass.jpg"); // todo - pass the textures as a param 
 		grass.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex1", grass);
 		mat_terrain.setFloat("Tex1Scale", 64f);
@@ -44,16 +44,14 @@ public class TerrainEntity extends AbstractPhysicalEntity {
 		mat_terrain.setFloat("Tex2Scale", 32f);
 
 		/** 1.4) Add ROAD texture into the blue layer (Tex3) */
-		Texture rock = assetManager.loadTexture(
-				"Textures/Terrain/splat/road.jpg");
+		Texture rock = assetManager.loadTexture("Textures/blocks/lavarock.jpg");//Terrain/splat/road.jpg");
 		rock.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex3", rock);
 		mat_terrain.setFloat("Tex3Scale", 128f);
 
 		/** 2. Create the height map */
 		AbstractHeightMap heightmap = null;
-		Texture heightMapImage = assetManager.loadTexture(
-				"Textures/Terrain/splat/mountains512.png");
+		Texture heightMapImage = assetManager.loadTexture("Textures/blocks/lavarock.jpg");//Terrain/splat/mountains512.png");
 		heightmap = new ImageBasedHeightMap(heightMapImage.getImage());
 		heightmap.load();
 
@@ -65,14 +63,13 @@ public class TerrainEntity extends AbstractPhysicalEntity {
 		 * 3.4) As LOD step scale we supply Vector3f(1,1,1).
 		 * 3.5) We supply the prepared heightmap itself.
 		 */
-		int patchSize = 16;
-		mainNode = new TerrainQuad("my terrain", patchSize, 33, heightmap.getHeightMap());
-
+		int patchSize = (mapSize)/2;//16;
+		mainNode = new TerrainQuad("my terrain", patchSize, mapSize+1, heightmap.getHeightMap());
 		/** 4. We give the terrain its material, position & scale it, and attach it. */
 		mainNode.setMaterial(mat_terrain);
-		mainNode.setLocalTranslation(0, -100, 0);
-		mainNode.setLocalScale(2f, .05f, 2f);
-		//mainNode.attachChild(terrain);
+		mainNode.setLocalTranslation(mapSize/2, 0, mapSize/2);
+		mainNode.setLocalScale(1f, .05f, 1f);
+		//mainNode.getWorldBound()
 
 		CollisionShape terrainShape = CollisionShapeFactory.createMeshShape((Node) mainNode);
 		rigidBodyControl = new RigidBodyControl(terrainShape, 0);
@@ -81,6 +78,10 @@ public class TerrainEntity extends AbstractPhysicalEntity {
 		/** 5. The LOD (level of detail) depends on were the camera is: */
 		//TerrainLodControl control = new TerrainLodControl(terrain, getCamera());
 		//terrain.addControl(control);
+		
+		mainNode.setUserData(Settings.ENTITY, this);
+		rigidBodyControl.setUserObject(this);
+
 	}
 
 }

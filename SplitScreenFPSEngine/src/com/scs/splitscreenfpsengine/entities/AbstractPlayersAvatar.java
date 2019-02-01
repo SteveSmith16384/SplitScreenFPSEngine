@@ -29,7 +29,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	private static final float WEIGHT = 1f;
 
 	public final Vector3f walkDirection = new Vector3f();
-	public float moveSpeed = Settings.PLAYER_MOVE_SPEED;
+	public float moveSpeed;// = Settings.PLAYER_MOVE_SPEED;
 	protected IInputDevice input;
 
 	//Temporary vectors used on each frame.
@@ -52,13 +52,14 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	protected float restartTime, invulnerableTime;
 	private float timeSinceLastMove = 0;
 
-	public AbstractPlayersAvatar(SplitScreenFpsEngine _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side) {
+	public AbstractPlayersAvatar(SplitScreenFpsEngine _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side, float _moveSpeed) {
 		super(_game, _module, "Player");
 
 		playerID = _playerID;
 		cam = _cam;
 		input = _input;
 		side = _side;
+		moveSpeed = _moveSpeed;
 
 		int pid = playerID;
 		avatarModel = getPlayersModel(game, pid);
@@ -152,7 +153,8 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 				}
 			}
 
-			camDir.set(cam.getDirection()).multLocal(moveSpeed, 0.0f, moveSpeed);
+			//camDir.set(cam.getDirection()).multLocal(moveSpeed, 0, moveSpeed);
+			camDir.set(cam.getDirection()).multLocal(1, 0, 1).multLocal(moveSpeed);
 			camLeft.set(cam.getLeft()).multLocal(moveSpeed);
 			if (input.getFwdValue() > 0) {	
 				//Settings.p("fwd=" + input.getFwdValue());

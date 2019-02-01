@@ -1,10 +1,18 @@
 package com.scs.splitscreenfpsengine.entities;
 
+import com.jme3.asset.TextureKey;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue.ShadowMode;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.Spatial.CullHint;
+import com.jme3.scene.shape.Sphere;
+import com.jme3.texture.Texture;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.components.ICanShoot;
@@ -28,9 +36,16 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 		
 		Vector3f origin = shooter.getBulletStartPosition().clone();
 
-		Spatial bullet = createBulletModel();// BeamLaserModel.Factory(game.getAssetManager(), origin, origin.add(shooter.getShootDir().multLocal(1)), ColorRGBA.Pink);
+		Spatial bullet = createBulletModel();
 
 		this.mainNode.attachChild(bullet);
+		
+		// Add physical sphere
+		Mesh sphere = new Sphere(8, 8, .2f, true, false);
+		Geometry ball_geo = new Geometry("BulletSphere", sphere);
+		ball_geo.setCullHint(CullHint.Always);
+		this.mainNode.attachChild(ball_geo);
+		
 		mainNode.setLocalTranslation(origin.add(shooter.getShootDir().multLocal(shooter.getRadius()*2)));
 		mainNode.getLocalTranslation().y -= 0.1f; // Drop bullets slightly
 

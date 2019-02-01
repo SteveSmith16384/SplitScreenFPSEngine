@@ -22,7 +22,6 @@ public class Settings {
 	public static final boolean DEBUG_HUD = false;
 	public static final boolean DEBUG_TARGETTER = false;
 
-	public static final String VERSION = "0.01";
 	public static final boolean SHOW_FLASH_EXPLOSIONS = false;
 	//public static final boolean PLAYER1_IS_MOUSE = true;
 
@@ -40,15 +39,13 @@ public class Settings {
 	public static final float JUMP_FORCE = 4f;
 
 	public static final float CAM_DIST = 100f;
-	//public static final int FLOOR_SECTION_SIZE = 12;
-	public static final String NAME = "Multiplayer Voxel World";
-	//public static final int CLONE_ID = 2; // Which model to use for clones
+	//public static final String NAME = "Multiplayer Voxel World";
 	
 	// User Data
 	public static final String ENTITY = "Entity";
 	
 	// Map codes
-	public static final int MAP_NOTHING = 0;
+	//public static final int MAP_NOTHING = 0;
 
 	
 	public static void p(String s) {

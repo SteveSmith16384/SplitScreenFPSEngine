@@ -35,7 +35,7 @@ public class MyProperties {
 			String filepath = filename;
 			File propsFile = new File(filepath);
 			try {
-				properties.store(new FileOutputStream(propsFile), Settings.NAME + " settings file");
+				properties.store(new FileOutputStream(propsFile), "Settings file");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

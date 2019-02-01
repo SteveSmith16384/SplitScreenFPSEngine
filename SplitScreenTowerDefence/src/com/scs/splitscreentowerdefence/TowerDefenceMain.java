@@ -18,12 +18,12 @@ public class TowerDefenceMain extends SplitScreenFpsEngine {
 			properties = new MultiplayerVoxelWorldProperties(PROPS_FILE);
 			settings = new AppSettings(true);
 			try {
-				settings.load(Settings.NAME);
+				settings.load(TDSettings.NAME);
 			} catch (BackingStoreException e) {
 				e.printStackTrace();
 			}
 			//settings.setUseJoysticks(true);
-			settings.setTitle(Settings.NAME + " (v" + Settings.VERSION + ")");
+			settings.setTitle(TDSettings.NAME + " (v" + TDSettings.VERSION + ")");
 			if (Settings.RELEASE_MODE) {
 				//todo settings.setSettingsDialogImage("Textures/text/multiplayerarena.png");
 			} else {
@@ -37,7 +37,7 @@ public class TowerDefenceMain extends SplitScreenFpsEngine {
 			app.setSettings(settings);
 
 			try {
-				settings.save(Settings.NAME);
+				settings.save(TDSettings.NAME);
 			} catch (BackingStoreException e) {
 				e.printStackTrace();
 			}

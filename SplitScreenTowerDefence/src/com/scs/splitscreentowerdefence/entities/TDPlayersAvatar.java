@@ -16,7 +16,7 @@ public class TDPlayersAvatar extends AbstractPlayersAvatar implements ITargetByA
 	public int resources = 10;
 
 	public TDPlayersAvatar(SplitScreenFpsEngine _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side) {
-		super(_game, _module, _playerID, _cam, _input, _side);
+		super(_game, _module, _playerID, _cam, _input, _side, 3f);
 
 		ability[0] = new PlaceTurretAbility(game, _module, this); //LaserRifle(_game, _module, this);
 		this.ability[1] = new CycleThroughAbilitiesAbility(game, _module, this);

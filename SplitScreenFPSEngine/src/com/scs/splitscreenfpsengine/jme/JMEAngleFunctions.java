@@ -139,13 +139,13 @@ public class JMEAngleFunctions {
 		return dir_to_target.angleBetween(forward);
 	}
 
-
+/*
 	public static Quaternion getYAxisRotation(float x, float z) {
 		Quaternion target_q = new Quaternion();
 		target_q.lookAt(new Vector3f(x, 0, z), Vector3f.UNIT_Y);
 		return target_q;
 	}
-
+*/
 
 	public static void rotateToWorldDirection(Spatial s, Vector3f dir) {
 		Vector3f v = s.getWorldTranslation();
@@ -160,9 +160,26 @@ public class JMEAngleFunctions {
 	}
 
 
-	public static void rotateYAxisBy(Spatial s, int angdeg) {
-		double ang = Math.toRadians(angdeg);
-		Quaternion q = getYAxisRotation((float)Math.cos(ang), (float)Math.sin(ang));
+	// https://wiki.jmonkeyengine.org/jme3/rotate.html
+	public static void rotateYAxisBy2(Spatial s, int angdeg) {
+		/*Quaternion roll180 = new Quaternion();
+		roll180.fromAngleAxis( FastMath.PI , new Vector3f(0,0,1) );
+		// The rotation is applied: The object rolls by 180 degrees.
+		thingamajig.setLocalRotation( roll180 );
+		*/
+		
+		float ang = (float)Math.toRadians(angdeg);
+		Quaternion q = new Quaternion();
+		q.fromAngleAxis(ang, new Vector3f(0,1,0));
+		//Quaternion q = getYAxisRotation((float)Math.cos(ang), (float)Math.sin(ang));
+		s.rotate(q);
+	}
+
+
+	public static void rotateXAxisBy(Spatial s, int angdeg) {
+		float ang = (float)Math.toRadians(angdeg);
+		Quaternion q = new Quaternion();
+		q.fromAngleAxis(ang, new Vector3f(1,0,0));
 		s.rotate(q);
 	}
 
