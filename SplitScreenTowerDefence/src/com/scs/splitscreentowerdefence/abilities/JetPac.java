@@ -35,8 +35,8 @@ public class JetPac extends AbstractAbility {
 		if (fuel > 0) {
 			//Settings.p("Jetpac-ing!");
 			//player.walkDirection.addLocal(FORCE);//, Vector3f.ZERO);
-			camUp.set(player.cam.getUp()).multLocal(POWER);
-			player.walkDirection.addLocal(camUp);
+			camUp.set(avatar.cam.getUp()).multLocal(POWER);
+			avatar.walkDirection.addLocal(camUp);
 			return true;
 		}
 		return false;

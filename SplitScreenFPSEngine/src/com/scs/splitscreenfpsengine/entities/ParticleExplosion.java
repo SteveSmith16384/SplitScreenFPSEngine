@@ -5,14 +5,13 @@ import com.jme3.effect.ParticleMesh;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
-import com.scs.splitscreenfpsengine.components.IProcessable;
+import com.scs.splitscreenfpsengine.components.IExpiringEffect;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 
-public class ParticleExplosion extends AbstractPhysicalEntity implements IProcessable {
+public class ParticleExplosion extends AbstractPhysicalEntity implements IExpiringEffect {
 
-	private float timeLeft = 6;
+	private float timeRemaining = 2;	
 
 	public ParticleExplosion(SplitScreenFpsEngine _game, AbstractGameModule _module, Vector3f pos) {
 		super(_game, _module, "ParticleExplosion");
@@ -38,12 +37,22 @@ public class ParticleExplosion extends AbstractPhysicalEntity implements IProces
 
 	
 	@Override
-	public void process(float tpf) {
-		this.timeLeft -= tpf;
-		if (this.timeLeft < 0) {
-			this.markForRemoval();
-		}
+	public float getTimeRemaining() {
+		return timeRemaining;
 	}
 
+	
+	@Override
+	public void setTimeRemaining(float t) {
+		timeRemaining = t;
+	}
+
+	
+	@Override
+	public void effectFinished() {
+		//module.markEntityForRemoval(this);
+		this.markForRemoval();
+	
+	}
 
 }

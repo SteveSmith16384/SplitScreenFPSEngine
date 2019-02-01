@@ -34,8 +34,8 @@ public class BoostFwd extends AbstractAbility {
 			//Settings.p("Jetpac-ing!");
 			//player.walkDirection.addLocal(FORCE);//, Vector3f.ZERO);
 
-			player.camDir.set(player.cam.getDirection()).multLocal(POWER, 0.0f, POWER);
-			player.walkDirection.addLocal(player.camDir);
+			avatar.camDir.set(avatar.cam.getDirection()).multLocal(POWER, 0.0f, POWER);
+			avatar.walkDirection.addLocal(avatar.camDir);
 			return true;
 		}
 		return false;

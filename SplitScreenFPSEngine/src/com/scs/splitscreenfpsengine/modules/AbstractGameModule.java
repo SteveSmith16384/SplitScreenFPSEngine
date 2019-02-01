@@ -368,7 +368,8 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		if (name.equals(TEST)) {
 			ParticleEmitter fire = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
 			Material mat_red = new Material(game.getAssetManager(), "Common/MatDefs/Misc/Particle.j3md");
-			mat_red.setTexture("Texture", game.getAssetManager().loadTexture("Textures/flame.png"));
+			//mat_red.setTexture("Texture", game.getAssetManager().loadTexture("Textures/flame.png"));
+			mat_red.setTexture("Texture", game.getAssetManager().loadTexture("Effects/Explosion/flame.png"));
 			fire.setMaterial(mat_red);
 			fire.setImagesX(2);
 			fire.setImagesY(2); // 2x2 texture animation
@@ -520,13 +521,13 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 
 	@Override
-	public void newController() {
+	public void newController(int idx) {
 		// Do nothing
 	}
 
 
 	@Override
-	public void controllerDisconnected() {
+	public void controllerDisconnected(int id) {
 		// todo - kill avatar
 
 	}

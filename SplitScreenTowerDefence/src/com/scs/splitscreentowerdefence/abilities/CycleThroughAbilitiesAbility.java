@@ -34,7 +34,7 @@ public class CycleThroughAbilitiesAbility extends AbstractAbility {
 		if (index >= this.abilities.size()) {
 			index = 0;
 		}
-		this.player.ability[0] = this.abilities.get(index);
+		this.avatar.ability[0] = this.abilities.get(index);
 		return true;
 	}
 	

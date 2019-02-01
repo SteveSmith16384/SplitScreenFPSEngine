@@ -133,7 +133,7 @@ public class Turret extends AbstractPhysicalEntity implements IShowOnHUD, IProce
 
 	@Override
 	public float getRadius() {
-		return 1f; // todo - correct?
+		return 1f; // todo - get from model
 	}
 
 

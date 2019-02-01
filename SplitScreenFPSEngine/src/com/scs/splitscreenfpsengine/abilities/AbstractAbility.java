@@ -6,7 +6,7 @@ import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 
 public abstract class AbstractAbility implements IAbility {
 	
-	protected AbstractPlayersAvatar player;
+	protected AbstractPlayersAvatar avatar;
 	protected SplitScreenFpsEngine game;
 	protected AbstractGameModule module;
 
@@ -15,7 +15,7 @@ public abstract class AbstractAbility implements IAbility {
 		
 		game = _game;
 		module = _module;
-		player = p;
+		avatar = p;
 	}
 	
 	

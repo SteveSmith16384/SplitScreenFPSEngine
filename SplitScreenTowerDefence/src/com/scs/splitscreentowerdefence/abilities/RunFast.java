@@ -23,7 +23,7 @@ public class RunFast extends AbstractAbility {
 		isRunningFast = false;
 		power += interpol;
 		power = Math.min(power, MAX_POWER);
-		this.player.moveSpeed = Settings.PLAYER_MOVE_SPEED;
+		this.avatar.moveSpeed = Settings.PLAYER_MOVE_SPEED;
 		return true;
 	}
 
@@ -33,7 +33,7 @@ public class RunFast extends AbstractAbility {
 		power -= interpol;
 		power = Math.max(power, 0);
 		if (power > 0) {
-			this.player.moveSpeed = Settings.PLAYER_MOVE_SPEED * 1.5f;
+			this.avatar.moveSpeed = Settings.PLAYER_MOVE_SPEED * 1.5f;
 			isRunningFast = true;
 			return true;
 		}

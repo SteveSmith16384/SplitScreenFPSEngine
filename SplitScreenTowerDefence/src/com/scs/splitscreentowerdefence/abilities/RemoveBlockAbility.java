@@ -34,7 +34,7 @@ public class RemoveBlockAbility extends AbstractAbility {
 
 	@Override
 	public boolean activate(float interpol) {
-		Ray ray = new Ray(this.player.getCamera().getLocation(), this.player.getCamera().getDirection());
+		Ray ray = new Ray(this.avatar.getCamera().getLocation(), this.avatar.getCamera().getDirection());
 
 		CollisionResults results = new CollisionResults();
 		module.getRootNode().collideWith(ray, results);

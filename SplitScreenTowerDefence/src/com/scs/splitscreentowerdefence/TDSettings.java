@@ -6,7 +6,6 @@ public class TDSettings	{
 	public static final int TURRET_COST = 5;
 
 	public TDSettings() {
-		// TODO Auto-generated constructor stub
 	}
 
 }

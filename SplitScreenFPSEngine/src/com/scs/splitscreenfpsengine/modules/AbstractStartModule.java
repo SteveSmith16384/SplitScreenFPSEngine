@@ -222,14 +222,14 @@ public abstract class AbstractStartModule implements IModule, ActionListener, Ra
 
 
 	@Override
-	public void newController() {
+	public void newController(int idx) {
 		Settings.p("New controller!");
 		
 	}
 
 
 	@Override
-	public void controllerDisconnected() {
+	public void controllerDisconnected(int id) {
 		Settings.p("Controller Disconnected!");
 		
 	}

@@ -91,7 +91,7 @@ public abstract class SplitScreenFpsEngine extends SimpleApplication implements 
 	@Override
 	public void newController(int idx) {
 		if (currentModule != null) {
-			currentModule.newController();
+			currentModule.newController(idx);
 		}
 	}
 
@@ -99,7 +99,7 @@ public abstract class SplitScreenFpsEngine extends SimpleApplication implements 
 	@Override
 	public void controllerDisconnected(int idx) {
 		if (currentModule != null) {
-			currentModule.controllerDisconnected();
+			currentModule.controllerDisconnected(idx);
 		}		
 	}
 

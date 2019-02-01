@@ -68,7 +68,7 @@ public class CameraSystem {
 			cam.getLocation().y = (int)(pos.y / 20) * 20 + 5;
 			cam.getLocation().z = (int)(pos.z / 25) * 25;
 		} else {
-			Vector3f avatarPos = avatar.getMainNode().getWorldTranslation().clone(); // todo - don't create each time - todo - use physics node!
+			Vector3f avatarPos = avatar.getMainNode().getWorldTranslation().clone(); // todo - don't create each time 
 			avatarPos.y += heightOffset3rdPerson;
 			if (this.currentView == View.Third) {
 				if (camInCharge) {

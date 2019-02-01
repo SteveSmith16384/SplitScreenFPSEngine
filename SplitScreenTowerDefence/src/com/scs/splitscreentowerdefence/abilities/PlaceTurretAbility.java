@@ -33,7 +33,7 @@ public class PlaceTurretAbility extends AbstractAbility {
 			Settings.p("Not enough resources");
 			//return false;
 		}*/
-		Ray ray = new Ray(this.player.getCamera().getLocation(), this.player.getCamera().getDirection());
+		Ray ray = new Ray(this.avatar.getCamera().getLocation(), this.avatar.getCamera().getDirection());
 
 		CollisionResults results = new CollisionResults();
 		module.getRootNode().collideWith(ray, results);
@@ -48,7 +48,7 @@ public class PlaceTurretAbility extends AbstractAbility {
 					Vector3f position = result.getContactPoint();
 					if (position.y == 1f) { // Must be on floor
 						//Vector3Int blockPosition = blocks.getPointedBlockLocation(position, true);
-						new Turret(game, module, position, this.player.getSide());
+						new Turret(game, module, position, this.avatar.getSide());
 						//todo player.resources -= TDSettings.TURRET_COST;
 						return true;
 					}

@@ -39,7 +39,7 @@ public abstract class AbstractEntity implements IEntity, Savable {
 	@Override
 	public void actuallyRemove() {
 		if (!this.isMarkedForRemoval()) {
-			throw new RuntimeException("You must mark an item for removal!");
+			throw new RuntimeException("You must mark " + this + " for removal!");
 		}
 	}
 
@@ -57,12 +57,12 @@ public abstract class AbstractEntity implements IEntity, Savable {
 	}
 
 	
-	
+	/*
 	@Override
 	public String toString() {
 		return "E_" + name + "_" + id;
 	}
-
+*/
 
 	@Override
 	public void write(JmeExporter ex) throws IOException {
