@@ -77,7 +77,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 	@Override
 	public void notifiedOfCollision(AbstractPhysicalEntity other) {
 		if (other != this.shooter) {
-			Settings.p(this + " collided with " + other);
+			Settings.p(this + " collided with " + other + ", creating explosion at " + this.getLocation());
 			//CubeExplosionShard.Factory(game, module, this.getLocation(), 3);
 			//module.audioSmallExplode.play();
 			new ParticleExplosion(game, module, this.getLocation());

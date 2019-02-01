@@ -142,7 +142,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 				if (this.ability[num] != null) {
 					ability[num].process(tpfSecs);
 					if (input.isAbilityPressed(num)) { // Must be before we set the walkDirection & moveSpeed, as this method may affect it
-						//Settings.p("Using " + this.ability.toString());
+						Settings.p("Using " + this.ability.toString());
 						this.ability[num].activate(tpfSecs);
 						if (this.ability[num].onlyActivateOnClick()) {
 							input.resetAbilitySwitch(num);

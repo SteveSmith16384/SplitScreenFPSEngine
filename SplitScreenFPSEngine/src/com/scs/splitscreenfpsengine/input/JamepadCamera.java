@@ -112,7 +112,7 @@ public class JamepadCamera implements IInputDevice {
 					if (f > getDeadzone()) {
 						return !abilityDisabled[num];
 					}
-				} catch (ControllerUnpluggedException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				abilityDisabled[num] = false;
@@ -124,7 +124,7 @@ public class JamepadCamera implements IInputDevice {
 					if (f > getDeadzone()) {
 						return !abilityDisabled[num];
 					}
-				} catch (ControllerUnpluggedException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				abilityDisabled[num] = false;

@@ -19,6 +19,8 @@ public class JamepadFullAxisState { // todo - extend hashmap
 			states.put(ControllerAxis.LEFTY, cont.getAxisState(ControllerAxis.LEFTY));
 			states.put(ControllerAxis.RIGHTX, cont.getAxisState(ControllerAxis.RIGHTX));
 			states.put(ControllerAxis.RIGHTY, cont.getAxisState(ControllerAxis.RIGHTY));
+			states.put(ControllerAxis.TRIGGERLEFT, cont.getAxisState(ControllerAxis.TRIGGERLEFT));
+			states.put(ControllerAxis.TRIGGERRIGHT, cont.getAxisState(ControllerAxis.TRIGGERRIGHT));
 		} catch (ControllerUnpluggedException e) {
 			e.printStackTrace();
 		}
