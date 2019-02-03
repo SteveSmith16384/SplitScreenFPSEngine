@@ -13,7 +13,7 @@ public class BoostFwd extends AbstractAbility {
 	private float fuel = 100;
 
 	public BoostFwd(SplitScreenFpsEngine _game, AbstractGameModule module, AbstractPlayersAvatar _player) {
-		super(_game, module, _player);
+		super(_game, module, _player, "BoostFwd");
 
 	}
 

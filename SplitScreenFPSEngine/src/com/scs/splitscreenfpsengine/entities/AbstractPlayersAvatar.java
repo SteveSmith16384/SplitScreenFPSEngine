@@ -143,7 +143,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 				if (this.ability[num] != null) {
 					ability[num].process(tpfSecs);
 					if (input.isAbilityPressed(num)) { // Must be before we set the walkDirection & moveSpeed, as this method may affect it
-						Settings.p("Using " + this.ability.toString());
+						Settings.p("Using " + this.ability[num].getName());
 						this.ability[num].activate(tpfSecs);
 						if (this.ability[num].onlyActivateOnClick()) {
 							input.resetAbilitySwitch(num);
@@ -212,7 +212,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 
 	@Override
 	public Vector3f getLocation() {
-		return this.cam.getLocation();
+		return this.mainNode.getWorldTranslation();
 		//return playerControl.getPhysicsRigidBody().getPhysicsLocation();  This is very low to the ground!
 	}
 
@@ -311,6 +311,14 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	public float getRadius() {
 		return radius;
 	}
+	
+	
+	@Override
+	public void setLocation(Vector3f pos) {
+		this.playerControl.warp(pos);
+	}
+
+
 
 
 }

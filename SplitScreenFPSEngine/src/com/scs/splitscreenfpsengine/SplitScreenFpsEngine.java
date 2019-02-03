@@ -2,6 +2,7 @@ package com.scs.splitscreenfpsengine;
 
 import com.jme3.app.FlyCamAppState;
 import com.jme3.app.SimpleApplication;
+import com.jme3.app.StatsAppState;
 import com.jme3.app.state.VideoRecorderAppState;
 import com.jme3.system.AppSettings;
 import com.scs.splitscreenfpsengine.input.IControllerListener;
@@ -36,6 +37,7 @@ public abstract class SplitScreenFpsEngine extends SimpleApplication implements 
 		getInputManager().clearRawInputListeners();
 
 		stateManager.detach( stateManager.getState(FlyCamAppState.class) );
+		stateManager.detach( stateManager.getState(StatsAppState.class) );
 
 		controllerManager = new JamepadControllerManager(this);
 

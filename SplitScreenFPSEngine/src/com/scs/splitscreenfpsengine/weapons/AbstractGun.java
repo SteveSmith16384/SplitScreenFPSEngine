@@ -36,5 +36,13 @@ public abstract class AbstractGun implements IAbility {
 	public String getHudText() {
 		return name;
 	}
+	
+	@Override
+	public String getName() {
+		return name;
+	}
+
+
+
 
 }

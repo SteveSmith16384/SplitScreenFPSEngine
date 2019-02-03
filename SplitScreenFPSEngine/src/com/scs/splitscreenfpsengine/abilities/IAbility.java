@@ -7,6 +7,8 @@ public interface IAbility {
 	 */
 	boolean process(float tpfSecs);
 	
+	String getName();
+	
 	/**
 	 * Called when activated
 	 */

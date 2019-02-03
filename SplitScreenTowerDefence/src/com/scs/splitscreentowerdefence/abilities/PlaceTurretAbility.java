@@ -17,7 +17,7 @@ import com.scs.splitscreentowerdefence.entities.Turret;
 public class PlaceTurretAbility extends AbstractAbility {
 
 	public PlaceTurretAbility(SplitScreenFpsEngine _game, AbstractGameModule module, AbstractPlayersAvatar p) {
-		super(_game, module, p);
+		super(_game, module, p, "PlaceTurretAbility");
 	}
 
 

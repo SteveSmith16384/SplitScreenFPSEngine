@@ -30,6 +30,11 @@ public abstract class AbstractPhysicalEntity extends AbstractEntity {
 
 	}
 
+	
+	public boolean collides() {
+		return true;
+	}
+	
 
 	@Override
 	public void actuallyAdd() {
@@ -39,14 +44,14 @@ public abstract class AbstractPhysicalEntity extends AbstractEntity {
 		if (this instanceof PhysicsTickListener) {
 			module.bulletAppState.getPhysicsSpace().addTickListener((PhysicsTickListener)this);
 		}
-		
+
 	}
 
 
 	@Override
 	public void actuallyRemove() {
 		super.actuallyRemove();
-		
+
 		this.mainNode.removeFromParent();
 		if (rigidBodyControl != null) {
 			this.module.bulletAppState.getPhysicsSpace().remove(this.rigidBodyControl);
@@ -77,9 +82,9 @@ public abstract class AbstractPhysicalEntity extends AbstractEntity {
 			return this.rigidBodyControl.getPhysicsLocation();
 		} else {
 			return this.mainNode.getWorldTranslation();
-			
+
 		}
-		
+
 	}
 
 
@@ -87,9 +92,8 @@ public abstract class AbstractPhysicalEntity extends AbstractEntity {
 		rigidBodyControl.applyImpulse(dir, Vector3f.ZERO);//.applyCentralForce(dir);
 	}
 
-	
+
 	public void setLocation(Vector3f pos) {
-		
 		if (rigidBodyControl != null) {
 			this.rigidBodyControl.setPhysicsLocation(pos);
 		} else {

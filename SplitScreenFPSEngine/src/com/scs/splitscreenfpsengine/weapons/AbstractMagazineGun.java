@@ -32,6 +32,12 @@ public abstract class AbstractMagazineGun implements IAbility {
 	}
 
 
+	@Override
+	public String getName() {
+		return name;
+	}
+
+
 	public abstract void launchBullet(SplitScreenFpsEngine _game, AbstractGameModule _module, ICanShoot _shooter);
 
 

@@ -14,7 +14,7 @@ public class RunFast extends AbstractAbility {
 	private boolean isRunningFast;
 	
 	public RunFast(SplitScreenFpsEngine _game, AbstractGameModule module, AbstractPlayersAvatar _player) {
-		super(_game, module, _player);
+		super(_game, module, _player, "RunFast");
 	}
 
 	

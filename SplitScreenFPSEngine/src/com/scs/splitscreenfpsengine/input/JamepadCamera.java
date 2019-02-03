@@ -18,8 +18,8 @@ public class JamepadCamera implements IInputDevice {
 	private ControllerIndex c;
 	private JamepadFullAxisState initialStates;
 	private Vector3f initialUpVec;
-	private boolean[] abilityDisabled = new boolean[2];
-	
+	private boolean[] abilityDisabled = new boolean[4];
+
 	public JamepadCamera(Camera _cam, ControllerIndex _c, JamepadFullAxisState _states) {
 		cam = _cam;
 		c = _c;
@@ -40,7 +40,7 @@ public class JamepadCamera implements IInputDevice {
 		try {
 			float f = c.getAxisState(ControllerAxis.LEFTY) - initialStates.states.get(ControllerAxis.LEFTY);
 			if (f > getDeadzone()) {
-				return f;
+				return f-getDeadzone();
 			}
 		} catch (ControllerUnpluggedException e) {
 			e.printStackTrace();
@@ -48,42 +48,42 @@ public class JamepadCamera implements IInputDevice {
 		return 0;
 	}
 
-	
+
 	@Override
 	public float getBackValue() {
 		try {
 			float f = -1 * c.getAxisState(ControllerAxis.LEFTY) - initialStates.states.get(ControllerAxis.LEFTY);
 			//Settings.p("Bwd:" + f);
 			if (f > getDeadzone()) {
-				return f;
+				return f-getDeadzone();
 			}
 		} catch (ControllerUnpluggedException e) {
 			e.printStackTrace();
 		}
 		return 0;
 	}
-	
+
 
 	@Override
 	public float getStrafeLeftValue() {
 		try {
 			float f = -1 * c.getAxisState(ControllerAxis.LEFTX) - initialStates.states.get(ControllerAxis.LEFTX);
 			if (f > getDeadzone()) {
-				return f;
+				return f-getDeadzone();
 			}
 		} catch (ControllerUnpluggedException e) {
 			e.printStackTrace();
 		}
 		return 0;
 	}
-	
+
 
 	@Override
 	public float getStrafeRightValue() {
 		try {
 			float f = c.getAxisState(ControllerAxis.LEFTX) - initialStates.states.get(ControllerAxis.LEFTX);
 			if (f > getDeadzone()) {
-				return f;
+				return f-getDeadzone();
 			}
 		} catch (ControllerUnpluggedException e) {
 			e.printStackTrace();
@@ -105,31 +105,31 @@ public class JamepadCamera implements IInputDevice {
 
 	@Override
 	public boolean isAbilityPressed(int num) {
-			switch (num) {
-			case 0:
-				try {
-					float f = c.getAxisState(ControllerAxis.TRIGGERRIGHT) - initialStates.states.get(ControllerAxis.TRIGGERRIGHT);
-					if (f > getDeadzone()) {
-						return !abilityDisabled[num];
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
+		switch (num) {
+		case 0:
+			try {
+				float f = c.getAxisState(ControllerAxis.TRIGGERRIGHT) - initialStates.states.get(ControllerAxis.TRIGGERRIGHT);
+				if (f > getDeadzone()) {
+					return !abilityDisabled[num];
 				}
-				abilityDisabled[num] = false;
-				return false;
-				
-			case 1:
-				try {
-					float f = c.getAxisState(ControllerAxis.TRIGGERLEFT) - initialStates.states.get(ControllerAxis.TRIGGERLEFT);
-					if (f > getDeadzone()) {
-						return !abilityDisabled[num];
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				abilityDisabled[num] = false;
-				return false;
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+			abilityDisabled[num] = false;
+			return false;
+
+		case 1:
+			try {
+				float f = c.getAxisState(ControllerAxis.TRIGGERLEFT) - initialStates.states.get(ControllerAxis.TRIGGERLEFT);
+				if (f > getDeadzone()) {
+					return !abilityDisabled[num];
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			abilityDisabled[num] = false;
+			return false;
+		}
 		return false;
 	}
 
@@ -193,9 +193,23 @@ public class JamepadCamera implements IInputDevice {
 	public boolean isCycleAbilityPressed(boolean fwd) {
 		try {
 			if (fwd) {
-				return c.isButtonPressed(ControllerButton.LEFTBUMPER);
+				if (c.isButtonPressed(ControllerButton.LEFTBUMPER)) {
+					if (!abilityDisabled[2]) {
+						abilityDisabled[2] = true;
+						return true;
+					}
+				} else {
+					abilityDisabled[2] = false;
+				}
 			} else {
-				return c.isButtonPressed(ControllerButton.RIGHTBUMPER);
+				if (c.isButtonPressed(ControllerButton.RIGHTBUMPER)) {
+					if (!abilityDisabled[3]) {
+						abilityDisabled[3] = true;
+						return true;
+					}
+				} else {
+					abilityDisabled[3] = false;
+				}
 			}
 		} catch (ControllerUnpluggedException e) {
 			e.printStackTrace();

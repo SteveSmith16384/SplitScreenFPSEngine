@@ -587,9 +587,11 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			Geometry g = col.getGeometry();
 			AbstractPhysicalEntity ape = (AbstractPhysicalEntity)AbstractGameModule.getEntityFromSpatial(g);
 			if (ape != null) {
-				//if (ape.getClass() == clazz || ape.getClass().getSuperclass() == clazz) { // todo - isAssignableFrom??
-				if (ape.getClass() == clazz || ape.getClass().getSuperclass() == clazz) { // todo - isAssignableFrom??
-					return col.getContactPoint();
+				if (ape.collides()) {
+					//if (ape.getClass() == clazz || ape.getClass().getSuperclass() == clazz) { // todo - isAssignableFrom??
+					if (ape.getClass() == clazz || ape.getClass().getSuperclass() == clazz) { // todo - isAssignableFrom??
+						return col.getContactPoint();
+					}
 				}
 			}
 		}
@@ -598,22 +600,23 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 
 	public boolean isAreaClear(BoundingVolume bv) {
-		try {
-			for (IEntity e : this.entities) {
-				if (e instanceof TerrainEntity || e instanceof FloorOrCeiling) {
-					continue;
-				}
+		for (IEntity e : this.entities) {
+			if (e instanceof TerrainEntity || e instanceof FloorOrCeiling || e instanceof VoxelTerrainEntity) {
+				continue;
+			}
+			try {
 				if (e instanceof AbstractPhysicalEntity) {
 					AbstractPhysicalEntity ape = (AbstractPhysicalEntity)e;
-					if (ape.getMainNode().getWorldBound().intersects(bv)) {
-						return false;
+					if (ape.collides()) {
+						if (ape.getMainNode().getWorldBound().intersects(bv)) { // error
+							return false;
+						}
 					}
 				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
-			return true;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return false;
 		}
+		return true;
 	}
 }

@@ -14,7 +14,7 @@ public class CycleThroughAbilitiesAbility extends AbstractAbility {
 	private int index;
 
 	public CycleThroughAbilitiesAbility(SplitScreenFpsEngine _game, AbstractGameModule module, AbstractPlayersAvatar p) {
-		super(_game, module, p);
+		super(_game, module, p, "CycleThroughAbilitiesAbility");
 		
 		abilities.add(new AddBlockAbility(game, module, p));
 		abilities.add(new RemoveBlockAbility(game, module, p));

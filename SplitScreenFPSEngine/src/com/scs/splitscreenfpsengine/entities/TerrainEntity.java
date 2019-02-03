@@ -5,6 +5,7 @@ import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.material.Material;
+import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Node;
 import com.jme3.terrain.geomipmap.TerrainQuad;
 import com.jme3.terrain.heightmap.AbstractHeightMap;
@@ -44,11 +45,11 @@ public class TerrainEntity extends AbstractPhysicalEntity {
 		mat_terrain.setFloat("Tex2Scale", 32f);
 
 		/** 1.4) Add ROAD texture into the blue layer (Tex3) */
-		Texture rock = assetManager.loadTexture("Textures/blocks/lavarock.jpg");//Terrain/splat/road.jpg");
+		/*Texture rock = assetManager.loadTexture("Textures/blocks/lavarock.jpg");//Terrain/splat/road.jpg");
 		rock.setWrap(WrapMode.Repeat);
 		mat_terrain.setTexture("Tex3", rock);
 		mat_terrain.setFloat("Tex3Scale", 128f);
-
+*/
 		/** 2. Create the height map */
 		AbstractHeightMap heightmap = null;
 		Texture heightMapImage = assetManager.loadTexture("Textures/blocks/lavarock.jpg");//Terrain/splat/mountains512.png");
@@ -68,7 +69,8 @@ public class TerrainEntity extends AbstractPhysicalEntity {
 		/** 4. We give the terrain its material, position & scale it, and attach it. */
 		mainNode.setMaterial(mat_terrain);
 		mainNode.setLocalTranslation(mapSize/2, 0, mapSize/2);
-		mainNode.setLocalScale(1f, .05f, 1f);
+		mainNode.setLocalScale(1f, .01f, 1f);
+		mainNode.setShadowMode(ShadowMode.CastAndReceive);
 		//mainNode.getWorldBound()
 
 		CollisionShape terrainShape = CollisionShapeFactory.createMeshShape((Node) mainNode);

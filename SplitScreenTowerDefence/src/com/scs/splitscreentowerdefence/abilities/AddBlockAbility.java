@@ -20,7 +20,7 @@ import mygame.util.Vector3Int;
 public class AddBlockAbility extends AbstractAbility {
 
 	public AddBlockAbility(SplitScreenFpsEngine _game, AbstractGameModule module, AbstractPlayersAvatar p) {
-		super(_game, module, p);
+		super(_game, module, p, "AddBlockAbility");
 	}
 
 

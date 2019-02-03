@@ -16,7 +16,7 @@ public class JetPac extends AbstractAbility {
 	private final Vector3f camUp = new Vector3f();
 
 	public JetPac(SplitScreenFpsEngine _game, AbstractGameModule module, AbstractPlayersAvatar _player) {
-		super(_game, module, _player);
+		super(_game, module, _player, "JetPac");
 	}
 
 

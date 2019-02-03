@@ -23,7 +23,7 @@ public class RemoveBlockAbility extends AbstractAbility {
 	private static final float MAX_RANGE = 4;
 
 	public RemoveBlockAbility(SplitScreenFpsEngine _game, AbstractGameModule module, AbstractPlayersAvatar p) {
-		super(_game, module, p);
+		super(_game, module, p, "RemoveBlockAbility");
 	}
 
 	@Override
