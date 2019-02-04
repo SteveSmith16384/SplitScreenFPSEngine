@@ -5,20 +5,22 @@ import com.jme3.effect.ParticleMesh;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.components.IExpiringEffect;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 
 public class ParticleExplosion extends AbstractPhysicalEntity implements IExpiringEffect {
 
-	private float timeRemaining = 2;	
+	private float timeRemaining = 3;
 
 	public ParticleExplosion(SplitScreenFpsEngine _game, AbstractGameModule _module, Vector3f pos) {
 		super(_game, _module, "ParticleExplosion");
 
+		Settings.p(this + " at " + pos);
+
 		ParticleEmitter debris = new ParticleEmitter("Debris", ParticleMesh.Type.Triangle, 10);
 		Material debris_mat = new Material(game.getAssetManager(), "Common/MatDefs/Misc/Particle.j3md");
-		//debris_mat.setTexture("Texture", game.getAssetManager().loadTexture("Textures/Debris.png"));
 		debris_mat.setTexture("Texture", game.getAssetManager().loadTexture("Effects/Explosion/Debris.png"));
 		debris.setMaterial(debris_mat);
 		debris.setImagesX(3);
@@ -29,31 +31,32 @@ public class ParticleExplosion extends AbstractPhysicalEntity implements IExpiri
 		debris.setStartColor(ColorRGBA.White);
 		debris.setGravity(0, 6, 0);
 		debris.getParticleInfluencer().setVelocityVariation(.60f);
-		mainNode.attachChild(debris);
 		debris.emitAllParticles();
-		
+
+		mainNode.attachChild(debris);
+
 		this.mainNode.setLocalTranslation(pos);
 		module.addEntity(this);
 	}
 
-	
+
 	@Override
 	public float getTimeRemaining() {
 		return timeRemaining;
 	}
 
-	
+
 	@Override
 	public void setTimeRemaining(float t) {
 		timeRemaining = t;
 	}
 
-	
+
 	@Override
 	public void effectFinished() {
 		//module.markEntityForRemoval(this);
 		this.markForRemoval();
-	
+
 	}
 
 }

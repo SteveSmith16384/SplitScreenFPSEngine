@@ -12,8 +12,6 @@ import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
-import com.jme3.effect.ParticleEmitter;
-import com.jme3.effect.ParticleMesh;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
@@ -21,7 +19,6 @@ import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.Light;
 import com.jme3.light.LightList;
-import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
@@ -42,7 +39,8 @@ import com.scs.splitscreenfpsengine.entities.AbstractPhysicalEntity;
 import com.scs.splitscreenfpsengine.entities.AbstractPlayersAvatar;
 import com.scs.splitscreenfpsengine.entities.CubeExplosionShard;
 import com.scs.splitscreenfpsengine.entities.FloorOrCeiling;
-import com.scs.splitscreenfpsengine.entities.TerrainEntity;
+import com.scs.splitscreenfpsengine.entities.ParticleSpark;
+import com.scs.splitscreenfpsengine.entities.AbstractTerrainEntity;
 import com.scs.splitscreenfpsengine.entities.VoxelTerrainEntity;
 import com.scs.splitscreenfpsengine.hud.IHud;
 import com.scs.splitscreenfpsengine.input.IInputDevice;
@@ -69,6 +67,8 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	private AudioNode audioMusic;
 	public DirectionalLight sun;
 	private boolean gameOver = false;
+	
+	private AbstractPlayersAvatar playerDebug;
 
 	protected ExpiringEffectSystem expiringEffectSystem;
 
@@ -118,6 +118,8 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			AbstractPlayersAvatar player = this.addPlayersAvatar(0, newCam, input, 0);
 			IHud hud = this.createHUD(newCam, player);
 			player.setHUD(hud);
+			
+			playerDebug = player;
 		}
 
 		// Create players for each joystick
@@ -270,7 +272,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		float w = c.getWidth() * (c.getViewPortRight()-c.getViewPortLeft());
 		float h = c.getHeight() * (c.getViewPortTop()-c.getViewPortBottom());
 		IHud hud = generateHUD(game, this, player, xBL, yBL, w, h, c);
-		game.getGuiNode().attachChild(hud.getSpatial()); // scs new
+		game.getGuiNode().attachChild(hud.getSpatial());
 		return hud;
 
 	}
@@ -304,7 +306,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 		sun = new DirectionalLight();
 		sun.setColor(ColorRGBA.White);
-		sun.setDirection(new Vector3f(-.5f, -.1f, -.5f).normalizeLocal());
+		sun.setDirection(new Vector3f(-.7f, -.1f, -.7f).normalizeLocal());
 		game.getRootNode().addLight(sun);
 
 	}
@@ -365,26 +367,14 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		}
 
 		if (name.equals(TEST)) {
-			ParticleEmitter fire = new ParticleEmitter("Emitter", ParticleMesh.Type.Triangle, 30);
-			Material mat_red = new Material(game.getAssetManager(), "Common/MatDefs/Misc/Particle.j3md");
-			//mat_red.setTexture("Texture", game.getAssetManager().loadTexture("Textures/flame.png"));
-			mat_red.setTexture("Texture", game.getAssetManager().loadTexture("Effects/Explosion/flame.png"));
-			fire.setMaterial(mat_red);
-			fire.setImagesX(2);
-			fire.setImagesY(2); // 2x2 texture animation
-			fire.setEndColor(  new ColorRGBA(1f, 0f, 0f, 1f));   // red
-			fire.setStartColor(new ColorRGBA(1f, 1f, 0f, 0.5f)); // yellow
-			//fire.getParticleInfluencer().setInitialVelocity(new Vector3f(2, 0, 0));
-			fire.getParticleInfluencer().setInitialVelocity(new Vector3f(0, -2, 0));
-			fire.setStartSize(1);//.5f);
-			fire.setEndSize(0.1f);
-			fire.setGravity(0, 0, 0);
-			fire.setLowLife(1f);
-			fire.setHighLife(3f);
-			fire.getParticleInfluencer().setVelocityVariation(0.3f);
+			Vector3f pos = playerDebug.getLocation();
+			pos.y += 2f;
+			//new ParticleShockwave(game, this, pos);
 
-			fire.setLocalTranslation(20, 2, 20);
-			this.getRootNode().attachChild(fire);
+			new ParticleSpark(game, this, playerDebug.getLocation());
+
+			//new ParticleExplosion(game, this, playerDebug.getLocation());
+		
 		} else if (name.equals(QUIT)) {
 			game.setNextModule(game.getStartModule());//new StartModule(game, GameMode.Skirmish));
 		}
@@ -564,7 +554,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 	public Vector3f getFloorPointWithRay(AbstractPlayersAvatar wiz, float range) {
 		if (Settings.USE_TERRAIN) {
-			return getPointWithRay(wiz, TerrainEntity.class, range);
+			return getPointWithRay(wiz, AbstractTerrainEntity.class, range);
 		} else {
 			return getPointWithRay(wiz, FloorOrCeiling.class, range);
 		}
@@ -601,7 +591,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 	public boolean isAreaClear(BoundingVolume bv) {
 		for (IEntity e : this.entities) {
-			if (e instanceof TerrainEntity || e instanceof FloorOrCeiling || e instanceof VoxelTerrainEntity) {
+			if (e instanceof AbstractTerrainEntity || e instanceof FloorOrCeiling || e instanceof VoxelTerrainEntity) {
 				continue;
 			}
 			try {

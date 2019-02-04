@@ -7,11 +7,11 @@ public class Settings {
 	public static final float FRUSTUM_ANGLE = 55;
 
 	// DEBUG
-	public static final boolean USE_TERRAIN = true;
+	public static final boolean SHOW_BULLET_SPHERE = true;
+	public static final boolean DEBUG_BULLET_COLLISION = true;
 	public static final boolean AI_WIZARDS = false;
 
 	// Unused debug
-	public static final boolean DEBUG_FIREBALL_POS = false;
 	public static final boolean DEBUG_ROTATING_CAM = false;
 	public static final boolean ALWAYS_SHOW_4_CAMS = false;
 	public static final boolean USE_MODEL_FOR_PLAYERS = true;
@@ -21,9 +21,7 @@ public class Settings {
 	public static final boolean DEBUG_GAMEPAD_TURNING = false;
 	public static final boolean DEBUG_HUD = false;
 	public static final boolean DEBUG_TARGETTER = false;
-
-	public static final boolean SHOW_FLASH_EXPLOSIONS = false;
-	//public static final boolean PLAYER1_IS_MOUSE = true;
+	public static final boolean USE_TERRAIN = true;
 
 	public enum GameMode {Skirmish, KingOfTheHill } // todo - delete these
 	

@@ -6,7 +6,6 @@ import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Spatial;
@@ -27,34 +26,43 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 	private float timeLeft = 6;
 	private boolean forceApplied = false;
 	private float damage;
-	
+	private Spatial bulletEffect;
+	private Geometry physicalBullet; // Typically invisible
+
 	public AbstractBullet(SplitScreenFpsEngine _game, AbstractGameModule _module, String name, ICanShoot _shooter, float _damage) {
 		super(_game, _module, name);
 
 		this.shooter = _shooter;
 		damage = _damage;
-		
+
 		Vector3f origin = shooter.getBulletStartPosition().clone();
 
-		Spatial bullet = createBulletModel();
+		bulletEffect = createBulletModel();
+		//this.mainNode.attachChild(bulletEffect);
 
-		this.mainNode.attachChild(bullet);
-		
 		// Add physical sphere
-		Mesh sphere = new Sphere(8, 8, .2f, true, false);
-		Geometry ball_geo = new Geometry("BulletSphere", sphere);
-		ball_geo.setCullHint(CullHint.Always);
-		this.mainNode.attachChild(ball_geo);
-		
-		mainNode.setLocalTranslation(origin.add(shooter.getShootDir().multLocal(shooter.getRadius()*2)));
+		Mesh sphere = new Sphere(8, 8, .1f, true, false);
+		physicalBullet = new Geometry("BulletSphere", sphere);
+		if (Settings.SHOW_BULLET_SPHERE) {
+			TextureKey key = new TextureKey( "Textures/greensun.jpg");
+			Texture tex = game.getAssetManager().loadTexture(key);
+			Material mat = new Material(game.getAssetManager(),"Common/MatDefs/Light/Lighting.j3md");
+			mat.setTexture("DiffuseMap", tex);
+			physicalBullet.setMaterial(mat);
+		} else {
+			physicalBullet.setCullHint(CullHint.Always);
+		}
+
+		this.mainNode.attachChild(physicalBullet);
+
+		mainNode.setLocalTranslation(origin.add(shooter.getShootDir().multLocal(shooter.getRadius()*1)));
 		mainNode.getLocalTranslation().y -= 0.1f; // Drop bullets slightly
 
 		rigidBodyControl = new RigidBodyControl(.1f);
 		mainNode.addControl(rigidBodyControl);
 
-		bullet.setUserData(Settings.ENTITY, this);
+		bulletEffect.setUserData(Settings.ENTITY, this);
 		rigidBodyControl.setUserObject(this);
-		rigidBodyControl.setGravity(Vector3f.ZERO);
 
 		module.addEntity(this);
 
@@ -65,7 +73,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 		audio_gun.setVolume(2);
 		this.getMainNode().attachChild(audio_gun);
 		audio_gun.play();
-*/
+		 */
 	}
 
 	protected abstract Spatial createBulletModel();
@@ -73,9 +81,9 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 
 	@Override
 	public void process(float tpf) {
-		if (Settings.DEBUG_FIREBALL_POS) { //this.mainNode
-			new DebuggingSphere(game, module, this.getLocation());
-		}
+		//this.bulletEffect.setLocalTranslation(physicalBullet.getLocalTranslation()); // Positrion effect on bullet - 0,0,0!!!
+		this.bulletEffect.setLocalTranslation(mainNode.getWorldTranslation()); // Positrion effect on bullet
+
 		this.timeLeft -= tpf;
 		if (this.timeLeft < 0) {
 			this.markForRemoval();
@@ -93,11 +101,14 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 	public void notifiedOfCollision(AbstractPhysicalEntity other) {
 		if (other != this.shooter) {
 			Settings.p(this + " collided with " + other + ", creating explosion at " + this.getLocation());
+			if (Settings.DEBUG_BULLET_COLLISION) { //this.mainNode
+				new DebuggingSphere(game, module, this.getLocation());
+			}
 			//CubeExplosionShard.Factory(game, module, this.getLocation(), 3);
 			//module.audioSmallExplode.play();
 			new ParticleExplosion(game, module, this.getLocation());
 			this.markForRemoval(); // Don't bounce
-			
+
 			// Make hole in walls
 			if (other instanceof VoxelTerrainEntity) {
 				VoxelTerrainEntity vte = (VoxelTerrainEntity)other;
@@ -117,7 +128,8 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 	public void prePhysicsTick(PhysicsSpace space, float tpf) {
 		if (!forceApplied) {
 			forceApplied = true;
-			rigidBodyControl.setLinearVelocity(shooter.getShootDir().mult(35));//40));
+			rigidBodyControl.setLinearVelocity(shooter.getShootDir().mult(20));//35));//40));
+			rigidBodyControl.setGravity(new Vector3f(0,0,0)); // Must be set after being added!
 		}
 
 	}
@@ -135,5 +147,15 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 	}
 
 
+	@Override
+	public void actuallyAdd() {
+		super.actuallyAdd();
+		this.game.getRootNode().attachChild(bulletEffect);
+	}
 
+	@Override
+	public void actuallyRemove() {
+		super.actuallyRemove();
+		this.bulletEffect.removeFromParent();
+	}
 }

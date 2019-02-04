@@ -32,7 +32,6 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	public float moveSpeed;// = Settings.PLAYER_MOVE_SPEED;
 	protected IInputDevice input;
 
-	//Temporary vectors used on each frame.
 	public Camera cam;
 	public final Vector3f camDir = new Vector3f();
 	private final Vector3f camLeft = new Vector3f();
@@ -86,28 +85,6 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 
 	protected abstract IAvatarModel getPlayersModel(SplitScreenFpsEngine game, int pid);
 
-	/*
-	private Spatial getPlayersModel(MultiplayerVoxelWorldMain game, int pid) {
-		if (Settings.USE_MODEL_FOR_PLAYERS) {
-			return new RobotModel(game.getAssetManager(), pid);
-		} else {
-			// Add player's box
-			Box box1 = new Box(PLAYER_RAD, PLAYER_HEIGHT/2, PLAYER_RAD);
-			//Cylinder box1 = new Cylinder(1, 8, PLAYER_RAD, PLAYER_HEIGHT, true);
-			Geometry playerGeometry = new Geometry("Player", box1);
-			TextureKey key3 = new TextureKey("Textures/robot_green.png");
-			key3.setGenerateMips(true);
-			Texture tex3 = game.getAssetManager().loadTexture(key3);
-			Material floor_mat = null;
-			floor_mat = new Material(game.getAssetManager(),"Common/MatDefs/Light/Lighting.j3md");  // create a simple material
-			floor_mat.setTexture("DiffuseMap", tex3);
-			playerGeometry.setMaterial(floor_mat);
-			//playerGeometry.setLocalTranslation(new Vector3f(0, PLAYER_HEIGHT/2, 0)); // Need this to ensure the crate is on the floor
-			playerGeometry.setLocalTranslation(new Vector3f(0, (PLAYER_HEIGHT/2)-.075f, 0)); // Need this to ensure the crate is on the floor
-			return playerGeometry;
-		}
-	}
-	 */
 
 	public void moveToStartPostion(boolean invuln) {
 		Vector3f warpPos = module.getPlayerStartPos(playerID);//new Vector3f(p.x, module.mapData.getRespawnHeight(), p.y);
@@ -221,7 +198,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	public Vector3f getShootDir() {
 		Vector3f pos = module.getPointWithRay(this, AbstractPhysicalEntity.class, -1);
 		if (pos != null) {
-			Vector3f dir = pos.subtract(this.getLocation());
+			Vector3f dir = pos.subtract(getBulletStartPosition());
 			return dir.normalizeLocal();
 		} else {
 			return this.cam.getDirection();
