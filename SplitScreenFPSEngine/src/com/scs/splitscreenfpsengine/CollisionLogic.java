@@ -36,7 +36,7 @@ public class CollisionLogic {
 	
 	private static void harmed(AbstractGameModule game, IDamagable damagable, ICausesHarmOnContact col) {
 		if (col.getSide() != damagable.getSide()) {
-			//todo
+			damagable.damaged(col.getDamageCaused(), "hit by " + col.getName());
 		}
 	}
 	

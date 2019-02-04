@@ -37,10 +37,10 @@ import com.scs.splitscreenfpsengine.components.IExpiringEffect;
 import com.scs.splitscreenfpsengine.components.IProcessable;
 import com.scs.splitscreenfpsengine.entities.AbstractPhysicalEntity;
 import com.scs.splitscreenfpsengine.entities.AbstractPlayersAvatar;
+import com.scs.splitscreenfpsengine.entities.AbstractTerrainEntity;
 import com.scs.splitscreenfpsengine.entities.CubeExplosionShard;
 import com.scs.splitscreenfpsengine.entities.FloorOrCeiling;
-import com.scs.splitscreenfpsengine.entities.ParticleSpark;
-import com.scs.splitscreenfpsengine.entities.AbstractTerrainEntity;
+import com.scs.splitscreenfpsengine.entities.ParticleExplosion;
 import com.scs.splitscreenfpsengine.entities.VoxelTerrainEntity;
 import com.scs.splitscreenfpsengine.hud.IHud;
 import com.scs.splitscreenfpsengine.input.IInputDevice;
@@ -369,11 +369,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		if (name.equals(TEST)) {
 			Vector3f pos = playerDebug.getLocation();
 			pos.y += 2f;
-			//new ParticleShockwave(game, this, pos);
-
-			new ParticleSpark(game, this, playerDebug.getLocation());
-
-			//new ParticleExplosion(game, this, playerDebug.getLocation());
+			new ParticleExplosion(game, this, pos);
 		
 		} else if (name.equals(QUIT)) {
 			game.setNextModule(game.getStartModule());//new StartModule(game, GameMode.Skirmish));

@@ -13,4 +13,6 @@ public interface ICausesHarmOnContact {
 	
 	ICanShoot getShooter();
 	
+	String getName();
+	
 }

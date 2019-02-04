@@ -30,6 +30,12 @@ public abstract class AbstractEntity implements IEntity, Savable {
 
 
 	@Override
+	public String getName() {
+		return name;
+	}
+
+
+	@Override
 	public void actuallyAdd() {
 		// Do nothing
 		

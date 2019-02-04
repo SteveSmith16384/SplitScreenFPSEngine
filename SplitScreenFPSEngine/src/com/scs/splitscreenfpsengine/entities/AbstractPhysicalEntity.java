@@ -4,8 +4,8 @@ import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
-import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.Settings;
+import com.scs.splitscreenfpsengine.SplitScreenFpsEngine;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 
 public abstract class AbstractPhysicalEntity extends AbstractEntity {
@@ -30,15 +30,14 @@ public abstract class AbstractPhysicalEntity extends AbstractEntity {
 
 	}
 
-	
+
 	public boolean collides() {
 		return true;
 	}
-	
+
 
 	@Override
 	public void actuallyAdd() {
-		//AbstractPhysicalEntity ape = (AbstractPhysicalEntity)e;
 		game.getRootNode().attachChild(getMainNode());
 		module.bulletAppState.getPhysicsSpace().add(mainNode);
 		if (this instanceof PhysicsTickListener) {
@@ -82,9 +81,7 @@ public abstract class AbstractPhysicalEntity extends AbstractEntity {
 			return this.rigidBodyControl.getPhysicsLocation();
 		} else {
 			return this.mainNode.getWorldTranslation();
-
 		}
-
 	}
 
 
@@ -97,7 +94,8 @@ public abstract class AbstractPhysicalEntity extends AbstractEntity {
 		if (rigidBodyControl != null) {
 			this.rigidBodyControl.setPhysicsLocation(pos);
 		} else {
-			Settings.pe(this + " has no rigid body!");
+			//Settings.pe(this + " has no rigid body!");
+			this.mainNode.setLocalTranslation(pos);
 		}
 	}
 
