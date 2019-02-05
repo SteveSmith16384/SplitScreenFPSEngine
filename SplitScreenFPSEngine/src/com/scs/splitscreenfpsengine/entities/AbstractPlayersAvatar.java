@@ -121,9 +121,13 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 					ability[num].process(tpfSecs);
 					if (input.isAbilityPressed(num)) { // Must be before we set the walkDirection & moveSpeed, as this method may affect it
 						Settings.p("Using " + this.ability[num].getName());
-						this.ability[num].activate(tpfSecs);
-						if (this.ability[num].onlyActivateOnClick()) {
-							input.resetAbilitySwitch(num);
+						try {
+							this.ability[num].activate(tpfSecs);
+							if (this.ability[num].onlyActivateOnClick()) {
+								input.resetAbilitySwitch(num);
+							}
+						} catch (Exception ex) {
+							ex.printStackTrace();
 						}
 						this.hud.refresh();
 					}
@@ -288,8 +292,8 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	public float getRadius() {
 		return radius;
 	}
-	
-	
+
+
 	@Override
 	public void setLocation(Vector3f pos) {
 		this.playerControl.warp(pos);

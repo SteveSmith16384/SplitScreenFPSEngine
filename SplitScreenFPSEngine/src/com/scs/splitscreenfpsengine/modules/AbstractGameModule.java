@@ -539,11 +539,14 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			Geometry g = col.getGeometry();
 			AbstractPhysicalEntity ape = (AbstractPhysicalEntity)AbstractGameModule.getEntityFromSpatial(g);
 			if (ape != null) {
-				if (ape.getClass() == clazz || ape.getClass().getSuperclass() == clazz) { // todo - isAssignableFrom??
+				if (clazz.isAssignableFrom(ape.getClass())) { // todo - isAssignableFrom??
+					//if (ape.getClass().isAssignableFrom(clazz)) { // todo - isAssignableFrom??
+					//if (ape.getClass() == clazz || ape.getClass().getSuperclass() == clazz) { // todo - isAssignableFrom??
 					return ape;
 				}
 			}
 		}
+		int dfg;
 		return null;
 	}
 

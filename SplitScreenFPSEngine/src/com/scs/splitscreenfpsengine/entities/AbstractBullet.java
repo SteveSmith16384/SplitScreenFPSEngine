@@ -56,7 +56,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 		this.mainNode.attachChild(physicalBullet);
 
 		mainNode.setLocalTranslation(origin.add(shooter.getShootDir().multLocal(shooter.getRadius()*1)));
-		mainNode.getLocalTranslation().y -= 0.1f; // Drop bullets slightly
+		//mainNode.getLocalTranslation().y += 0.2f; // Raise bullets slightly
 
 		rigidBodyControl = new RigidBodyControl(.1f);
 		mainNode.addControl(rigidBodyControl);
@@ -100,7 +100,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 	@Override
 	public void notifiedOfCollision(AbstractPhysicalEntity other) {
 		if (other != this.shooter) {
-			Settings.p(this + " collided with " + other + ", creating explosion at " + this.getLocation());
+			Settings.p(this.getName() + " collided with " + other.getName() + ", creating explosion at " + this.getLocation());
 			if (Settings.DEBUG_BULLET_COLLISION) { //this.mainNode
 				new DebuggingSphere(game, module, this.getLocation());
 			}
