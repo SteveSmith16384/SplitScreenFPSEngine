@@ -563,7 +563,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		for(PhysicsRayTestResult o : list) {
 			if (o.getCollisionObject().getUserObject() instanceof AbstractPhysicalEntity) {
 				AbstractPhysicalEntity ape = (AbstractPhysicalEntity)o.getCollisionObject().getUserObject();
-				if (ape != null) {
+				if (ape != null && ape != wiz) {
 					if (ape.collides()) {
 						if (clazz.isAssignableFrom(ape.getClass())) {
 							return ape;
