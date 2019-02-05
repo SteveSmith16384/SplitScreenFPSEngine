@@ -29,7 +29,7 @@ public abstract class AbstractBullet extends AbstractPhysicalEntity implements I
 	private Spatial bulletEffect;
 	private Geometry physicalBullet; // Typically invisible
 
-	public AbstractBullet(SplitScreenFpsEngine _game, AbstractGameModule _module, String name, ICanShoot _shooter, float _damage) {
+	protected AbstractBullet(SplitScreenFpsEngine _game, AbstractGameModule _module, String name, ICanShoot _shooter, float _damage) {
 		super(_game, _module, name);
 
 		this.shooter = _shooter;

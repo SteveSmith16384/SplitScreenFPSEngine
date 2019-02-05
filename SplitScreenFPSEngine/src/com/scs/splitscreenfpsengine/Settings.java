@@ -7,11 +7,12 @@ public class Settings {
 	public static final float FRUSTUM_ANGLE = 55;
 
 	// DEBUG
-	public static final boolean SHOW_BULLET_SPHERE = true;
-	public static final boolean DEBUG_BULLET_COLLISION = true;
-	public static final boolean AI_WIZARDS = false;
+	public static final boolean INFINITE_MANA = true;
 
 	// Unused debug
+	public static final boolean SHOW_BULLET_SPHERE = false;
+	public static final boolean DEBUG_BULLET_COLLISION = false;
+	public static final boolean AI_WIZARDS = false;
 	public static final boolean DEBUG_ROTATING_CAM = false;
 	public static final boolean ALWAYS_SHOW_4_CAMS = false;
 	public static final boolean USE_MODEL_FOR_PLAYERS = true;

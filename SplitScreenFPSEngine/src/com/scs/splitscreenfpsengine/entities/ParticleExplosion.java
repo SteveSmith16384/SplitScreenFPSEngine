@@ -31,14 +31,21 @@ public class ParticleExplosion extends AbstractPhysicalEntity implements IExpiri
 		debris.setStartColor(ColorRGBA.White);
 		debris.setGravity(0, 6, 0);
 		debris.getParticleInfluencer().setVelocityVariation(.60f);
-		debris.emitAllParticles();
 
 		mainNode.attachChild(debris);
+		debris.emitAllParticles();
 
 		this.mainNode.setLocalTranslation(pos);
 		module.addEntity(this);
 	}
 
+	
+	@Override
+	public void actuallyAdd() {
+		super.actuallyAdd();
+		//todo debris.setGravity(0, 6, 0);
+	}
+	
 
 	@Override
 	public float getTimeRemaining() {

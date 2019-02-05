@@ -10,6 +10,7 @@ import com.scs.splitscreenfpsengine.input.JamepadControllerManager;
 import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 import com.scs.splitscreenfpsengine.modules.AbstractStartModule;
 import com.scs.splitscreenfpsengine.modules.IModule;
+import com.scs.splitscreenfpsengine.systems.SoundSystem;
 
 public abstract class SplitScreenFpsEngine extends SimpleApplication implements IControllerListener {
 
@@ -19,7 +20,7 @@ public abstract class SplitScreenFpsEngine extends SimpleApplication implements 
 	public static AppSettings settings;
 	public static MultiplayerVoxelWorldProperties properties;
 	public JamepadControllerManager controllerManager;;
-
+	public SoundSystem soundSystem;
 
 
 	public abstract AbstractGameModule getGameModule();
@@ -55,6 +56,8 @@ public abstract class SplitScreenFpsEngine extends SimpleApplication implements 
 			VideoRecorderAppState video_recorder = new VideoRecorderAppState();
 			stateManager.attach(video_recorder);
 		}
+		
+		soundSystem = new SoundSystem(this.getAssetManager(), this.getRootNode());
 
 	}
 
@@ -77,11 +80,17 @@ public abstract class SplitScreenFpsEngine extends SimpleApplication implements 
 			this.currentModule = pendingModule;
 			this.currentModule.init();
 			pendingModule = null;
+			
+			soundSystem = new SoundSystem(this.getAssetManager(), this.getRootNode());
 		}
 
 		controllerManager.checkControllers();
 
 		currentModule.update(tpf_secs);
+		
+		if (soundSystem != null) {
+			soundSystem.process();
+		}
 	}
 
 

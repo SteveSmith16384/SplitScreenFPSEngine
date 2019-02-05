@@ -51,7 +51,7 @@ public abstract class AbstractPlayersAvatar extends AbstractPhysicalEntity imple
 	protected float restartTime, invulnerableTime;
 	private float timeSinceLastMove = 0;
 
-	public AbstractPlayersAvatar(SplitScreenFpsEngine _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side, float _moveSpeed) {
+	protected AbstractPlayersAvatar(SplitScreenFpsEngine _game, AbstractGameModule _module, int _playerID, Camera _cam, IInputDevice _input, int _side, float _moveSpeed) {
 		super(_game, _module, "Player");
 
 		playerID = _playerID;

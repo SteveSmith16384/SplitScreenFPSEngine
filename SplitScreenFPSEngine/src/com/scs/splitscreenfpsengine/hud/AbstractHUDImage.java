@@ -45,8 +45,6 @@ public class AbstractHUDImage extends Picture implements IEntity, IProcessable {
 
 	@Override
 	public void actuallyAdd() {
-		// TODO Auto-generated method stub
-		
 	}
 
 

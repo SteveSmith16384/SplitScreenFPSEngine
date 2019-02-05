@@ -10,6 +10,8 @@ import com.jme3.bounding.BoundingVolume;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
+import com.jme3.bullet.collision.PhysicsRayTestResult;
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.KeyInput;
@@ -67,8 +69,8 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	private AudioNode audioMusic;
 	public DirectionalLight sun;
 	private boolean gameOver = false;
-	
-	private AbstractPlayersAvatar playerDebug;
+
+	protected AbstractPlayersAvatar playerDebug;
 
 	protected ExpiringEffectSystem expiringEffectSystem;
 
@@ -118,7 +120,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			AbstractPlayersAvatar player = this.addPlayersAvatar(0, newCam, input, 0);
 			IHud hud = this.createHUD(newCam, player);
 			player.setHUD(hud);
-			
+
 			playerDebug = player;
 		}
 
@@ -367,16 +369,19 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		}
 
 		if (name.equals(TEST)) {
-			Vector3f pos = playerDebug.getLocation();
-			pos.y += 2f;
-			new ParticleExplosion(game, this, pos);
-		
+			testPressed();
 		} else if (name.equals(QUIT)) {
 			game.setNextModule(game.getStartModule());//new StartModule(game, GameMode.Skirmish));
 		}
 
 	}
 
+
+	protected void testPressed() {
+		Vector3f pos = playerDebug.getLocation();
+		pos.y += 2f;
+		new ParticleExplosion(game, this, pos);
+	}
 
 	public void doExplosion(Vector3f pos, IEntity ignore) {
 		//Settings.p("Showing explosion");
@@ -522,7 +527,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 	}
 
-
+/*
 	public AbstractPhysicalEntity getWithRay(AbstractPlayersAvatar wiz, Class<? extends AbstractPhysicalEntity> clazz, float range) {
 		Ray ray = new Ray(wiz.getCamera().getLocation(), wiz.getCamera().getDirection());
 
@@ -539,9 +544,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			Geometry g = col.getGeometry();
 			AbstractPhysicalEntity ape = (AbstractPhysicalEntity)AbstractGameModule.getEntityFromSpatial(g);
 			if (ape != null) {
-				if (clazz.isAssignableFrom(ape.getClass())) { // todo - isAssignableFrom??
-					//if (ape.getClass().isAssignableFrom(clazz)) { // todo - isAssignableFrom??
-					//if (ape.getClass() == clazz || ape.getClass().getSuperclass() == clazz) { // todo - isAssignableFrom??
+				if (clazz.isAssignableFrom(ape.getClass())) {
 					return ape;
 				}
 			}
@@ -549,8 +552,30 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		int dfg;
 		return null;
 	}
+*/
 
-
+	
+	// Uses physics space
+	public AbstractPhysicalEntity getWithRay(AbstractPlayersAvatar wiz, Class<? extends AbstractPhysicalEntity> clazz, float range) {
+		Vector3f from = wiz.getCamera().getLocation();
+		Vector3f to = wiz.getCamera().getLocation().add(wiz.getCamera().getDirection().mult(100));
+		List<PhysicsRayTestResult> list = this.getBulletAppState().getPhysicsSpace().rayTest(from, to);
+		for(PhysicsRayTestResult o : list) {
+			if (o.getCollisionObject().getUserObject() instanceof AbstractPhysicalEntity) {
+				AbstractPhysicalEntity ape = (AbstractPhysicalEntity)o.getCollisionObject().getUserObject();
+				if (ape != null) {
+					if (ape.collides()) {
+						if (clazz.isAssignableFrom(ape.getClass())) {
+							return ape;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	
 	public Vector3f getFloorPointWithRay(AbstractPlayersAvatar wiz, float range) {
 		if (Settings.USE_TERRAIN) {
 			return getPointWithRay(wiz, AbstractTerrainEntity.class, range);
@@ -560,6 +585,13 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 	}
 
 
+	/**
+	 * Don't use physics space for this as it can't return the point of collision
+	 * @param wiz
+	 * @param clazz
+	 * @param range
+	 * @return
+	 */
 	public Vector3f getPointWithRay(AbstractPlayersAvatar wiz, Class<? extends AbstractPhysicalEntity> clazz, float range) {
 		Ray ray = new Ray(wiz.getCamera().getLocation(), wiz.getCamera().getDirection());
 
@@ -577,8 +609,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 			AbstractPhysicalEntity ape = (AbstractPhysicalEntity)AbstractGameModule.getEntityFromSpatial(g);
 			if (ape != null) {
 				if (ape.collides()) {
-					//if (ape.getClass() == clazz || ape.getClass().getSuperclass() == clazz) { // todo - isAssignableFrom??
-					if (ape.getClass() == clazz || ape.getClass().getSuperclass() == clazz) { // todo - isAssignableFrom??
+					if (clazz.isAssignableFrom(ape.getClass())) {
 						return col.getContactPoint();
 					}
 				}
@@ -587,6 +618,27 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		return null;
 	}
 
+/*
+	public Vector3f getPointWithRay_Physics(AbstractPlayersAvatar wiz, Class<? extends AbstractPhysicalEntity> clazz, float range) {
+		//Ray ray = new Ray(wiz.getCamera().getLocation(), wiz.getCamera().getDirection());
+		Vector3f from = wiz.getCamera().getLocation();
+		Vector3f to = wiz.getCamera().getLocation().add(wiz.getCamera().getDirection().mult(100));
+		List<PhysicsRayTestResult> list = this.getBulletAppState().getPhysicsSpace().rayTest(from, to);
+		for(PhysicsRayTestResult o : list) {
+			if (o.getCollisionObject().getUserObject() instanceof AbstractPhysicalEntity) {
+				AbstractPhysicalEntity ape = (AbstractPhysicalEntity)o.getCollisionObject().getUserObject();
+				if (ape != null) {
+					if (ape.collides()) {
+						if (clazz.isAssignableFrom(ape.getClass())) {
+							return o.getHitNormalLocal();
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+*/
 
 	public boolean isAreaClear(BoundingVolume bv) {
 		for (IEntity e : this.entities) {

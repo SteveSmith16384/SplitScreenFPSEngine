@@ -19,15 +19,12 @@ public class ParticleShockwave extends AbstractPhysicalEntity implements IExpiri
 		
 		Settings.p(this + " at " + pos);
 
-		ParticleEmitter shockwave = new ParticleEmitter("Shockwave", ParticleMesh.Type.Triangle, 1);
-		//       shockwave.setRandomAngle(true);
+		ParticleEmitter shockwave = new ParticleEmitter("Shockwave", ParticleMesh.Type.Triangle, 2);
 		shockwave.setFaceNormal(Vector3f.UNIT_Y);
-		shockwave.setStartColor(new ColorRGBA(.48f, 0.17f, 0.01f, (float)0.8f));
-		shockwave.setEndColor(new ColorRGBA(.48f, 0.17f, 0.01f, 0f));
-
+		shockwave.setStartColor(new ColorRGBA(.48f, 0.17f, 0.01f, (float)1f));
+		shockwave.setEndColor(new ColorRGBA(.48f, 0.17f, 0.01f, 0.8f));
 		shockwave.setStartSize(0f);
 		shockwave.setEndSize(7f);
-
 		shockwave.setParticlesPerSec(1);
 		shockwave.setGravity(0, 0, 0);
 		shockwave.setLowLife(0.5f);

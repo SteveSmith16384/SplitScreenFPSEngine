@@ -5,7 +5,7 @@ import com.scs.splitscreenfpsengine.modules.AbstractGameModule;
 
 public abstract class AbstractTerrainEntity extends AbstractPhysicalEntity {
 
-	public AbstractTerrainEntity(SplitScreenFpsEngine _game, AbstractGameModule _module) {
+	protected AbstractTerrainEntity(SplitScreenFpsEngine _game, AbstractGameModule _module) {
 		super(_game, _module, "Terrain");
 
 	}

@@ -161,7 +161,7 @@ public class JMEAngleFunctions {
 
 
 	// https://wiki.jmonkeyengine.org/jme3/rotate.html
-	public static void rotateYAxisBy2(Spatial s, int angdeg) {
+	public static void rotateYAxisBy2(Spatial s, float angdeg) {
 		/*Quaternion roll180 = new Quaternion();
 		roll180.fromAngleAxis( FastMath.PI , new Vector3f(0,0,1) );
 		// The rotation is applied: The object rolls by 180 degrees.

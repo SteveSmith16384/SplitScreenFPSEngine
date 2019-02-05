@@ -27,9 +27,11 @@ public class CameraSystem {
 	private float heightOffset3rdPerson;
 	private boolean camInCharge;
 	private View currentView = View.Third;
-
+	
 	// Temp vars
 	private Vector3f dirTmp = new Vector3f();
+	private Vector3f lookAtTmp = new Vector3f();
+	private Vector3f avatarPosTmp = new Vector3f();
 
 	public CameraSystem(SplitScreenFpsEngine _game, Camera _cam, AbstractPlayersAvatar _avatar) {
 		game = _game;
@@ -56,9 +58,11 @@ public class CameraSystem {
 			cam.getLocation().z = vec.z;
 
 			if (!camInCharge) { // Need for Stock Car
-				Vector3f dir = avatar.getMainNode().getWorldRotation().getRotationColumn(2);
+				Vector3f dir = avatar.getMainNode().getWorldRotation().getRotationColumn(2, dirTmp);
 				dir.y = cam.getLocation().y;
-				cam.lookAt(avatar.getMainNode().getWorldTranslation().add(dir), Vector3f.UNIT_Y); // todo - dcet
+				lookAtTmp.set(avatar.getMainNode().getWorldTranslation());
+				lookAtTmp.addLocal(dir);
+				cam.lookAt(lookAtTmp, Vector3f.UNIT_Y);
 			}
 		
 		} else if (this.currentView == View.Cinema) {
@@ -68,8 +72,8 @@ public class CameraSystem {
 			cam.getLocation().y = (int)(pos.y / 20) * 20 + 5;
 			cam.getLocation().z = (int)(pos.z / 25) * 25;
 		} else {
-			Vector3f avatarPos = avatar.getMainNode().getWorldTranslation().clone(); // todo - don't create each time 
-			avatarPos.y += heightOffset3rdPerson;
+			avatarPosTmp.set(avatar.getMainNode().getWorldTranslation()); 
+			avatarPosTmp.y += heightOffset3rdPerson;
 			if (this.currentView == View.Third) {
 				if (camInCharge) {
 					dirTmp = cam.getDirection().mult(-1, dirTmp);
@@ -86,7 +90,7 @@ public class CameraSystem {
 				dirTmp.set(0, 1, 0);
 			}
 
-			Ray r = new Ray(avatarPos, dirTmp);
+			Ray r = new Ray(avatarPosTmp, dirTmp);
 			if (this.currentView == View.Third) {
 				r.setLimit(followDist);
 			} else if (this.currentView == View.TopDown) {
@@ -117,7 +121,7 @@ public class CameraSystem {
 								dist -= 0.1f;
 							}
 							Vector3f add = dirTmp.multLocal(dist);
-							cam.setLocation(avatarPos.add(add));
+							cam.setLocation(avatarPosTmp.addLocal(add));
 							found = true;
 							break;
 						}
@@ -127,7 +131,7 @@ public class CameraSystem {
 
 			if (!found) {
 				Vector3f add = dirTmp.multLocal(r.limit);
-				cam.setLocation(avatarPos.add(add));
+				cam.setLocation(avatarPosTmp.addLocal(add));
 			}
 
 			if (fixedHeight > 0) {

@@ -19,7 +19,7 @@ public abstract class AbstractEntity implements IEntity, Savable {
 	public String name;
 	private boolean markedForRemoval = false;
 
-	public AbstractEntity(SplitScreenFpsEngine _game, AbstractGameModule _module, String _name) {
+	protected AbstractEntity(SplitScreenFpsEngine _game, AbstractGameModule _module, String _name) {
 		id = nextId++;
 		game = _game;
 		module = _module;
