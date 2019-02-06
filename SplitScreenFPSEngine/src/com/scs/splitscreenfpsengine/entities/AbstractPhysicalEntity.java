@@ -100,7 +100,7 @@ public abstract class AbstractPhysicalEntity extends AbstractEntity {
 	}
 
 
-	public Vector3f getCenter() {
+	public Vector3f getCentre() {
 		return this.getMainNode().getWorldBound().getCenter();
 	}
 

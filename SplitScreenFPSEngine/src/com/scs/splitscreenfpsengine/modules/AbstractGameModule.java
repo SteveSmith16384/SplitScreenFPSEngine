@@ -556,7 +556,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 
 	
 	// Uses physics space
-	public AbstractPhysicalEntity getWithRay(AbstractPlayersAvatar wiz, Class<? extends AbstractPhysicalEntity> clazz, float range) {
+	public AbstractPhysicalEntity getWithRay(AbstractPlayersAvatar wiz, Class clazz, float range) {
 		Vector3f from = wiz.getCamera().getLocation();
 		Vector3f to = wiz.getCamera().getLocation().add(wiz.getCamera().getDirection().mult(100));
 		List<PhysicsRayTestResult> list = this.getBulletAppState().getPhysicsSpace().rayTest(from, to);
