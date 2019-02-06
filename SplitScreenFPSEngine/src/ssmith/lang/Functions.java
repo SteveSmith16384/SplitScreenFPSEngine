@@ -38,15 +38,12 @@ public class Functions {
 
 	public static String readAllTextFileFromJar(String filename) throws IOException {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		//InputStream inputStream = classLoader.getResourceAsStream(filename);
-		InputStream inputStream = classLoader.getResourceAsStream("Data/creaturestats.txt");
-		InputStream inputStream2 = classLoader.getResourceAsStream("/Data/creaturestats.txt");
-		InputStream inputStream3 = classLoader.getResourceAsStream("/Assets/Data/creaturestats.txt");
-		InputStream inputStream4 = classLoader.getResourceAsStream("Assets/Data/creaturestats.txt");
+		InputStream inputStream = classLoader.getResourceAsStream(filename);
+		//InputStream inputStream = classLoader.getResourceAsStream("Data/creaturestats.txt");
 		InputStreamReader streamReader = new InputStreamReader(inputStream, "UTF-8");
 		BufferedReader in = new BufferedReader(streamReader);
 
-		StringBuilder result = new StringBuilder("");
+		StringBuilder result = new StringBuilder();
 		for (String line; (line = in.readLine()) != null;) {
 			result.append(line).append("\n");
 		}
@@ -55,7 +52,6 @@ public class Functions {
 
 
 	public static byte[] readAllBinaryFileFromJar(String filename) throws IOException {
-		//InputStream inputStream = ClassLoader.getSystemClassLoader().getSystemResourceAsStream(filename);
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		InputStream inputStream = classLoader.getResourceAsStream(filename);
 
