@@ -1,11 +1,15 @@
 package com.scs.splitscreenfpsengine.jme;
 
+import java.io.File;
+import java.io.IOException;
+
 import com.jme3.animation.AnimControl;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.AssetNotFoundException;
 import com.jme3.asset.TextureKey;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.collision.CollisionResults;
+import com.jme3.export.binary.BinaryExporter;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
@@ -35,28 +39,33 @@ public class JMEModelFunctions {
 	}
 
 
-	public static Spatial loadModel(AssetManager assetManager, String path) {
-		Spatial ship = null;
-		String j30_path = path.substring(path.lastIndexOf("/")+1) + ".j3o";
-		try {
-			String filename = "Models/" + j30_path;
-			System.out.println("Loading " + filename);
-			//ship = assetManager.loadModel(filename);
-		} catch (AssetNotFoundException | IllegalArgumentException ex) {
-			ex.printStackTrace();
-		}
-		if (ship == null) {
-			System.err.println("WARNING!! Loading original model! " + path);
-			ship = assetManager.loadModel(path);
-			/*File file = new File("assets/Models/" + j30_path);
-			BinaryExporter exporter = BinaryExporter.getInstance();
+	public static Spatial loadModel(AssetManager assetManager, String path, boolean loadj3o) {
+		Spatial model = null;
+		String j3oName = path.substring(path.lastIndexOf("/")+1) + ".j3o";
+		if (loadj3o) {
+			// Try and load j3o mode first
 			try {
-				exporter.save(ship, file);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}*/
+				String j3oPath = "Models/" + j3oName;
+				model = assetManager.loadModel(j3oPath);
+			} catch (AssetNotFoundException | IllegalArgumentException ex) {
+				ex.printStackTrace();
+			}
 		}
-		return ship;
+		if (model == null) {
+			// Loading failed, so load original model
+			model = assetManager.loadModel(path);
+			if (loadj3o) {
+				// Save out j3o model for next time
+				File file = new File("assets/Models/" + j3oName);
+				BinaryExporter exporter = BinaryExporter.getInstance();
+				try {
+					exporter.save(model, file);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return model;
 	}
 
 
