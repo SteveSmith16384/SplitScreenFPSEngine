@@ -44,11 +44,16 @@ public class JMEModelFunctions {
 		String j3oName = path.substring(path.lastIndexOf("/")+1) + ".j3o";
 		if (loadj3o) {
 			// Try and load j3o mode first
+			String j3oPath = "Models/" + j3oName;
 			try {
-				String j3oPath = "Models/" + j3oName;
 				model = assetManager.loadModel(j3oPath);
 			} catch (AssetNotFoundException | IllegalArgumentException ex) {
 				ex.printStackTrace();
+				// Delete the j3o model
+				File f = new File(j3oPath);
+				if (f.exists()) {
+					f.delete();
+				}
 			}
 		}
 		if (model == null) {

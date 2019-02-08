@@ -15,6 +15,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.scs.splitscreenfpsengine.Settings;
 import com.scs.splitscreenfpsengine.jme.JMEModelFunctions;
+import com.studiohartman.jamepad.ControllerManager;
 
 public class ModelViewer extends SimpleApplication implements AnimEventListener {
 
