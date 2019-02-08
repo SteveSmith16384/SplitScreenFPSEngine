@@ -78,11 +78,11 @@ public abstract class AbstractStartModule implements IModule, ActionListener, Ra
 		game.getInputManager().addRawInputListener(this);
 
 		if (Settings.RELEASE_MODE) {
-			Picture pic = new Picture("HUD Picture");
+			/*Picture pic = new Picture("HUD Picture");
 			pic.setImage(game.getAssetManager(), "Textures/text/multiplayerarena.png", true);
 			pic.setWidth(game.getCamera().getWidth());
 			pic.setHeight(game.getCamera().getWidth()/7);
-			game.getGuiNode().attachChild(pic);
+			game.getGuiNode().attachChild(pic);*/
 		}
 
 		//BitmapFont guiFont_small = game.getAssetManager().loadFont("Interface/Fonts/Console.fnt");

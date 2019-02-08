@@ -3,9 +3,9 @@ package com.scs.splitscreenfpsengine;
 public class Settings {
 
 	public static final boolean RELEASE_MODE = false;
-	public static final boolean RECORD_VID = true;
+	public static final boolean RECORD_VID = false;
 	public static final float FRUSTUM_ANGLE = 55;
-	public static final boolean LOAD_J3OModels = true;
+	public static final boolean LOAD_J3OModels = false;
 
 	// DEBUG
 	public static final boolean INFINITE_MANA = true;

@@ -274,7 +274,7 @@ public abstract class AbstractGameModule implements IModule, PhysicsCollisionLis
 		float w = c.getWidth() * (c.getViewPortRight()-c.getViewPortLeft());
 		float h = c.getHeight() * (c.getViewPortTop()-c.getViewPortBottom());
 		IHud hud = generateHUD(game, this, player, xBL, yBL, w, h, c);
-		game.getGuiNode().attachChild(hud.getSpatial());
+		//game.getGuiNode().attachChild(hud.getSpatial());
 		return hud;
 
 	}
