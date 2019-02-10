@@ -125,7 +125,9 @@ public abstract class AbstractStartModule implements IModule, ActionListener, Ra
 
 	@Override
 	public void destroy() {
-		audioMusic.stop();
+		if (audioMusic != null) {
+			audioMusic.stop();
+		}
 
 		game.getInputManager().clearMappings();
 		game.getInputManager().clearRawInputListeners();
