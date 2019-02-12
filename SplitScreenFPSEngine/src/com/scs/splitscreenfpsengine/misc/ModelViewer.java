@@ -1,10 +1,14 @@
 package com.scs.splitscreenfpsengine.misc;
 
+import java.io.File;
+import java.io.IOException;
+
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
 import com.jme3.animation.AnimEventListener;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bounding.BoundingBox;
+import com.jme3.export.binary.BinaryExporter;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.Light;
@@ -31,7 +35,8 @@ public class ModelViewer extends SimpleApplication implements AnimEventListener 
 
 
 	public Spatial getModel() {
-		Node model = (Node)assetManager.loadModel("Models/rat.blend");
+		Spatial model = JMEModelFunctions.loadModel(assetManager, "Models/spider/Spider.blend", false);
+		JMEModelFunctions.setTextureOnSpatial(assetManager, model, "Models/spider/Spider.png");
 
 		//JMEModelFunctions.scaleModelToHeight(model, 2f);
 		//JMEModelFunctions.setTextureOnSpatial(assetManager, model, "Models/young_lightskinned_male_diffuse.png");
@@ -94,7 +99,7 @@ public class ModelViewer extends SimpleApplication implements AnimEventListener 
 		fpp = new FilterPostProcessor(assetManager);
 		viewPort.addProcessor(fpp);
 		
-		setupLight();
+		//setupLight();
 
 		//this.showOutlineEffect(model, 3, ColorRGBA.Red);
 

@@ -43,7 +43,6 @@ public class JMEModelFunctions {
 		Spatial model = null;
 		String j3oName = path.substring(path.lastIndexOf("/")+1) + ".j3o";
 		if (loadj3o) {
-			// Try and load j3o mode first
 			String j3oPath = "Models/" + j3oName;
 			try {
 				model = assetManager.loadModel(j3oPath);
@@ -55,22 +54,22 @@ public class JMEModelFunctions {
 					f.delete();
 				}
 			}
-		}
-		if (model == null) {
-			// Loading failed, so load original model
+		} else {
 			model = assetManager.loadModel(path);
-			if (loadj3o) {
-				// Save out j3o model for next time
-				File file = new File("assets/Models/" + j3oName);
-				BinaryExporter exporter = BinaryExporter.getInstance();
-				try {
-					exporter.save(model, file);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 		return model;
+	}
+
+
+	public static void exportModelAsJ3O(Spatial model, String j3oName) {
+		// Save out j3o model for next time
+		File file = new File("assets/Models/" + j3oName);
+		BinaryExporter exporter = BinaryExporter.getInstance();
+		try {
+			exporter.save(model, file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 
