@@ -1,4 +1,4 @@
-MIT Licence for Multiplayer Voxel World
+MIT Licence for Split-Screen FPS Engine
 
 Copyright (c)2017 Stephen Carlyle-Smith
 
